@@ -1,0 +1,89 @@
+/* ========================
+   SCROLL ARCHITECTURE
+   ======================== */
+
+.comic-scroll {
+  /* Long road = slow cinematic journey: ~3.7 screenfuls per chapter */
+  height: 2200vh;
+  position: relative;
+}
+
+.comic-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ========================
+   CAMERA RIG PARALLAX
+   --cam-x/--cam-y (-0.5..0.5) published by CameraRig.
+   Layers drift at different rates = depth. Overscan/scale hides edges.
+   ======================== */
+
+.comic-canvas-wrapper {
+  /* Art drifts least (far plane) + 4% overscan so edges never show */
+  transform:
+    translate(calc(var(--cam-x, 0) * -14px), calc(var(--cam-y, 0) * -10px))
+    scale(1.04);
+}
+
+.comic-overlay {
+  /* Content floats nearest — counter-drifts against the art */
+  translate: calc(var(--cam-x, 0) * 10px) calc(var(--cam-y, 0) * 8px);
+}
+
+/* Spotlight position (Phase 5) defaults to center */
+.comic-sticky {
+  --spot-x: 50%;
+  --spot-y: 45%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comic-canvas-wrapper {
+    transform: none;
+  }
+  .comic-overlay {
+    translate: none;
+  }
+}
+/* Page-turn entry wipe: a slanted reveal band sweeps across the incoming
+   chapter. Gated on .is-live so it plays after the loader lifts, and only
+   when .is-active is (re)applied on chapter entry. */
+.comic-scroll.is-live .comic-overlay > section.is-active {
+  animation: page-turn-in 0.55s cubic-bezier(0.6, 0, 0.3, 1);
+}
+
+@keyframes page-turn-in {
+  from {
+    clip-path: polygon(-30% 0, -8% 0, -28% 100%, -50% 100%);
+  }
+  to {
+    clip-path: polygon(-30% 0, 130% 0, 110% 100%, -50% 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comic-scroll.is-live .comic-overlay > section.is-active {
+    animation: none;
+  }
+}
+
+/* ========================
+   OVERLAY CONTAINER
+   ======================== */
+
+.comic-overlay {
+  position: absolute;
+  left: var(--img-x, 0);
+  top: var(--img-y, 0);
+  width: var(--img-w, 100vw);
+  height: var(--img-h, 100vh);
+  z-index: var(--z-content);
+  pointer-events: none;
+}
+
+.comic-overlay > * {
+  pointer-events: auto;
+}

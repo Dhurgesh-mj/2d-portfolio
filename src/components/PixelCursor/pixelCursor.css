@@ -1,0 +1,78 @@
+.pixel-cursor {
+  position: fixed;
+  top: -8px;
+  left: -8px;
+  width: 16px;
+  height: 16px;
+  z-index: var(--z-cursor, 300);
+  pointer-events: none;
+  transition: scale 0.15s steps(2);
+  will-change: transform;
+}
+
+.pixel-cursor__h,
+.pixel-cursor__v {
+  position: absolute;
+  background: var(--paper, #f4f0e7);
+  /* Ink outline so the reticle reads on light and dark art alike */
+  box-shadow:
+    1px 0 0 var(--ink, #0a0a0a),
+    -1px 0 0 var(--ink, #0a0a0a),
+    0 1px 0 var(--ink, #0a0a0a),
+    0 -1px 0 var(--ink, #0a0a0a);
+}
+
+.pixel-cursor__h {
+  top: 7px;
+  left: 0;
+  width: 16px;
+  height: 2px;
+}
+
+.pixel-cursor__v {
+  top: 0;
+  left: 7px;
+  width: 2px;
+  height: 16px;
+}
+
+/* Hot state — reticle rotates into an X and grows over interactives */
+.pixel-cursor--hot {
+  scale: 1.6;
+}
+
+.pixel-cursor--hot .pixel-cursor__h,
+.pixel-cursor--hot .pixel-cursor__v {
+  background: var(--accent, #4a90b8);
+}
+
+.pixel-cursor--hot .pixel-cursor__h {
+  transform: rotate(45deg) scaleX(0.85);
+  transform-origin: center;
+  top: 7px;
+}
+
+.pixel-cursor--hot .pixel-cursor__v {
+  transform: rotate(45deg) scaleY(0.85);
+  transform-origin: center;
+  left: 7px;
+}
+
+/* Native cursor steps aside everywhere except the loading screen
+   (the skip button keeps its native pointer). Fine pointers only —
+   and never when reduced motion is preferred, since the custom
+   cursor doesn't render there either. */
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .comic-sticky,
+  .comic-sticky *,
+  .comic-nav,
+  .comic-nav * {
+    cursor: none !important;
+  }
+}
+
+@media (pointer: coarse) {
+  .pixel-cursor {
+    display: none;
+  }
+}

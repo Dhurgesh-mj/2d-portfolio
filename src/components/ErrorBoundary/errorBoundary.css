@@ -1,0 +1,66 @@
+.error-fallback {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink, #0a0a0a);
+  padding: 2rem;
+}
+
+.error-fallback__panel {
+  background: var(--paper, #f4f0e7);
+  border: 3px solid var(--paper, #f4f0e7);
+  outline: 3px solid var(--ink, #0a0a0a);
+  box-shadow:
+    8px 8px 0 rgba(0, 0, 0, 0.6),
+    -2px -2px 0 rgba(0, 229, 255, 0.5),
+    10px 10px 0 rgba(255, 0, 100, 0.35);
+  padding: 2rem 2.5rem;
+  max-width: 28rem;
+  text-align: center;
+}
+
+.error-fallback__eyebrow {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--accent, #4a90b8);
+  margin-bottom: 0.5rem;
+}
+
+.error-fallback__title {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 2.5rem;
+  line-height: 0.95;
+  margin: 0 0 0.75rem 0;
+  color: var(--ink, #0a0a0a);
+}
+
+.error-fallback__body {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #333;
+  margin: 0 0 1.25rem 0;
+}
+
+.error-fallback__reload {
+  appearance: none;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--paper, #f4f0e7);
+  background: var(--ink, #0a0a0a);
+  border: 2px solid var(--ink, #0a0a0a);
+  padding: 10px 18px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 3px 3px 0 rgba(10, 10, 10, 0.35);
+}
+
+.error-fallback__reload:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 rgba(10, 10, 10, 0.35);
+}

@@ -1,0 +1,143 @@
+.comic-loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loading, 9999);
+  background-color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease-out;
+  opacity: 1;
+}
+
+.comic-loading-screen--fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.comic-loading-screen__texture {
+  position: absolute;
+  inset: 0;
+  background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.08"/></svg>');
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.comic-loading-screen__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.comic-loading-screen__text {
+  font-family: var(--font-heading), 'Bebas Neue', sans-serif;
+  color: var(--paper);
+  font-size: 2.5rem;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.comic-loading-screen__progress-wrapper {
+  width: 12.5rem;
+  height: 4px;
+  background-color: var(--charcoal);
+  border: 1px solid var(--mid-gray);
+  position: relative;
+  overflow: hidden;
+}
+
+.comic-loading-screen__progress-bar {
+  height: 100%;
+  background-color: var(--paper);
+  transition: width 0.1s linear;
+  background-image: linear-gradient(
+    45deg,
+    var(--mid-gray) 25%,
+    transparent 25%,
+    transparent 50%,
+    var(--mid-gray) 50%,
+    var(--mid-gray) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 8px 8px;
+}
+
+.comic-loading-screen__percent {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  color: var(--muted, #a0a0a0);
+  letter-spacing: 0.1em;
+  margin-top: -8px;
+}
+
+.comic-loading-screen__skip {
+  position: absolute;
+  bottom: 32px;
+  right: 32px;
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: var(--muted, #a0a0a0);
+  background: transparent;
+  border: 1.5px solid var(--mid-gray, #555);
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  pointer-events: auto;
+}
+
+.comic-loading-screen__skip:hover {
+  color: var(--paper);
+  border-color: var(--paper);
+}
+
+.comic-loading-screen__skip:focus-visible {
+  outline: 2px solid var(--accent, #4A90B8);
+  outline-offset: 3px;
+  color: var(--paper);
+}
+
+/* ── Boot log ── */
+.comic-loading-screen__boot {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 5.5rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--muted, #a0a0a0);
+  text-align: left;
+  width: 100%;
+}
+
+.boot-line__prompt {
+  color: var(--accent, #4A90B8);
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.boot-line--ready {
+  color: var(--paper);
+}
+
+.boot-line__cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 0.95em;
+  margin-left: 6px;
+  vertical-align: text-bottom;
+  background-color: var(--accent-cyan, rgba(0, 229, 255, 0.85));
+  animation: cursor-blink 0.85s steps(2) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-line__cursor {
+    animation: none;
+  }
+}

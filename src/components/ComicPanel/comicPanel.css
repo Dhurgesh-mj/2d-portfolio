@@ -1,0 +1,127 @@
+.comic-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 40px;
+}
+
+.comic-panel--sm {
+  max-width: 17.5rem;
+  width: 100%;
+}
+
+.comic-panel--md {
+  max-width: 25rem;
+  width: 100%;
+}
+
+.comic-panel--lg {
+  max-width: 100%;
+  width: 100%;
+}
+
+.comic-panel__inner {
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-comic);
+}
+
+.comic-panel--dark .comic-panel__inner {
+  border: 3px solid var(--ink);
+  background-color: var(--charcoal);
+  color: var(--paper);
+}
+
+.comic-panel--light .comic-panel__inner {
+  border: 2px solid var(--charcoal);
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+.comic-panel:hover {
+  box-shadow: 7px 7px 0 rgba(10, 10, 10, 0.35);
+}
+
+/* Halftone overlay pseudo-element */
+.comic-panel__inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(10, 10, 10, 0.1) 1px, transparent 1px);
+  background-size: 4px 4px;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  z-index: 10;
+  transform: translate(calc(var(--p, 0) * 4px), calc(var(--p, 0) * -2px));
+}
+
+.comic-panel__content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Scanline shine sweep on hover — a light band rakes across the panel */
+.comic-panel__inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.35) 50%, transparent 58%);
+  transform: translateX(-120%);
+  opacity: 0;
+  z-index: 11;
+}
+
+.comic-panel:hover .comic-panel__inner::before {
+  opacity: 1;
+  animation: shine-sweep 0.55s ease;
+}
+
+@keyframes shine-sweep {
+  from { transform: translateX(-120%); }
+  to   { transform: translateX(120%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comic-panel:hover .comic-panel__inner::before {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+.comic-panel__chapter {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 20;
+  background: var(--paper);
+  padding: 2px 6px;
+  border: 2px solid var(--ink);
+}
+
+.comic-panel--dark .comic-panel__chapter {
+  background: var(--charcoal);
+  border-color: var(--mid-gray);
+  color: var(--paper);
+}
+
+.comic-panel__caption-wrapper {
+  margin-top: -16px;
+  padding: 0 16px;
+  z-index: 30;
+  position: relative;
+}
+
+.comic-panel__caption {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .comic-panel--sm,
+  .comic-panel--md {
+    max-width: 100%;
+  }
+}

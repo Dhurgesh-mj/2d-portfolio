@@ -1,0 +1,26 @@
+.comic-canvas-wrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: var(--z-canvas, 1);
+}
+
+.comic-canvas-wrapper canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Depth-of-field beats: the art softens while text panels hold focus.
+   Desktop only — blur is skipped on small GPUs and reduced motion. */
+@media (min-width: 769px) {
+  .comic-canvas-wrapper {
+    filter: blur(var(--dof, 0px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comic-canvas-wrapper {
+    filter: none;
+  }
+}

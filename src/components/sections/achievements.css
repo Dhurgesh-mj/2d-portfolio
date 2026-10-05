@@ -1,0 +1,247 @@
+/* ========================================
+   CHAPTER 04 — ACHIEVEMENTS
+   Comic-milestone / editorial annotation
+   ======================================== */
+
+.achievements-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-content, 10);
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* pointer-events only — inline style owns opacity */
+.achievements-section.is-active {
+  pointer-events: auto;
+}
+
+/* Milestone strip container — right side */
+.achievements-strip {
+  position: absolute;
+  right: calc(5% + max(0px, (100% - 100vw) + var(--img-x, 0px)));
+  top: 14%;
+  width: 23.75rem;
+  max-width: 42vw;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding-left: 28px;
+}
+
+/* Single milestone row */
+.milestone {
+  position: relative;
+  will-change: opacity, transform;
+}
+
+/* Vertical ink rule */
+.achievements-rule {
+  position: absolute;
+  left: 10px;
+  top: 0;
+  width: 2px;
+  background: var(--paper, #F4F0E7);
+  opacity: var(--p-rule, 0);
+  height: calc(var(--p-rule, 0) * 100%);
+  transition: opacity 0.1s linear;
+}
+
+/* Pip on the vertical rule */
+.milestone-pip {
+  position: absolute;
+  left: -22px;
+  top: 12px;
+  transform: scale(var(--p-pip, 0));
+  opacity: var(--p-pip, 0);
+  will-change: transform, opacity;
+}
+
+/* Annotation card — ink-bordered, paper bg, halftone overlay */
+.milestone-card {
+  position: relative;
+  background: var(--paper, #F4F0E7);
+  border: 2px solid var(--ink, #0A0A0A);
+  padding: 0.7rem 0.9rem 0.6rem;
+  box-shadow: 3px 3px 0 rgba(10, 10, 10, 0.22);
+  clip-path: inset(0 calc(100% - var(--p-card, 0) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--p-card, 0)) * 10px));
+  will-change: clip-path, transform;
+}
+
+/* Specular sheen on hover — physical card light-play (::before is free) */
+.milestone-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 55%, rgba(255, 255, 255, 0.28) 82%, rgba(0, 229, 255, 0.12) 100%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 2;
+}
+
+.milestone-card:hover::before {
+  opacity: 1;
+}
+
+/* Halftone texture */
+.milestone-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(10, 10, 10, 0.06) 1px, transparent 1px);
+  background-size: 4px 4px;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  z-index: 0;
+}
+
+.milestone-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Marker swipes key off the card reveal (this scope uses --p-card) */
+.milestone-card .mark {
+  --p: var(--p-card, 0);
+}
+
+/* Marker symbol — inline decorative glyph */
+.milestone-marker {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--accent, #4A90B8);
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* Label — small mono tag */
+.milestone-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink, #0A0A0A);
+  background: var(--accent, #4A90B8);
+  color: #fff;
+  padding: 1px 6px;
+  display: inline-block;
+  margin-bottom: 0.35rem;
+}
+
+/* Caption text */
+.milestone-caption {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: #222;
+  margin: 0 0 0.3rem 0;
+}
+
+/* Source — tiny reference */
+.milestone-source {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mid-gray, #555);
+  border-top: 1px solid rgba(10, 10, 10, 0.15);
+  padding-top: 0.25rem;
+  display: block;
+}
+
+/* Stamp-in: the card slams down with a shadow punch when it enters.
+   Box-shadow only — never touches the progress-driven clip-path/transform. */
+.milestone--visible .milestone-card {
+  animation: stamp-hit 0.32s steps(3);
+}
+
+@keyframes stamp-hit {
+  0%   { box-shadow: 0 0 0 rgba(10, 10, 10, 0); }
+  40%  { box-shadow: 7px 7px 0 rgba(10, 10, 10, 0.38); }
+  70%  { box-shadow: 2px 2px 0 rgba(10, 10, 10, 0.2); }
+  100% { box-shadow: 3px 3px 0 rgba(10, 10, 10, 0.22); }
+}
+
+/* ---- Hover: subtle ink shift ---- */
+.milestone-card:hover {
+  box-shadow: 4px 4px 0 var(--ink, #0a0a0a), -1px -1px 0 rgba(0, 229, 255, 0.4);
+}
+
+.milestone-card:hover::after {
+  transform: translate(2px, 2px);
+}
+
+.milestone-card:hover .milestone-label {
+  transform: translateX(2px);
+  text-shadow: 1px 1px 0 rgba(0, 229, 255, 0.5);
+  transition: all 0.2s ease;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 1024px) {
+  .achievements-strip {
+    max-width: 50vw;
+    right: calc(4% + max(0px, (100% - 100vw) + var(--img-x, 0px)));
+  }
+}
+
+@media (max-width: 768px) {
+  .achievements-strip {
+    right: auto;
+    left: 5%;
+    width: 90%;
+    max-width: none;
+    top: 8%;
+    gap: 0.75rem;
+  }
+
+  .milestone-card {
+    padding: 0.55rem 0.75rem;
+  }
+
+  .milestone-caption {
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .achievements-strip {
+    top: 6%;
+    gap: 0.6rem;
+  }
+
+  .milestone-card {
+    padding: 0.45rem 0.6rem;
+    box-shadow: 2px 2px 0 rgba(10, 10, 10, 0.18);
+  }
+
+  .milestone-caption {
+    font-size: 0.74rem;
+    line-height: 1.35;
+  }
+
+  .milestone-source {
+    font-size: 0.58rem;
+  }
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .milestone {
+    transition: opacity 0.1s linear !important;
+    transform: none !important;
+  }
+  .milestone--visible .milestone-card {
+    animation: none;
+  }
+}

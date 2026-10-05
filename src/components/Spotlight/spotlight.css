@@ -1,0 +1,36 @@
+.spotlight {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.spotlight__layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.spotlight__layer--base {
+  background: radial-gradient(
+    circle 44vmax at var(--spot-x, 50%) var(--spot-y, 45%),
+    rgba(255, 255, 255, 0.13),
+    transparent 70%
+  );
+}
+
+.spotlight__layer--cool {
+  background: radial-gradient(
+    circle 44vmax at var(--spot-x, 50%) var(--spot-y, 45%),
+    rgba(0, 229, 255, 0.12),
+    transparent 70%
+  );
+}
+
+.spotlight__layer--warm {
+  background: radial-gradient(
+    circle 44vmax at var(--spot-x, 50%) var(--spot-y, 45%),
+    rgba(255, 200, 130, 0.16),
+    transparent 70%
+  );
+}

@@ -1,0 +1,67 @@
+:root {
+  /* ── Core Palette ── */
+  --ink: #0A0A0A;
+  --charcoal: #171717;
+  --dark-gray: #262626;
+  --mid-gray: #555555;
+  --light-gray: #B8B8B8;
+  --muted: #a0a0a0;
+  --paper: #F4F0E7;
+  --cream: #E9E1D0;
+  --white: #FAFAF7;
+  --paper-dark: #E0D8C6;
+
+  /* ── Accent Colors ── */
+  --accent: #4A90B8;
+  --accent-cyan: rgba(0, 229, 255, 0.85);
+  --accent-magenta: rgba(255, 0, 100, 0.75);
+
+  /* ── Text Hierarchy ── */
+  --text-primary: #0A0A0A;
+  --text-secondary: #333333;
+  --text-muted: #555555;
+
+  /* ── Font Families ── */
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+  /* ── Borders & Shadows ── */
+  --border-heavy: 3px;
+  --border-light: 1px;
+  --shadow-comic: 6px 6px 0 rgba(10,10,10,0.3);
+  --shadow-comic-light: 4px 4px 0 rgba(10,10,10,0.15);
+
+  /* ── Z-index Layers ── */
+  --z-canvas: 1;
+  --z-texture: 2;
+  --z-decoration: 3;
+  --z-content: 10;
+  --z-nav: 100;
+  --z-loading: 200;
+  --z-cursor: 300;
+
+  /* ── Typography Scale ── */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+  --text-7xl: 4.5rem;
+
+  /* ── Scrollbar (Firefox) ── */
+  scrollbar-width: thin;
+  scrollbar-color: var(--mid-gray) var(--charcoal);
+
+  /* Breakpoints:
+     sm: 640px
+     md: 768px
+     lg: 1024px
+     xl: 1280px
+  */
+}

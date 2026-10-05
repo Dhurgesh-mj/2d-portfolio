@@ -1,0 +1,396 @@
+/* ========================================
+   CHAPTER 05 — PROJECTS
+   Premium comic/graphic-novel panels
+   ======================================== */
+
+.projects-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-content, 10);
+  pointer-events: none;
+  overflow: hidden;
+  /* 3D stage for the coverflow carousel */
+  perspective: 1200px;
+}
+
+/* ── Skeleton Loading ── */
+@keyframes skeleton-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.project-skeleton {
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  background: linear-gradient(
+    90deg,
+    #e8e0d0 25%,
+    #f0e8d8 50%,
+    #e8e0d0 75%
+  );
+  background-size: 800px 100%;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.skeleton-badge {
+  height: 16px;
+  width: 80px;
+  background: rgba(10,10,10,0.15);
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-title {
+  height: 28px;
+  width: 75%;
+  background: rgba(10,10,10,0.15);
+  margin-bottom: 0.4rem;
+}
+
+.skeleton-desc {
+  height: 12px;
+  width: 90%;
+  background: rgba(10,10,10,0.12);
+  margin-bottom: 0.3rem;
+}
+
+.skeleton-desc--short {
+  width: 60%;
+}
+
+.skeleton-footer {
+  height: 32px;
+  width: 55%;
+  background: rgba(10,10,10,0.15);
+  margin-top: 0.5rem;
+}
+
+/* ---- Comic Mission Panel ---- */
+.comic-mission-panel {
+  position: absolute;
+  background-color: #efe8db;
+  border: 3px solid var(--ink, #0A0A0A);
+  box-shadow: 5px 5px 0 rgba(10, 10, 10, 0.25);
+  padding: 1.2rem 1.35rem;
+  width: 23.125rem;
+  max-width: 40vw;
+  z-index: 12;
+  box-sizing: border-box;
+}
+
+/* Cinematic staggered reveals */
+.comic-mission-panel {
+  --lp-panel: calc(max(0, min(1, (var(--p, 0) - 0.0) * 3.33)));
+  clip-path: inset(0 calc(100% - var(--lp-panel) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--lp-panel)) * 12px));
+}
+.mission-corners {
+  --lp: calc(max(0, min(1, (var(--p, 0) - 0.0) * 10)));
+  opacity: var(--lp);
+  transform: scale(var(--lp));
+  transform-origin: center;
+  transition: transform 0.2s ease;
+}
+.mission-badge {
+  --lp: calc(max(0, min(1, (var(--p, 0) - 0.2) * 4)));
+  opacity: var(--lp);
+  clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--lp)) * -6px));
+}
+.mission-title {
+  --lp: calc(max(0, min(1, (var(--p, 0) - 0.3) * 4)));
+  opacity: var(--lp);
+  clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--lp)) * -6px));
+}
+.mission-role-tag {
+  --lp: calc(max(0, min(1, (var(--p, 0) - 0.4) * 4)));
+  opacity: var(--lp);
+  clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--lp)) * -6px));
+}
+.mission-desc {
+  --lp: calc(max(0, min(1, (var(--p, 0) - 0.5) * 4)));
+  opacity: var(--lp);
+  clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--lp)) * -6px));
+}
+.mission-tech {
+  --lp: calc(max(0, min(1, (var(--p, 0) - 0.6) * 4)));
+  opacity: var(--lp);
+  clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--lp)) * -6px));
+}
+.mission-footer {
+  --lp: calc(max(0, min(1, (var(--p, 0) - 0.7) * 3)));
+  opacity: var(--lp);
+  clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--lp)) * -6px));
+}
+
+/* Paper/halftone texture */
+.comic-mission-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(10, 10, 10, 0.07) 1px, transparent 1px);
+  background-size: 4px 4px;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  z-index: 1;
+  transform: translate(calc(var(--p, 0) * 4px), calc(var(--p, 0) * -2px));
+}
+
+.comic-mission-panel > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---- Panel Positions (right side, avoiding left artwork) ---- */
+
+.mission-panel--right-a {
+  top: 12%;
+  right: calc(6% + max(0px, (100% - 100vw) + var(--img-x, 0px)));
+}
+
+.mission-panel--right-b {
+  top: 22%;
+  right: calc(8% + max(0px, (100% - 100vw) + var(--img-x, 0px)));
+}
+
+.mission-panel--right-c {
+  top: 16%;
+  right: calc(5% + max(0px, (100% - 100vw) + var(--img-x, 0px)));
+}
+
+.mission-panel--right-d {
+  top: 30%;
+  right: calc(7% + max(0px, (100% - 100vw) + var(--img-x, 0px)));
+}
+
+/* ---- Badge ---- */
+.mission-badge {
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  background-color: var(--accent, #4A90B8);
+  color: #FFFFFF;
+  padding: 2px 8px;
+  margin-bottom: 0.45rem;
+  border: 1px solid var(--ink, #0A0A0A);
+}
+
+/* ---- Title ---- */
+.mission-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.7rem;
+  line-height: 1.05;
+  color: var(--ink, #0A0A0A);
+  margin: 0 0 0.2rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* ---- Role tag ---- */
+.mission-role-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink, #0A0A0A);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.35rem;
+  opacity: 0.7;
+}
+
+/* ---- Tech ---- */
+.mission-tech {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--mid-gray, #555555);
+  margin-bottom: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ---- Description ---- */
+.mission-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: #1a1a1a;
+  margin: 0 0 0.85rem 0;
+}
+
+/* ---- Footer / Links ---- */
+.mission-footer {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  border-top: 2px solid var(--ink, #0A0A0A);
+  padding-top: 0.55rem;
+  margin-top: 0.15rem;
+}
+
+.mission-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink, #0A0A0A);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  position: relative;
+  padding: 8px 14px;
+  border: 2px solid var(--ink, #0A0A0A);
+  overflow: hidden;
+  transition: color 0.25s ease;
+}
+
+/* Solid ink sweep on hover */
+.mission-link::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: var(--ink, #0A0A0A);
+  transition: width 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+  z-index: 0;
+}
+
+.mission-link:hover::after {
+  width: 100%;
+}
+
+.mission-link:hover {
+  color: var(--paper, #F4F0E7);
+}
+
+.mission-link__text, .mission-link__arrow {
+  position: relative;
+  z-index: 1;
+  transform: translate(calc(var(--p, 0) * 4px), calc(var(--p, 0) * -2px));
+}
+
+.mission-link__arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.mission-link:hover .mission-link__arrow {
+  transform: translateX(5px);
+}
+
+/* Focus states for keyboard accessibility */
+.mission-link:focus-visible {
+  outline: 2px solid var(--accent, #4A90B8);
+  outline-offset: 3px;
+}
+
+/* ---- Panel hover: subtle border registration shift ---- */
+.comic-mission-panel:hover {
+  box-shadow: 6px 6px 0 var(--ink, #0a0a0a), -1px -1px 0 rgba(0, 229, 255, 0.4);
+}
+
+.comic-mission-panel:hover .mission-corners {
+  transform: scale(1.05);
+}
+
+.comic-mission-panel:hover::after {
+  transform: translate(2px, 2px);
+}
+
+.comic-mission-panel:hover .mission-title {
+  transform: translateX(2px);
+  text-shadow: 1px 1px 0 rgba(0, 229, 255, 0.5);
+  transition: all 0.2s ease;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 1024px) {
+  .comic-mission-panel {
+    max-width: 46vw;
+  }
+}
+
+@media (max-width: 900px) {
+  .comic-mission-panel {
+    max-width: 52vw;
+  }
+
+  .mission-panel--right-b {
+    right: 5%;
+  }
+}
+
+@media (max-width: 768px) {
+  .comic-mission-panel {
+    width: 88%;
+    max-width: 21.25rem;
+    padding: 1rem 1.1rem;
+    box-shadow: 4px 4px 0 rgba(10, 10, 10, 0.22);
+    /* True viewport center inside the oversized overlay */
+    left: calc(50vw - var(--img-x, 0px)) !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    top: 10% !important;
+  }
+
+  .mission-title {
+    font-size: 1.4rem;
+  }
+
+  .mission-desc {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin-bottom: 0.7rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .comic-mission-panel {
+    width: 92%;
+    max-width: 19.375rem;
+    padding: 0.85rem 0.95rem;
+    top: 8% !important;
+  }
+
+  .mission-title {
+    font-size: 1.25rem;
+  }
+
+  .mission-desc {
+    font-size: 0.76rem;
+    line-height: 1.35;
+  }
+
+  .mission-badge {
+    font-size: 0.6rem;
+    padding: 1px 6px;
+  }
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .comic-mission-panel, .mission-badge, .mission-title, .mission-tech, .mission-desc, .mission-footer {
+    transition: opacity 0.1s linear !important;
+    clip-path: none !important;
+    transform: none !important;
+  }
+
+  .mission-link__arrow,
+  .mission-link::after {
+    transition: none !important;
+  }
+}

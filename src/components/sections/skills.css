@@ -1,0 +1,271 @@
+.skills-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-content, 10);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* pointer-events only — inline style controls opacity */
+.skills-section.is-active {
+  pointer-events: auto;
+}
+
+.skills-content {
+  position: absolute;
+  /* Overhang compensation: the zoomed artwork is wider than the viewport —
+     (100% - 100vw) + --img-x is exactly how far the image spills past the
+     right screen edge, so cards never get clipped there. */
+  right: calc(2% + max(0px, (100% - 100vw) + var(--img-x, 0px)));
+  top: 8%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 36.25rem;
+  width: 48%;
+}
+
+.skills-header {
+  opacity: var(--p, 0);
+  clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--p, 0)) * -12px));
+  will-change: opacity, clip-path, transform;
+  color: var(--paper, #fdfbf7);
+}
+
+/* Desktop: the nav already reads "03 // ARSENAL" — the inline pill would
+   double up and collide with it. Mobile keeps the pill (nav title hides). */
+@media (min-width: 769px) {
+  .skills-header {
+    display: none;
+  }
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.skills-grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* Override ComicPanel's large bottom margin and shadow inside skills grid */
+.skills-grid .comic-panel {
+  margin-bottom: 0;
+}
+
+.skills-grid .comic-panel__inner {
+  padding: 0.5rem 0.6rem;
+  box-shadow: 3px 3px 0 rgba(10,10,10,0.15);
+}
+
+.skill-item {
+  opacity: var(--p-item, 0);
+  clip-path: inset(0 calc(100% - var(--p-item, 0) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--p-item, 0)) * -8px));
+  will-change: opacity, clip-path, transform;
+}
+
+.skill-item .comic-panel__inner {
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.skill-item:hover .comic-panel__inner {
+  box-shadow: 5px 5px 0 rgba(10, 10, 10, 0.25);
+  transform: translate(-1px, -1px);
+}
+
+.skill-meta {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  color: var(--muted, #a0a0a0);
+  text-transform: uppercase;
+  margin-bottom: 0.15rem;
+}
+
+.skill-name {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 1.2rem;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.1;
+  color: var(--ink, #0a0a0a);
+}
+
+.skill-desc {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.75rem;
+  margin: 0;
+  color: #333;
+  line-height: 1.3;
+}
+
+@media (max-width: 1024px) {
+  .skills-content {
+    width: 55%;
+  }
+}
+
+@media (max-width: 768px) {
+  .skills-content {
+    right: auto;
+    left: 5%;
+    width: 90%;
+    top: auto;
+    bottom: 5%;
+  }
+  
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .skill-name {
+    font-size: 1rem;
+  }
+
+  .skill-desc {
+    font-size: 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skills-header, .skill-item {
+    transition: opacity 0.1s;
+    transform: none;
+  }
+}
+
+/* ---- Security Toolchain ---- */
+.skills-toolchain {
+  margin-top: 1rem;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  position: relative;
+}
+
+.toolchain-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.toolchain-label {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 1.1rem;
+  color: var(--ink, #0a0a0a);
+  letter-spacing: 0.05em;
+  opacity: var(--p, 0);
+  clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--p, 0)) * -4px));
+}
+
+.toolchain-line {
+  flex: 1;
+  height: 1px;
+  background-color: var(--ink, #0a0a0a);
+  opacity: var(--p, 0);
+  clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
+  transform-origin: left;
+}
+
+.toolchain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding-left: 0.25rem;
+}
+
+.toolchain-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tc-item {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--mid-gray, #555555);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  
+  opacity: var(--p, 0);
+  clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--p, 0)) * -4px));
+  will-change: opacity, clip-path, transform;
+}
+
+/* Subtle accent usage only on the first item of each column for print registration style */
+.toolchain-col .tc-item:first-child {
+  color: var(--ink, #0a0a0a);
+  font-weight: 700;
+  text-shadow: 1px 1px 0 rgba(0, 229, 255, 0.2);
+}
+
+/* Adjust editorial */
+.toolchain-editorial {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-top: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.editorial-word {
+  font-family: var(--font-sans, 'Inter', sans-serif);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--ink, #0a0a0a);
+  opacity: var(--p, 0);
+  clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--p, 0)) * -4px));
+  will-change: opacity, clip-path, transform;
+}
+
+.editorial-sep {
+  font-family: var(--font-sans, 'Inter', sans-serif);
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--accent, #4A90B8);
+  opacity: var(--p, 0);
+}
+
+.editorial-markers {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  /* Was a flat 0.6 — always visible, floating alone before the words
+     revealed. Now rides the same --p the JSX already provides. */
+  opacity: calc(var(--p, 0) * 0.6);
+}
+
+.marker-square {
+  width: 4px;
+  height: 4px;
+  background-color: var(--ink, #0a0a0a);
+}
+
+.marker-line {
+  width: 24px;
+  height: 1px;
+  background-color: var(--ink, #0a0a0a);
+}
+
+@media (max-width: 768px) {
+  .toolchain-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

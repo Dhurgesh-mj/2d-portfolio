@@ -1,0 +1,99 @@
+.pixel-corner {
+  position: absolute;
+  /* Box shadow creates the stepped effect */
+  box-shadow: 100% 0 0 0 currentColor, 0 100% 0 0 currentColor;
+}
+
+.pixel-corner--top-left {
+  top: 0;
+  left: 0;
+}
+
+.pixel-corner--top-right {
+  top: 0;
+  right: 0;
+  transform: scaleX(-1);
+}
+
+.pixel-corner--bottom-left {
+  bottom: 0;
+  left: 0;
+  transform: scaleY(-1);
+}
+
+.pixel-corner--bottom-right {
+  bottom: 0;
+  right: 0;
+  transform: scale(-1, -1);
+}
+
+.pixel-divider {
+  height: 4px;
+  background-size: 8px 100%;
+  background-repeat: repeat-x;
+  margin: 16px 0;
+}
+
+.pixel-marker {
+  width: 6px;
+  height: 6px;
+  border: 1px solid;
+  transition: all 0.2s ease;
+}
+
+.pixel-burst {
+  position: relative;
+  width: calc(var(--burst-size) * 3);
+  height: calc(var(--burst-size) * 3);
+}
+
+.pixel-burst__dot {
+  position: absolute;
+  width: var(--burst-size);
+  height: var(--burst-size);
+  background-color: var(--ink);
+}
+
+.pixel-burst__dot--top {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.pixel-burst__dot--bottom {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.pixel-burst__dot--left {
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.pixel-burst__dot--right {
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.chapter-label {
+  font-family: var(--font-heading), 'Bebas Neue', sans-serif;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--ink);
+  color: var(--paper);
+  padding: 6px 12px;
+  border: 2px solid var(--paper);
+  box-shadow: 4px 4px 0 var(--ink, #0a0a0a), -1px -1px 0 rgba(0, 229, 255, 0.6), 5px 5px 0 rgba(255, 0, 100, 0.4);
+}
+
+.chapter-label__separator {
+  color: var(--accent);
+  font-weight: bold;
+}

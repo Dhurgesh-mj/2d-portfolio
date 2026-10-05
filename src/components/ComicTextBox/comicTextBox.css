@@ -1,0 +1,86 @@
+.comic-text-box {
+  position: relative;
+  padding: 16px 20px;
+  border-radius: 2px;
+  box-shadow: 5px 5px 0 var(--ink, #0a0a0a), -1px -1px 0 rgba(0, 229, 255, 0.4), 1px 1px 0 rgba(255, 0, 100, 0.2);
+  font-family: var(--font-body), sans-serif;
+  margin-bottom: 24px;
+}
+
+.comic-text-box::before,
+.comic-text-box::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+}
+
+.comic-text-box::before {
+  top: -2px;
+  left: -2px;
+}
+
+.comic-text-box::after {
+  bottom: -2px;
+  right: -2px;
+}
+
+.comic-text-box--dark {
+  background-color: var(--charcoal);
+  color: var(--paper);
+  border: 2px solid var(--mid-gray);
+}
+
+.comic-text-box--dark::before,
+.comic-text-box--dark::after {
+  background-color: var(--paper);
+}
+
+.comic-text-box--light {
+  background-color: var(--paper);
+  color: var(--ink);
+  border: 2px solid var(--charcoal);
+}
+
+.comic-text-box--light::before,
+.comic-text-box--light::after {
+  background-color: var(--ink);
+}
+
+.comic-text-box--paper {
+  background-color: var(--cream);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+}
+
+.comic-text-box--paper::before,
+.comic-text-box--paper::after {
+  background-color: var(--ink);
+}
+
+.comic-text-box__content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Halftone texture */
+.comic-text-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(10, 10, 10, 0.08) 1px, transparent 1px);
+  background-size: 4px 4px;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.comic-text-box > * {
+  position: relative;
+  z-index: 1;
+}
