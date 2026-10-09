@@ -1,7 +1,6 @@
 import React from 'react';
 import './comicPanel.css';
 import ComicTextBox from '../ComicTextBox/ComicTextBox';
-import { ChapterLabel } from '../PixelDecoration/PixelDecoration';
 
 const ComicPanel = ({
   children,
@@ -10,18 +9,12 @@ const ComicPanel = ({
   className = '',
   style = {},
   caption,
-  chapterNumber,
 }) => {
   const panelClasses = `comic-panel comic-panel--${size} comic-panel--${variant} ${className}`.trim();
 
   return (
     <div className={panelClasses} style={style}>
       <div className="comic-panel__inner">
-        {chapterNumber && (
-          <div className="comic-panel__chapter">
-            <ChapterLabel number={chapterNumber} title="" />
-          </div>
-        )}
         <div className="comic-panel__content">
           {children}
         </div>

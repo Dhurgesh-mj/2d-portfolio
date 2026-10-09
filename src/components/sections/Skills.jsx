@@ -1,7 +1,6 @@
 import React from 'react';
 import './skills.css';
 import ComicPanel from '../ComicPanel/ComicPanel';
-import { ChapterLabel } from '../PixelDecoration/PixelDecoration';
 import { Decode } from '../TextFX/TextFX';
 import { Tilt } from '../Interactive/Interactive';
 import { portfolio } from '../../data/portfolio';
@@ -28,8 +27,6 @@ const Skills = ({ progress, sectionProgress, isActive }) => {
   const sp = sectionProgress || 0;
   const skills = portfolio.skills || [];
 
-  const pLabel = mapRange(sp, 0.10, 0.25);
-
   const exitOpacity = mapRange(sp, 0.84, 0.96);
   const globalOpacity = 1 - exitOpacity;
 
@@ -48,10 +45,6 @@ const Skills = ({ progress, sectionProgress, isActive }) => {
       aria-label="Skills Arsenal"
     >
       <div className="skills-content">
-
-        <div className="skills-header" style={{ '--p': pLabel }}>
-          <ChapterLabel number={3} title="ARSENAL" />
-        </div>
 
         <div className="skills-grid">
           {skills.map((skill, index) => {

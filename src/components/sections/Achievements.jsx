@@ -1,37 +1,11 @@
 import React from 'react';
 import './achievements.css';
 import { PixelMarker, PixelCorner } from '../PixelDecoration/PixelDecoration';
+import { portfolio } from '../../data/portfolio';
 
-/* 
- * Achievements are derived from REAL portfolio data only.
- * Each milestone is a factual statement about the person's journey.
- */
-const MILESTONES = [
-  {
-    marker: '◆',
-    label: 'HALL OF FAME',
-    caption: 'Listed in bug bounty halls of fame — vulnerabilities responsibly disclosed, fixed, and credited.',
-    source: 'Bug Bounty',
-  },
-  {
-    marker: '◈',
-    label: 'CVE TRIPLE',
-    caption: 'Three assigned CVEs and counting: CVE-2026-103471, CVE-2026-103472, CVE-2026-102333.',
-    source: 'CVE Program',
-  },
-  {
-    marker: '★',
-    label: 'HAT-TRICK',
-    caption: 'Three 1st-place finishes on stage: Bugathon, Secure Tooling Competition, and Tool Expo.',
-    source: 'Competitions',
-  },
-  {
-    marker: '⬣',
-    label: 'DISCLOSED',
-    caption: 'Vulnerability responsibly reported to and acknowledged by CERT-In, India\u2019s national cybersecurity agency.',
-    source: 'CERT-In',
-  },
-];
+// Achievements come from portfolio.js — this used to hardcode the list inline,
+// the only section that ignored the data file.
+const MILESTONES = portfolio.achievements;
 
 const clamp = (val, min, max) => Math.min(max, Math.max(min, val));
 const mapRange = (val, inMin, inMax) => clamp((val - inMin) / (inMax - inMin), 0, 1);

@@ -22,7 +22,9 @@
 .contact-content {
   position: absolute;
   left: 54%;
-  top: 25%;
+  /* Centred in the page rather than pinned 25% from the top */
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -30,13 +32,6 @@
   /* 28rem so --type-body-lg lands at a 45-70 character measure */
   max-width: 28rem;
   width: 25%;
-}
-
-.contact-header {
-  opacity: var(--p, 0);
-  clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--p, 0)) * -12px));
-  will-change: opacity, clip-path, transform;
 }
 
 .contact-title {
@@ -206,7 +201,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .contact-header, .contact-title, .contact-tagline, .contact-links {
+  .contact-title, .contact-tagline, .contact-links {
     transition: opacity 0.1s linear !important;
     clip-path: none !important;
     transform: none;

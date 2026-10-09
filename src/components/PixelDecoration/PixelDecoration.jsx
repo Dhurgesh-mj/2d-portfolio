@@ -44,18 +44,3 @@ export const PixelBurst = ({ size = 4 }) => {
     </div>
   );
 };
-
-export const ChapterLabel = ({ number, title }) => {
-  const formattedNumber = number < 10 ? `0${number}` : number;
-  return (
-    <div className="chapter-label">
-      <span className="chapter-label__number">CHAPTER {formattedNumber}</span>
-      {title && (
-        <>
-          <span className="chapter-label__separator"> // </span>
-          <span className="chapter-label__title">{title}</span>
-        </>
-      )}
-    </div>
-  );
-};

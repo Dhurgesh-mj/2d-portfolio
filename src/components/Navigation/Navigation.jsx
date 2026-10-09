@@ -6,10 +6,13 @@ const CHAPTER_FRAMES = [8, 55, 95, 130, 175, 230];
 const frameSrc = (n) => `/comic/frame_${String(n).padStart(4, '0')}.webp`;
 
 const Navigation = ({ currentSection = 0, progress = 0, sections = [] }) => {
-  const isLightBg = progress > 0.75;
+  // Theme comes from the section definition (measured against the artwork),
+  // not from a progress guess — see SECTION_RANGES in App.jsx.
+  const activeSection = sections[currentSection] || {};
+  const isLightBg = activeSection.theme === 'light';
+
   const navClasses = `comic-nav ${isLightBg ? 'comic-nav--on-light' : 'comic-nav--on-dark'}`;
 
-  const activeSection = sections[currentSection] || {};
   const chapterNum = currentSection + 1 < 10 ? `0${currentSection + 1}` : currentSection + 1;
 
   // Jump-cut to a chapter (smooth scroll to its range start)

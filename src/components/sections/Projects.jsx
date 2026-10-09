@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './projects.css';
 import { PixelCorner } from '../PixelDecoration/PixelDecoration';
 import { Decode } from '../TextFX/TextFX';
@@ -27,7 +27,7 @@ const PROJECT_SCENES = [
   },
 ];
 
- // calculateCoverflow lives in ./coverflow.js (unit-tested)
+//  calculateCoverflow lives in ./coverflow.js (unit-tested)
 
 // Skeleton placeholder for a single project card
 const ProjectSkeleton = ({ scene }) => (
@@ -41,34 +41,13 @@ const ProjectSkeleton = ({ scene }) => (
 );
 
 const Projects = ({ progress, sectionProgress, isActive }) => {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
   const sp = sectionProgress || 0;
 
-  useEffect(() => {
-    // GitHub repo source for the mission panels
-    fetch('https://api.github.com/users/Dhurgesh-mj/repos?per_page=10&sort=updated')
-      .then(res => {
-        if (!res.ok) throw new Error('GitHub API error');
-        return res.json();
-      })
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          const sorted = data
-            .filter(r => !r.fork)
-            .sort((a, b) => b.stargazers_count - a.stargazers_count);
-          setProjects(sorted.slice(0, 3));
-        } else {
-          setProjects(portfolio.projects || []);
-        }
-      })
-      .catch(() => {
-        setProjects(portfolio.projects || []);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+  // Curated list from portfolio.js. This used to fetch the GitHub API and
+  // sort by stargazers, which meant the page showed whatever was most popular
+  // rather than the work that fits — and rendered different content per visit.
+  const projects = portfolio.projects || [];
+  const loading = false;
 
   return (
     <section
@@ -93,12 +72,11 @@ const Projects = ({ progress, sectionProgress, isActive }) => {
 
         if (!state.isVisible) return null;
 
-        // Support both GitHub API shape and portfolio.js shape
-        const title = project.name || project.title || 'Untitled';
+        const title = project.title || project.name || 'Untitled';
         const description = project.description || 'No description provided.';
-        const language = project.language || (project.tech ? project.tech.join(' · ') : null);
-        const stars = project.stargazers_count;
-        const html_url = project.html_url || project.github;
+        const language = (project.tech && project.tech.join(' · ')) || project.language || null;
+        const role = project.role;
+        const html_url = project.github || project.html_url;
 
         return (
           <div
@@ -128,10 +106,12 @@ const Projects = ({ progress, sectionProgress, isActive }) => {
 
               <h3 className="mission-title"><Decode text={title} p={state.focus} /></h3>
 
+              {role && (
+                <div className="mission-role">{role}</div>
+              )}
+
               {language && (
-                <div className="mission-tech">
-                  {language}{typeof stars === 'number' ? ` · ★ ${stars}` : ''}
-                </div>
+                <div className="mission-tech">{language}</div>
               )}
 
               <p className="mission-desc">{description}</p>

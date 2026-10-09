@@ -1,7 +1,6 @@
 import React from 'react';
 import './hero.css';
 import ComicTextBox from '../ComicTextBox/ComicTextBox';
-import { ChapterLabel } from '../PixelDecoration/PixelDecoration';
 import { SplitText, Typewriter } from '../TextFX/TextFX';
 import { portfolio } from '../../data/portfolio';
 
@@ -12,7 +11,6 @@ const Hero = ({ progress, sectionProgress, isActive }) => {
   const sp = sectionProgress || 0;
 
   // Staggered cinematic reveals
-  const pLabel   = mapRange(sp, 0.10, 0.25);
   const pName    = mapRange(sp, 0.20, 0.40);
   const pRole    = mapRange(sp, 0.30, 0.50);
   const pTagline = mapRange(sp, 0.45, 0.65);
@@ -34,10 +32,6 @@ const Hero = ({ progress, sectionProgress, isActive }) => {
       }}
     >
       <div className="hero-content">
-
-        <div className="hero-reveal" style={{ '--p': pLabel }}>
-          <ChapterLabel number={1} title="ORIGIN" />
-        </div>
 
         <h1 className="hero-name" style={{ '--p': pName }}>
           <SplitText text={name} p={pName} />

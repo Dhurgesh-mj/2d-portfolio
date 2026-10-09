@@ -91,22 +91,6 @@
   }
 }
 
-.comic-panel__chapter {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  z-index: 20;
-  background: var(--paper);
-  padding: 2px 6px;
-  border: 2px solid var(--ink);
-}
-
-.comic-panel--dark .comic-panel__chapter {
-  background: var(--charcoal);
-  border-color: var(--mid-gray);
-  color: var(--paper);
-}
-
 .comic-panel__caption-wrapper {
   margin-top: -16px;
   padding: 0 16px;

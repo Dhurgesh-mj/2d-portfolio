@@ -1,7 +1,7 @@
 import React from 'react';
 import './about.css';
 import ComicTextBox from '../ComicTextBox/ComicTextBox';
-import { ChapterLabel, PixelMarker } from '../PixelDecoration/PixelDecoration';
+import { PixelMarker } from '../PixelDecoration/PixelDecoration';
 import { Typewriter } from '../TextFX/TextFX';
 import { portfolio } from '../../data/portfolio';
 
@@ -11,15 +11,15 @@ const mapRange = (val, inMin, inMax) => clamp((val - inMin) / (inMax - inMin), 0
 const About = ({ progress, sectionProgress, isActive }) => {
   const sp = sectionProgress || 0;
 
-  const pLabel = mapRange(sp, 0.10, 0.25);
-  const pBio = mapRange(sp, 0.20, 0.40);
-  const pInterests = mapRange(sp, 0.45, 0.65);
-  const pLocation = mapRange(sp, 0.70, 0.85);
+  const pBio = mapRange(sp, 0.15, 0.35);
+  const pInterests = mapRange(sp, 0.40, 0.60);
+  const pExperience = mapRange(sp, 0.62, 0.78);
+  const pLocation = mapRange(sp, 0.82, 0.95);
   
-  const exitP = mapRange(sp, 0.85, 1.0);
+  const exitP = mapRange(sp, 0.90, 1.0);
   const globalOpacity = 1 - exitP;
 
-  const { bio, interests, location } = portfolio.about;
+  const { bio, interests, experience, location } = portfolio.about;
 
   return (
     <section
@@ -32,10 +32,6 @@ const About = ({ progress, sectionProgress, isActive }) => {
     >
       <div className="about-content">
         
-        <div className="about-reveal" style={{ '--p': pLabel }}>
-          <ChapterLabel number={2} title="IDENTITY" />
-        </div>
-
         <div className="about-bio" style={{ '--p': pBio }}>
           <ComicTextBox variant="dark">
             <p><Typewriter text={bio} p={pBio} /></p>
@@ -43,7 +39,6 @@ const About = ({ progress, sectionProgress, isActive }) => {
         </div>
 
         <div className="about-interests" style={{ '--p': pInterests }}>
-          {/* Chapter h2 — this section has no other heading */}
           <h2 className="interests-title">Interests</h2>
           <ul className="interests-list">
             {interests.map((interest, i) => {
@@ -53,6 +48,23 @@ const About = ({ progress, sectionProgress, isActive }) => {
               return (
                 <li key={i} className="interest-item" style={{ '--p-item': pItem }}>
                   <PixelMarker active /> <span>{interest}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        {/* Real engagements — the credibility the rest of the page argues for */}
+        <div className="about-experience" style={{ '--p': pExperience }}>
+          <h2 className="experience-title">Experience</h2>
+          <ul className="experience-list">
+            {experience.map((role, i) => {
+              const staggerStart = (i / Math.max(1, experience.length - 1)) * 0.55;
+              const pItem = mapRange(pExperience, staggerStart, staggerStart + 0.45);
+              return (
+                <li key={role.organization} className="experience-item" style={{ '--p-item': pItem }}>
+                  <span className="experience-role">{role.role}</span>
+                  <span className="experience-org">{role.organization}</span>
                 </li>
               );
             })}

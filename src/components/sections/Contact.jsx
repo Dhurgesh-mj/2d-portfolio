@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import './contact.css';
-import { ChapterLabel } from '../PixelDecoration/PixelDecoration';
 import { Magnetic } from '../Interactive/Interactive';
 import { portfolio } from '../../data/portfolio';
 
@@ -11,7 +10,6 @@ const Contact = ({ progress, sectionProgress, isActive }) => {
   const sp = sectionProgress || 0;
   const [copied, setCopied] = useState(false);
 
-  const pLabel   = mapRange(sp, 0.10, 0.25);
   const pTitle   = mapRange(sp, 0.20, 0.40);
   const pTagline = mapRange(sp, 0.35, 0.55);
   const pLinks   = mapRange(sp, 0.50, 0.70);
@@ -41,10 +39,6 @@ const Contact = ({ progress, sectionProgress, isActive }) => {
       }}
     >
       <div className="contact-content">
-
-        <div className="contact-header" style={{ '--p': pLabel }}>
-          <ChapterLabel number={6} title="NEXT CHAPTER" />
-        </div>
 
         <h2 className="contact-title" style={{ '--p': pTitle }}>
           THE NEXT CHAPTER

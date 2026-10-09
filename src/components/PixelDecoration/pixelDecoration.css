@@ -78,25 +78,6 @@
   transform: translateY(-50%);
 }
 
-/* Sole owner of .chapter-label — typography.css used to declare a competing
-   copy of this rule that won on source order and killed the values below. */
-.chapter-label {
-  font-family: var(--font-heading);
-  font-size: var(--type-body-lg);
-  line-height: var(--leading-snug);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-normal);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background-color: var(--ink);
-  color: var(--paper);
-  padding: 6px 12px;
-  border: 2px solid var(--paper);
-  box-shadow: 4px 4px 0 var(--ink, #0a0a0a), -1px -1px 0 rgba(0, 229, 255, 0.6), 5px 5px 0 rgba(255, 0, 100, 0.4);
-}
-
-.chapter-label__separator {
-  color: var(--accent);
-  font-weight: var(--weight-bold);
-}
+/* .chapter-label lived here. Removed when the nav took over as the single
+   source of chapter identity (see SECTION_RANGES / Navigation.jsx) — the inline
+   pill duplicated the nav header in every chapter it appeared in. */

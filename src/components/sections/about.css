@@ -19,7 +19,9 @@
 .about-content {
   position: absolute;
   left: 5%;
-  top: 20%;
+  /* Centred in the page rather than pinned 20% from the top */
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -27,9 +29,9 @@
   max-width: 26.25rem;
 }
 
-.about-reveal,
 .about-bio,
 .about-interests,
+.about-experience,
 .about-location {
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
@@ -56,9 +58,16 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
+}
+
+/* Odd count leaves an orphan in the last row — let it span so the list
+   closes on a full-width bar instead of a hole. */
+.interest-item:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  justify-content: center;
 }
 
 /* Pill tags */
@@ -89,6 +98,59 @@
   border-color: var(--accent, #4A90B8);
 }
 
+/* ── Experience ── */
+.experience-title {
+  font-family: var(--font-display);
+  font-size: var(--type-h3);
+  line-height: var(--leading-heading);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: var(--tracking-wide);
+  color: var(--paper);
+  background-color: var(--ink);
+  padding: 4px 10px;
+  border: 2px solid var(--paper);
+  display: inline-block;
+  box-shadow: 3px 3px 0 rgba(10, 10, 10, 0.4);
+}
+
+.experience-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.experience-item {
+  opacity: var(--p-item, 1);
+  clip-path: inset(0 calc(100% - var(--p-item, 1) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--p-item, 1)) * -8px));
+  will-change: opacity, clip-path, transform;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--accent);
+}
+
+.experience-role {
+  font-family: var(--font-sans);
+  font-size: var(--type-label);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-normal);
+  color: var(--paper);
+}
+
+.experience-org {
+  font-family: var(--font-mono);
+  font-size: var(--type-meta);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-normal);
+  color: var(--muted);
+}
+
 /* ── Location ── */
 .about-location {
   margin-top: 0.5rem;
@@ -114,11 +176,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .about-reveal,
   .about-bio,
   .about-interests,
+  .about-experience,
   .about-location,
-  .interest-item {
+  .interest-item,
+  .experience-item {
     transition: opacity 0.1s;
     transform: none;
   }

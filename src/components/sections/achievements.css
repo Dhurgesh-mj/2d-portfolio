@@ -25,7 +25,9 @@
 .achievements-strip {
   position: absolute;
   right: calc(5% + max(0px, (100% - 100vw) + var(--img-x, 0px)));
-  top: 14%;
+  /* Centred in the page rather than pinned 14% from the top */
+  top: 50%;
+  transform: translateY(-50%);
   /* 26rem keeps --type-body at a 45-70 character measure inside the card */
   width: 26rem;
   max-width: 42vw;
@@ -206,6 +208,7 @@
     width: 90%;
     max-width: none;
     top: 8%;
+    transform: none;      /* cancels the desktop vertical centring */
     gap: 0.75rem;
   }
 

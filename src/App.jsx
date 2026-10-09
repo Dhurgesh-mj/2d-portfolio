@@ -19,13 +19,22 @@ import Projects from './components/sections/Projects';
 import Contact from './components/sections/Contact';
 import './App.css';
 
+// `theme` is the art backdrop the nav text sits against, measured from the
+// frames themselves (mean luminance of the nav's top-left and top-right regions,
+// sampled across each chapter). It replaces a `progress > 0.75` guess that was
+// picking paper text over light artwork — a 1.3:1 contrast ratio in Projects.
+//
+//   theme: 'dark'  -> artwork is dark  -> nav text is paper
+//   theme: 'light' -> artwork is light -> nav text is ink
+//
+// Re-measure and update these if the art sequence changes.
 const SECTION_RANGES = [
-  { id: 'hero', label: 'ORIGIN', start: 0, end: 0.15 },
-  { id: 'about', label: 'IDENTITY', start: 0.15, end: 0.31 },
-  { id: 'skills', label: 'ARSENAL', start: 0.31, end: 0.48 },
-  { id: 'achievements', label: 'ACHIEVEMENTS', start: 0.48, end: 0.62 },
-  { id: 'projects', label: 'PROJECTS', start: 0.62, end: 0.82 },
-  { id: 'contact', label: 'NEXT CHAPTER', start: 0.82, end: 1.0 },
+  { id: 'hero', label: 'ORIGIN', start: 0, end: 0.15, theme: 'dark' },
+  { id: 'about', label: 'IDENTITY', start: 0.15, end: 0.31, theme: 'dark' },
+  { id: 'skills', label: 'ARSENAL', start: 0.31, end: 0.48, theme: 'light' },
+  { id: 'achievements', label: 'ACHIEVEMENTS', start: 0.48, end: 0.62, theme: 'light' },
+  { id: 'projects', label: 'PROJECTS', start: 0.62, end: 0.82, theme: 'light' },
+  { id: 'contact', label: 'NEXT CHAPTER', start: 0.82, end: 1.0, theme: 'light' },
 ];
 
 function App() {

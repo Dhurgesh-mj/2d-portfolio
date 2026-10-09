@@ -106,7 +106,19 @@
   clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
   transform: translateX(calc((1 - var(--lp)) * -6px));
 }
+.mission-role {
+  --lp: calc(max(0, min(1, (var(--p, 0) - 0.4) * 4)));
+  opacity: var(--lp);
+  clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--lp)) * -6px));
+}
 .mission-tech {
+  --lp: calc(max(0, min(1, (var(--p, 0) - 0.5) * 4)));
+  opacity: var(--lp);
+  clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
+  transform: translateX(calc((1 - var(--lp)) * -6px));
+}
+.mission-desc {
   --lp: calc(max(0, min(1, (var(--p, 0) - 0.6) * 4)));
   opacity: var(--lp);
   clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
@@ -180,6 +192,18 @@
   margin: 0 0 0.2rem 0;
   text-transform: uppercase;
   letter-spacing: var(--tracking-tight);
+}
+
+/* ---- Role ---- */
+.mission-role {
+  font-family: var(--font-sans);
+  font-size: var(--type-label);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-normal);
+  color: var(--ink);
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
 }
 
 /* ---- Tech ---- */
@@ -345,7 +369,7 @@
 
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
-  .comic-mission-panel, .mission-badge, .mission-title, .mission-tech, .mission-desc, .mission-footer {
+  .comic-mission-panel, .mission-badge, .mission-title, .mission-role, .mission-tech, .mission-desc, .mission-footer {
     transition: opacity 0.1s linear !important;
     clip-path: none !important;
     transform: none !important;
