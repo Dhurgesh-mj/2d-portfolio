@@ -72,6 +72,39 @@ const Achievements = ({ sectionProgress, isActive }) => {
                 <span className="milestone-marker">{m.marker}</span>
                 <span className="milestone-label">{m.label}</span>
                 <p className="milestone-caption">{markCVEs(m.caption)}</p>
+
+                {/* Milestones carrying a `cves` array render them as real links
+                    to their CVE records rather than leaving the IDs as text. A
+                    CVE is the strongest verifiable claim on the page, so it
+                    should be checkable by the reader, not asserted. */}
+                {m.cves && (
+                  <ul className="cve-list">
+                    {m.cves.map((cve) => (
+                      <li key={cve.id}>
+                        <a
+                          className="cve-link"
+                          href={`https://www.cve.org/CVERecord?id=${cve.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={`${cve.id} — ${cve.summary} (${cve.cwe}, CVSS ${cve.cvss} ${cve.severity})`}
+                        >
+                          <span className="cve-link__id">{cve.id}</span>
+                          <span className="cve-link__summary">{cve.summary}</span>
+                          <span
+                            className={`cve-sev cve-sev--${cve.severity.toLowerCase()}`}
+                          >
+                            {cve.cvss}
+                            <span className="cve-sev__word">{cve.severity}</span>
+                          </span>
+                          <span className="cve-link__arrow" aria-hidden="true">
+                            ↗
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
                 <span className="milestone-source">{m.source}</span>
               </div>
             </div>

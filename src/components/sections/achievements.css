@@ -248,3 +248,138 @@
     animation: none;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   CVE LIST
+
+   Six published CVE IDs, each linking to its record on cve.org. A CVE is the
+   single strongest verifiable claim on the page, so the reader is given the
+   link rather than asked to take the count on trust.
+
+   Grid: id + score on the first row, summary beneath. Keeps the monospace ID
+   scannable down the left edge while the prose stays in the readable measure
+   below it.
+   ═══════════════════════════════════════════════════════════ */
+.cve-list {
+  list-style: none;
+  margin: var(--space-2xs) 0 0;
+  padding: var(--space-2xs) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-top: 1px solid rgba(10, 10, 10, 0.15);
+}
+
+.cve-link {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  grid-template-areas: 'id sev sum arrow';
+  align-items: center;
+  gap: var(--space-2xs);
+  padding: var(--space-3xs) var(--space-2xs);
+  text-decoration: none;
+  color: var(--ink);
+  border-left: 2px solid transparent;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.cve-link:hover {
+  background-color: rgba(0, 229, 255, 0.1);
+  border-left-color: var(--accent-cyan);
+  transform: translateX(2px);
+}
+
+.cve-link:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: 1px;
+  background-color: rgba(0, 229, 255, 0.1);
+  border-left-color: var(--accent-cyan);
+}
+
+.cve-link:active {
+  transform: translateX(2px, 2px);
+  transition-duration: var(--duration-instant);
+}
+
+.cve-link__id {
+  grid-area: id;
+  font-family: var(--font-mono);
+  font-size: var(--type-meta);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.35;
+}
+
+.cve-link__summary {
+  grid-area: sum;
+  font-family: var(--font-mono);
+  font-size: var(--type-meta);
+  line-height: 1.4;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cve-sev {
+  grid-area: sev;
+  align-self: center;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  padding: 1px 4px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: var(--weight-bold);
+  line-height: 1.4;
+  white-space: nowrap;
+  color: var(--white);
+}
+
+.cve-sev__word {
+  font-size: 0.5625rem;
+  letter-spacing: var(--tracking-wide);
+  opacity: 0.92;
+}
+
+.cve-sev--high {
+  background: #B3261E;
+}
+
+.cve-sev--medium {
+  background: #9A6A00;
+}
+
+.cve-link__arrow {
+  grid-area: arrow;
+  font-size: var(--type-meta);
+  opacity: 0;
+  transform: translateX(-3px);
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.cve-link:hover .cve-link__arrow,
+.cve-link:focus-visible .cve-link__arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cve-link,
+  .cve-link:hover,
+  .cve-link:active,
+  .cve-link:focus-visible {
+    transform: none;
+  }
+
+  .cve-link__arrow {
+    opacity: 0.55;
+    transform: none;
+    transition: none;
+  }
+}

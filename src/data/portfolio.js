@@ -39,9 +39,66 @@ export const portfolio = {
     },
     {
       marker: '\u25C8',
-      label: 'CVE TRIPLE',
-      caption: 'Three assigned CVEs and counting: CVE-2026-103471, CVE-2026-103472, CVE-2026-102333.',
+      label: 'SIX CVEs',
+      // Short: the list below carries the detail, and the caption is the one
+      // line a reader scanning the strip actually reads.
+      caption: 'Six published CVEs credited as finder across three upstream projects.',
       source: 'CVE Program',
+      // Structured rather than a prose string so the UI can render each as a
+      // real, verifiable link to its CVE record instead of unclickable text.
+      // Every field below is transcribed from the published CVE record
+      // (cveawg.mitre.org); `cvss` is the CVSS v4.0 base score assigned by the
+      // CNA. Newest first.
+      cves: [
+        {
+          id: 'CVE-2026-106059',
+          product: 'GitAhead',
+          summary: 'AppleScript injection',
+          cwe: 'CWE-78',
+          cvss: '8.7',
+          severity: 'HIGH',
+        },
+        {
+          id: 'CVE-2026-106058',
+          product: 'GitAhead',
+          summary: 'Git filter cmd injection',
+          cwe: 'CWE-78',
+          cvss: '7.7',
+          severity: 'HIGH',
+        },
+        {
+          id: 'CVE-2026-105295',
+          product: 'GitAhead',
+          summary: 'Unsigned update install',
+          cwe: 'CWE-494',
+          cvss: '7.7',
+          severity: 'HIGH',
+        },
+        {
+          id: 'CVE-2026-103472',
+          product: 'restbed',
+          summary: 'WebSocket frame DoS',
+          cwe: 'CWE-770',
+          cvss: '8.7',
+          severity: 'HIGH',
+        },
+        {
+          id: 'CVE-2026-103471',
+          product: 'restbed',
+          summary: 'Unbounded header DoS',
+          cwe: 'CWE-770',
+          cvss: '8.7',
+          severity: 'HIGH',
+        },
+        {
+          id: 'CVE-2026-102333',
+          product: 'httpdbg',
+          summary: 'Stored XSS via URL',
+          cwe: 'CWE-79',
+          cvss: '5.3',
+          severity: 'MEDIUM',
+        },
+      ],
     },
     {
       marker: '\u2605',
