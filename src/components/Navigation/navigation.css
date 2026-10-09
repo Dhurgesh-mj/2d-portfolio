@@ -8,12 +8,6 @@
   z-index: var(--z-nav);
   transition: color var(--duration-slow) var(--ease-standard);
   font-family: var(--font-display);
-
-  /* The reader's own plane — nearest the eye of everything on the page.
-     --depth-fore (160px) vs the content's --depth-content (90px): the chrome
-     lifts off the chapter text rather than sitting flush with it. position:
-     fixed, so this is a flat composite regardless of the sticky scene. */
-  transform: translateZ(var(--depth-fore));
 }
 
 /* Dark artwork background → light text */
@@ -330,12 +324,7 @@
     transition: none !important;
   }
 
-  /* Nav chrome sits on the reader's plane via translateZ, and the progress fill
-     reacts to scroll velocity. Both are movement, so both go. */
-  .comic-nav {
-    transform: none;
-  }
-
+  /* The progress fill reacts to scroll velocity. That is movement, so it goes. */
   .comic-nav__progress-fill {
     transform: none;
     filter: none;
