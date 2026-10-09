@@ -81,10 +81,13 @@
    slightly enlarged is both visually acceptable (the canvas already carries a
    1.04 overscan for exactly this) and far less fragile. */
 .comic-overlay {
-  /* Content floats nearest — counter-drifts against the art. Depth separation
-     comes from the differing drift rates plus the coverflow's own translateZ,
-     not from a scene-wide preserve-3d; see .comic-sticky__depth. */
-  translate: calc(var(--cam-x, 0) * 10px) calc(var(--cam-y, 0) * 8px);
+  /* No pointer drift here — deliberately. This layer holds every clickable
+     thing on the page (cards, links, buttons), and a target that slides up
+     to 10px toward the incoming cursor reads as running away from it
+     (Fitts's law: moving targets are harder to hit). Pointer parallax lives
+     on the non-interactive layers only — the canvas art drifts beneath and
+     the spotlight follows — so depth still reads while targets stay put. */
+  translate: none;
 }
 
 /* Spotlight position defaults to centre */
