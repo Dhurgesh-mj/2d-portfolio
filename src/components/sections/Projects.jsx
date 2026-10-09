@@ -72,12 +72,14 @@ const Projects = ({ sectionProgress, isActive }) => {
             className={`comic-mission-panel ${scene.positionClass}`}
             style={{
               // Inner staggered reveals key off focus (1 = fully centered).
+              // `reveal`, not `focus`: the inner reveals are gated up to 0.7 of
+              // this value, so keying them to focus left a card blank unless it
+              // was dead-centre. See coverflow.js.
               // clipPath forced open: the old wipe system is retired for coverflow.
-              '--p': state.focus,
+              '--p': state.reveal,
               clipPath: 'none',
               opacity: state.opacity,
               transform: state.transform,
-              filter: state.filter,
               zIndex: state.zIndex,
               pointerEvents: state.focus > 0.45 ? 'auto' : 'none',
               // pointer-events only stops the mouse — it does not stop Tab.
@@ -95,7 +97,7 @@ const Projects = ({ sectionProgress, isActive }) => {
 
               <div className="mission-badge">PROJECT {scene.missionNumber}</div>
 
-              <h3 className="mission-title"><Decode text={title} p={state.focus} /></h3>
+              <h3 className="mission-title"><Decode text={title} p={state.reveal} /></h3>
 
               {role && (
                 <div className="mission-role">{role}</div>

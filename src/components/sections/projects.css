@@ -13,7 +13,7 @@
   pointer-events: none;
   overflow: hidden;
   /* 3D stage for the coverflow carousel */
-  perspective: 1200px;
+  perspective: var(--perspective-panel);
 }
 
 
@@ -219,11 +219,15 @@
   z-index: 0;
 }
 
-.mission-link:hover::after {
+/* The ink sweep is width-driven, so mirroring hover means driving the same
+   property — a transform here would have done nothing. */
+.mission-link:hover::after,
+.mission-link:focus-visible::after {
   width: 100%;
 }
 
-.mission-link:hover {
+.mission-link:hover,
+.mission-link:focus-visible {
   color: var(--paper);
 }
 
@@ -252,12 +256,28 @@
   transform: translateX(5px);
 }
 
-/* Focus states for keyboard accessibility */
+/* Focus mirrors hover so keyboard users get the same affordance: the ink
+   sweep fills, the arrow nudges, and the panel lifts on its shadow. */
 .mission-link:focus-visible {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
-  transition-duration: var(--duration-instant);
   outline-offset: 3px;
+  transition-duration: var(--duration-instant);
   box-shadow: 0 0 0 1px var(--focus-ring-offset);
+}
+
+
+
+.mission-link:hover .mission-link__arrow,
+.mission-link:focus-visible .mission-link__arrow {
+  transform: translateX(5px);
+}
+
+/* Pressed: collapse the shadow and settle toward the page, same key-snapping
+   press as the contact CTAs. */
+.mission-link:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-chip-press);
+  transition-duration: var(--duration-instant);
 }
 
 /* ---- Panel hover: subtle border registration shift ---- */

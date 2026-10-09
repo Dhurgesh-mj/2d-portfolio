@@ -97,14 +97,18 @@ const Contact = ({ sectionProgress, isActive }) => {
           )}
 
           {cv && (
-            <a
-              href={cv}
-              download
-              className="contact-link contact-link--secondary"
-            >
-              <span className="contact-link__text">DOWNLOAD CV</span>
-              <span className="contact-link__arrow" aria-hidden="true">↓</span>
-            </a>
+            /* Wrapped in Magnetic like the other three, which it previously
+               wasn't — the row moved inconsistently as the pointer crossed it. */
+            <Magnetic strength={6} className="magnetic--block">
+              <a
+                href={cv}
+                download
+                className="contact-link contact-link--secondary"
+              >
+                <span className="contact-link__text">DOWNLOAD CV</span>
+                <span className="contact-link__arrow" aria-hidden="true">↓</span>
+              </a>
+            </Magnetic>
           )}
         </div>
       </div>

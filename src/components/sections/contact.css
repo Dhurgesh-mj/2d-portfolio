@@ -166,10 +166,32 @@
   width: 10px;
 }
 
+/* Pressed. The shadow collapses to near-zero while the element slides toward
+   the surface it appears to be casting, which is what sells the press as depth
+   rather than a colour change. --ease-snap (a slight overshoot) on release
+   gives it the snap of a real key. */
 .contact-link:active,
 .contact-link--email:active {
-  transform: translate(2px, 2px);
-  box-shadow: var(--shadow-chip-press);
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 rgba(10, 10, 10, 0.45);
+  transition-duration: var(--duration-instant);
+}
+
+/* Focus follows the same geometry as hover, so a keyboard user sees the same
+   affordance a mouse user does — offset out, shadow raised. */
+.contact-link:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: 3px;
+  transition-duration: var(--duration-instant);
+}
+
+.contact-link:focus-visible:not(:active) {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 rgba(10, 10, 10, 0.45);
+}
+
+.contact-link:focus-visible:not(:active)::before {
+  width: 10px;
 }
 
 
@@ -234,10 +256,10 @@
   transform: translateX(6px);
 }
 
+/* Later duplicate of the focus ring, kept only for its 1px paper offset ring
+   so the ring stays visible against dark chrome. The outline itself is
+   identical to the rule above and is not repeated. */
 .contact-link:focus-visible {
-  outline: var(--focus-ring-width) solid var(--focus-ring-color);
-  transition-duration: var(--duration-instant);
-  outline-offset: 3px;
   box-shadow: 0 0 0 1px var(--focus-ring-offset);
 }
 

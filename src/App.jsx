@@ -126,6 +126,10 @@ function App() {
       <div className={`comic-scroll${frameReady ? ' is-live' : ''}`}>
         <ErrorBoundary>
         <div ref={stickyRef} className="comic-sticky">
+          {/* Clipping lives on .comic-sticky; this wrapper exists only to hold
+              preserve-3d, which the spec forces back to `flat` on any element
+              with overflow != visible. See the note in App.css. */}
+          <div className="comic-sticky__depth">
           <CameraRig targetRef={stickyRef} getProgress={getProgress} />
           <ComicCanvas
             scrollProgress={currentProgress}
@@ -168,6 +172,7 @@ function App() {
             progress={currentProgress}
             sections={SECTION_RANGES}
           />
+          </div>
         </div>
         </ErrorBoundary>
       </div>

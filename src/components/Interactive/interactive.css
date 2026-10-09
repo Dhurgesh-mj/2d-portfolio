@@ -1,11 +1,21 @@
 .tilt {
   position: relative;
   transform:
-    perspective(800px)
+    perspective(var(--perspective-tilt))
     rotateX(var(--rx, 0deg))
-    rotateY(var(--ry, 0deg));
+    rotateY(var(--ry, 0deg))
+    /* Third axis. rotateX/rotateY alone let the card's surface stay parallel to
+       the screen's plane normal in a way that reads as a flat sprite spinning;
+       a touch of roll makes it read as a slab of cardstock. Driven off --ry so
+       it inherits the pointer's horizontal motion and needs no extra JS. */
+    rotateZ(calc(var(--ry, 0deg) * 0.18));
   transition: transform var(--duration-fast) var(--ease-decelerate);
   transform-style: preserve-3d;
+
+  /* The card has a back. Without this, once rotateY passes 90deg the browser
+     still paints the front face mirrored; with it, the card genuinely turns
+     away and disappears. */
+  backface-visibility: hidden;
   will-change: transform;
 }
 
@@ -30,14 +40,34 @@
   opacity: 1;
 }
 
+/* Pull offset is published as --mx/--my rather than an inline transform, so the
+   press response can compose with it in one declaration. Writing
+   `style.transform` directly (as this did) meant the two effects could not both
+   be expressed at once. */
 .magnetic {
   display: inline-block;
+  transform: translate(var(--mx, 0px), var(--my, 0px));
   transition: transform var(--duration-fast) var(--ease-decelerate);
   will-change: transform;
 }
 
 .magnetic--block {
   display: block;
+}
+
+/* Pressed: commit forward and settle. --ease-snap is the tactile overshoot
+   curve, so the target dips in and rebounds rather than just fading in. */
+.magnetic.is-pressed {
+  transform:
+    translate(var(--mx, 0px), var(--my, 0px))
+    scale(0.97);
+  transition-duration: var(--duration-instant);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magnetic.is-pressed {
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

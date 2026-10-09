@@ -12,10 +12,12 @@ const About = ({ sectionProgress, isActive }) => {
   const pBio = mapRange(sp, 0.15, 0.35);
   const pInterests = mapRange(sp, 0.40, 0.60);
   const pExperience = mapRange(sp, 0.62, 0.78);
-  // Must complete before exitP starts fading at 0.90 — otherwise the location
-  // wipes in while the chapter is already dimming and never reads at full
-  // opacity.
-  const pLocation = mapRange(sp, 0.78, 0.89);
+  // Must complete before exitP starts fading at 0.90, with real margin. This
+  // used to end at 0.89 — a 0.01 gap that only just held, because the app's
+  // progress lerps and settles a percent or two shy of the nominal scroll
+  // position. Ended too late, the location still had a visible seam clipped
+  // right as the chapter began dimming. Ends at 0.86, giving 0.04 of slack.
+  const pLocation = mapRange(sp, 0.74, 0.86);
   
   const exitP = mapRange(sp, 0.90, 1.0);
   const globalOpacity = 1 - exitP;

@@ -3,6 +3,10 @@
   inset: 0;
   z-index: 6;
   pointer-events: none;
+
+  /* The light pool belongs to the artwork, so it stays in the art's plane. A
+     translateZ here would need a scene-wide preserve-3d, which conflicts with
+     the coverflow's own perspective — see the note in App.css. */
 }
 
 .spotlight__layer {

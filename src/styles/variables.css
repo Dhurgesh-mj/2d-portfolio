@@ -71,6 +71,39 @@
   --space-xl:  2rem;      /* 32px */
   --space-2xl: 2.5rem;    /* 40px */
 
+  /* ── Depth / 3D ──
+     The site has exactly two hardcoded perspective values (1400px on
+     .comic-sticky, 1200px on .projects-section) and a scattering of literal
+     translateZ/rotate figures in keyframes. Tokenised so depth reads as a
+     deliberate scale rather than magic numbers.
+
+     --perspective-stage is the camera for the whole page; --perspective-panel
+     is the (closer) camera for cards that rotate on their own axis. Smaller
+     perspective = more extreme foreshortening, so the panel value being lower
+     is intentional: a card swinging to 46deg should look like a card, not a
+     flat rectangle being squashed. */
+  --perspective-stage: 1400px;
+  --perspective-panel: 1200px;
+  --perspective-tilt: 800px;
+
+  /* Z strata, back to front. Each layer sits on its own translateZ so the
+     parallax between them is real perspective, not a faked scale difference. */
+  --depth-back: -60px;   /* vignette + atmosphere, furthest from the reader */
+  --depth-art: 0px;       /* the comic flipbook canvas, the "page" plane */
+  --depth-mid: 40px;      /* spotlight pool, sits just off the page */
+  --depth-content: 90px;  /* chapter text and cards, lifted toward the reader */
+  --depth-fore: 160px;    /* grain, cursor, nav — the reader's own plane */
+
+  /* Rotation extremes. Kept well under 90deg: past that the element is edge-on
+     and reads as a glitch rather than depth. */
+  --rotate-peak-y: -26deg;   /* Projects page turn */
+  --rotate-coverflow-y: 38deg; /* per-card coverflow swing, scaled by |off| */
+  --rotate-tilt-max: 7deg;   /* pointer Tilt half-extent */
+  --rotate-drift-z: 0.6deg;  /* resting skew, for a hand-placed panel feel */
+
+  /* Depth travel on entry — how far back a peak chapter starts. */
+  --depth-enter: 140px;
+
   /* ── Z-index Layers ── */
   --z-canvas: 1;
   --z-texture: 2;

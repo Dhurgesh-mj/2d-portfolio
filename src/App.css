@@ -14,6 +14,35 @@
   height: 100vh;
   width: 100%;
   overflow: hidden;
+
+  /* Scene camera for the chapter page-turn and the coverflow. */
+  perspective: var(--perspective-stage);
+}
+
+/* NOTE ON DEPTH STRATA — tried and reverted, do not re-add blindly.
+
+   The obvious move is a preserve-3d wrapper plus a translateZ per layer
+   (art / spotlight / content / nav). That does NOT work here:
+
+   1. Per spec, `overflow: hidden` on .comic-sticky computes transform-style to
+      `flat` regardless of what is declared, so preserve-3d needs a separate
+      unclipped wrapper.
+   2. With that wrapper, the scene's 1400px perspective and Projects' own 1200px
+      coverflow perspective both apply to the same cards. Two independent 3D
+      contexts reproject each other and the panel backgrounds render
+      translucent — the artwork shows straight through the paper.
+   3. Compensating for the resulting upscale by scaling back shrinks the panel
+      about its own centre, which makes it read smaller than the artwork around
+      it — still wrong, and now also mispositioned.
+
+   The depth tokens stay because they are what --rotate-* and
+   --depth-enter key off, and because they document the scene. Depth separation
+   is instead achieved by the mechanisms that compose safely here: the canvas's
+   own 1.04 overscan, per-layer translate drift at different rates, coverflow's
+   translateZ on the cards, and the coverflow rotateZ added in this pass. */
+.comic-sticky__depth {
+  position: absolute;
+  inset: 0;
 }
 
 /* ========================
@@ -27,7 +56,10 @@
      --vel is already published by CameraRig every frame (smoothed, attack
      0.35 / release 0.08, clamped 0-3) and was read by no CSS at all. The slow
      release is the point: a flick overshoots then settles, like paper.
-     Falls back to 0 on touch, where CameraRig bails early and never sets it. */
+     Falls back to 0 on touch, where CameraRig bails early and never sets it.
+
+     translateZ(--depth-art) is 0px, so it is applied in comicCanvas.css where
+     the wrapper is owned — this rule is purely camera response. */
   transform:
     translate(calc(var(--cam-x, 0) * -14px), calc(var(--cam-y, 0) * -10px))
     skewY(calc(var(--vel, 0) * -0.35deg))
@@ -35,12 +67,27 @@
     scale(1.04);
 }
 
+/* Depth strata (Phase 1)
+
+   Layers sit on their own translateZ so the scene's preserve-3d gives real
+   differential parallax rather than a flat slide.
+
+   NOTE: no perspective-compensation scale. An earlier attempt divided by
+   (perspective - depth) to cancel the upscale a forward layer receives, but
+   the compensation must be applied around the perspective ORIGIN, not scaled
+   about the element's own centre — scaling about the centre shrank the Projects
+   panel in place and left it visibly smaller than the surrounding artwork,
+   which read as a transparent panel rather than depth. Leaving the strata
+   slightly enlarged is both visually acceptable (the canvas already carries a
+   1.04 overscan for exactly this) and far less fragile. */
 .comic-overlay {
-  /* Content floats nearest — counter-drifts against the art */
+  /* Content floats nearest — counter-drifts against the art. Depth separation
+     comes from the differing drift rates plus the coverflow's own translateZ,
+     not from a scene-wide preserve-3d; see .comic-sticky__depth. */
   translate: calc(var(--cam-x, 0) * 10px) calc(var(--cam-y, 0) * 8px);
 }
 
-/* Spotlight position (Phase 5) defaults to center */
+/* Spotlight position defaults to centre */
 .comic-sticky {
   --spot-x: 50%;
   --spot-y: 45%;
@@ -52,6 +99,13 @@
   }
   .comic-overlay {
     translate: none;
+  }
+  /* Depth strata are motion. Flattening them back onto the art plane is the
+     point of the preference — someone who asked for less movement should not
+     still be looking through a perspective they can't control. */
+  .comic-overlay,
+  .spotlight {
+    transform: none;
   }
 }
 /* Page-turn entry wipe: a slanted reveal band sweeps across the incoming
@@ -81,24 +135,39 @@
    the spine sells the dimensionality without any 3D geometry.
 
    Scoped to .projects-section on purpose — everything else keeps the flat wipe. */
-.comic-sticky {
-  perspective: 1400px;
-}
-
 .comic-scroll.is-live .comic-overlay > .projects-section.is-active {
   animation: page-turn-3d var(--duration-page) var(--ease-decelerate);
   transform-origin: left center;
 }
 
+/* The scene's preserve-3d propagates down through the section into the
+   coverflow panels, which already establish their own perspective and
+   transform. Nested 3D contexts get flattened at that boundary, which made the
+   panels render as if they were inside the page's perspective — the panel came
+   out translucent, showing the artwork straight through it.
+
+   Opting the chapter root OUT of the inherited preserve-3d re-establishes the
+   coverflow's own perspective as the only one in play, restoring opaque
+   panels. The chapter keeps its own 3D entrance (it is animated directly, not
+   inherited) while its children stop being reprojected. */
+.comic-overlay > .projects-section {
+  transform-style: flat;
+}
+
 @keyframes page-turn-3d {
   from {
-    transform: rotateY(-26deg) translateZ(-140px);
+    /* rotateZ is the small part: it keeps the card's near edge lower than its
+       far edge so the turn doesn't read as a flat card sliding. Paired with the
+       left-edge transform-origin, this is what makes the spine feel like a
+       physical gutter rather than a hinge. */
+    transform: rotateY(var(--rotate-peak-y)) rotateZ(-1.4deg)
+      translateZ(calc(var(--depth-enter) * -1));
     opacity: 0;
     /* the fold: a hard shadow lifting off the gutter */
     box-shadow: 70px 0 90px -34px rgba(10, 10, 10, 0.7);
   }
   to {
-    transform: rotateY(0deg) translateZ(0);
+    transform: rotateY(0deg) rotateZ(0deg) translateZ(0);
     opacity: 1;
     box-shadow: none;
   }

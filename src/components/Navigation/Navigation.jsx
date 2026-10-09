@@ -88,12 +88,32 @@ const Navigation = ({ currentSection = 0, progress = 0, sections = [] }) => {
         </div>
       )}
 
-      {/* Section progress strip — bottom of screen */}
-      <div className="comic-nav__progress-track" role="progressbar" aria-valuenow={Math.round(sectionFraction * 100)} aria-valuemin={0} aria-valuemax={100} aria-label={`${activeSection.label || 'Section'} progress`}>
+      {/* Section progress strip — bottom of screen.
+          Two readings of "where am I": the fill is intra-chapter (how far
+          through this chapter), the ticks are the chapter boundaries. Both
+          were previously implied by one bar, so a reader landing mid-page had
+          no way to know how many chapters remained. */}
+      <div
+        className="comic-nav__progress-track"
+        role="progressbar"
+        aria-valuenow={Math.round(sectionFraction * 100)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={`${activeSection.label || 'Section'} progress`}
+      >
         <div
           className="comic-nav__progress-fill"
           style={{ width: `${sectionFraction * 100}%` }}
         />
+        <div className="comic-nav__progress-ticks" aria-hidden="true">
+          {sections.map((s, i) => (
+            <span
+              key={s.id}
+              className={`comic-nav__progress-tick${i < currentSection ? ' is-past' : ''}${i === currentSection ? ' is-current' : ''}`}
+              style={{ left: `${i / (sections.length - 1) * 100}%` }}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Chapter filmstrip — clickable thumbnails, bottom center */}

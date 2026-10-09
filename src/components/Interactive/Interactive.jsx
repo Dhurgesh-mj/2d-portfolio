@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import './interactive.css';
 
 // Pointer-driven effects need a fine pointer AND no reduced-motion preference.
@@ -53,6 +53,7 @@ export function Tilt({ children, max = 7, className = '' }) {
  */
 export function Magnetic({ children, strength = 7, className = '' }) {
   const ref = useRef(null);
+  const [pressed, setPressed] = useState(false);
 
   const handleMove = (e) => {
     const el = ref.current;
@@ -62,22 +63,31 @@ export function Magnetic({ children, strength = 7, className = '' }) {
     const dy = e.clientY - (rect.top + rect.height / 2);
     const cx = Math.max(-1, Math.min(1, dx / (rect.width / 2)));
     const cy = Math.max(-1, Math.min(1, dy / (rect.height / 2)));
-    el.style.transform = `translate(${(cx * strength).toFixed(1)}px, ${(cy * strength).toFixed(1)}px)`;
+    // Pulled further while held: the target offers, then commits. `--mp` is
+    // consumed by the CSS so the press response stays in the stylesheet.
+    const gain = pressed ? 1.35 : 1;
+    el.style.setProperty('--mx', `${(cx * strength * gain).toFixed(1)}px`);
+    el.style.setProperty('--my', `${(cy * strength * gain).toFixed(1)}px`);
   };
 
   const handleLeave = () => {
     const el = ref.current;
     if (!el) return;
-    el.style.transform = 'translate(0px, 0px)';
+    el.style.setProperty('--mx', '0px');
+    el.style.setProperty('--my', '0px');
+    setPressed(false);
   };
 
   return (
     <div
       ref={ref}
-      className={`magnetic ${className}`}
+      className={`magnetic ${className}${pressed ? ' is-pressed' : ''}`}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       onTouchStart={handleLeave}
+      onPointerDown={() => setPressed(true)}
+      onPointerUp={handleLeave}
+      onPointerCancel={handleLeave}
     >
       {children}
     </div>

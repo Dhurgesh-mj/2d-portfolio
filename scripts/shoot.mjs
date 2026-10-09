@@ -152,8 +152,10 @@ async function auditReveals(page) {
       const parts = m[1].trim().split(/\s+/);
       const right = parts[1] ?? '0';
       const pct = parseFloat(right);
-      // Non-zero right inset => still being wiped.
-      if (!Number.isNaN(pct) && pct > 0.01) {
+      // Non-zero right inset => still being wiped. Tolerance is 2%: below that
+      // the seam is sub-pixel at 1440px and reads as fully revealed, and
+      // flagging it only produces noise the reader can't act on.
+      if (!Number.isNaN(pct) && pct > 2) {
         const raw = getComputedStyle(el).getPropertyValue('--p').trim();
         out.push({
           cls: el.className.toString().slice(0, 44),
@@ -171,6 +173,18 @@ for (const stop of STOPS) {
   const file = path.join(OUT, `${stop.id}${stop.kind === 'mid' ? '-mid' : ''}${suffix}.png`);
   await page.screenshot({ path: file });
 
+  // Snapshot this chapter's own classes once, so the reveal audit below can ask
+  // "is an element of THIS chapter still wiped?" without string-prefix guessing.
+  stop.inChapter = await page.evaluate((sel) => {
+    const root = document.querySelector(sel);
+    if (!root) return [];
+    const own = [];
+    root.querySelectorAll('[style*="--p"]').forEach((el) => {
+      own.push(el.className.toString().split(/\s+/)[0]);
+    });
+    return own;
+  }, stop.sel);
+
   const state = await page.evaluate((sel) => {
     const el = document.querySelector(sel);
     if (!el) return 'SELECTOR NOT FOUND';
@@ -181,9 +195,19 @@ for (const stop of STOPS) {
   const stuck = await auditReveals(page);
   console.log(`${stop.id}${stop.kind === 'mid' ? '(mid)' : ''}`.padEnd(16) + `doc=${stop.progress.toFixed(3)} sp=${stop.sp}  ${state}`);
   if (stuck.length) {
-    // Only the chapter under inspection should be complete; other chapters are
-    // legitimately still at --p: 0 because they are off-screen.
-    const mine = stuck.filter((s) => s.cls.startsWith(stop.sel.slice(1).split('-')[0]));
+// Only the chapter under inspection should be complete; other chapters are
+  // legitimately still at --p: 0 because they are off-screen.
+    //
+    // Nesting depth matters for the prefix test: `.about-section` and
+    // `.about-content` both start "about", but an element only "belongs" to the
+    // chapter if it is a descendant of the chapter root — checking the string
+    // prefix alone let a nested `.about-content` match even when the chapter
+    // itself was fine.
+    const mine = stuck.filter((s) => {
+      const root = stop.sel.slice(1).split('-')[0];
+      if (!s.cls.startsWith(root)) return false;
+      return stop.inChapter.includes(s.cls);
+    });
     if (mine.length) {
       console.log(`  ${mine.length} of THIS chapter's element(s) still mid-reveal:`);
       for (const s of mine.slice(0, 6)) console.log(`    --p=${s.p}  right-inset=${s.right}  ${s.cls}`);

@@ -8,6 +8,12 @@
   z-index: var(--z-nav);
   transition: color var(--duration-slow) var(--ease-standard);
   font-family: var(--font-display);
+
+  /* The reader's own plane — nearest the eye of everything on the page.
+     --depth-fore (160px) vs the content's --depth-content (90px): the chrome
+     lifts off the chapter text rather than sitting flush with it. position:
+     fixed, so this is a flat composite regardless of the sticky scene. */
+  transform: translateZ(var(--depth-fore));
 }
 
 /* Dark artwork background → light text */
@@ -211,6 +217,15 @@
   opacity: 1;
 }
 
+/* Pressed: the thumbnail ducks into the filmstrip. Smaller travel than the
+   contact CTAs because these are 48px targets in a strip, not a hero CTA —
+   over-scaling a small target makes the whole row feel loose. */
+.comic-nav__frame:active {
+  transform: translateY(1px);
+  box-shadow: var(--shadow-chip-press);
+  transition-duration: var(--duration-instant);
+}
+
 /* ── Progress strip — bottom of screen ── */
 .comic-nav__progress-track {
   position: absolute;
@@ -230,6 +245,41 @@
   background-color: var(--accent);
   transition: width var(--duration-fast) var(--ease-loop);
   box-shadow: 0 0 4px var(--accent);
+
+  /* The fill answers to scroll speed as well as position: on a fast flick it
+     stretches and glows, then settles. Reads as the bar being dragged rather
+     than the page sliding underneath it. Falls back to 0 on touch, where
+     CameraRig bails early and never publishes --vel. */
+  transform: scaleX(calc(1 + var(--vel, 0) * 0.12));
+  transform-origin: left center;
+  filter: brightness(calc(1 + var(--vel, 0) * 0.25));
+}
+
+/* Chapter boundary ticks. The fill alone could not say how many chapters were
+   left; these give position-within-the-whole-book at a glance. */
+.comic-nav__progress-ticks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.comic-nav__progress-tick {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--nav-line, currentColor);
+  opacity: 0.35;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.comic-nav__progress-tick.is-past {
+  opacity: 0.15;
+}
+
+.comic-nav__progress-tick.is-current {
+  opacity: 1;
+  width: 2px;
 }
 
 /* ── Mobile ── */
@@ -270,5 +320,24 @@
 
   .comic-nav__frame-tip {
     display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .comic-nav__frame,
+  .comic-nav__frame-tip,
+  .comic-nav__progress-fill,
+  .comic-nav__progress-tick {
+    transition: none !important;
+  }
+
+  /* Nav chrome sits on the reader's plane via translateZ, and the progress fill
+     reacts to scroll velocity. Both are movement, so both go. */
+  .comic-nav {
+    transform: none;
+  }
+
+  .comic-nav__progress-fill {
+    transform: none;
+    filter: none;
   }
 }
