@@ -12,7 +12,8 @@
   --paper-dark: #E0D8C6;
 
   /* ── Accent Colors ── */
-  --accent: #4A90B8;
+  --accent: #4A90B8;         /* borders, rules, glows — never body text */
+  --accent-ink: #2E5F80;     /* accent used AS TEXT: 6.0:1 on paper, 6.9:1 under white */
   --accent-cyan: rgba(0, 229, 255, 0.85);
   --accent-magenta: rgba(255, 0, 100, 0.75);
 
@@ -25,6 +26,10 @@
   --font-display: 'Bebas Neue', sans-serif;
   --font-sans: 'Inter', sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  /* Aliases — call sites that ask for --font-heading / --font-body were
+     silently falling back to the inherited face before these existed. */
+  --font-heading: var(--font-display);
+  --font-body: var(--font-sans);
 
   /* ── Borders & Shadows ── */
   --border-heavy: 3px;
@@ -41,7 +46,7 @@
   --z-loading: 200;
   --z-cursor: 300;
 
-  /* ── Typography Scale ── */
+  /* ── Typography Scale (base steps — 1rem == root, see globals.css) ── */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
@@ -53,6 +58,44 @@
   --text-5xl: 3rem;
   --text-6xl: 3.75rem;
   --text-7xl: 4.5rem;
+
+  /* ── Type Roles ──
+     Every text rule binds to one of these, never to a raw value.
+
+     The clamp() floor/cap matters because globals.css scales the root font-size
+     with --img-scale so layout tracks the zoomed artwork. That makes rem
+     non-deterministic (1rem is 16px at 1920 but 28.7px at 3440), so a plain
+     0.75rem token renders 9.3px on a standard laptop and 21.5px on an ultrawide.
+     The MIN and MAX here are px so they stay absolute at every viewport; only
+     the preferred step is rem, so the role still tracks the art between bounds.
+
+     Display tiers step >= 1.25x (80 / 48 / 24px). The body band is a
+     deliberate 2px-per-step ramp (20 / 18 / 16 / 12) — those levels are
+     separated by weight and family, not size. */
+  --type-display:  clamp(40px, 5rem, 88px);        /* hero name, contact title */
+  --type-h1:       clamp(32px, 3rem, 64px);        /* loading + error h1 */
+  --type-h3:       clamp(20px, 1.5rem, 30px);      /* card titles */
+  --type-h4:       clamp(18px, 1.25rem, 26px);     /* inline sub-headings */
+  --type-body-lg:  clamp(16px, 1.125rem, 24px);    /* lead copy, taglines */
+  --type-body:     clamp(16px, 1rem, 20px);        /* section + card body */
+  --type-label:    clamp(12px, 0.75rem, 15px);     /* uppercase mono badges */
+  --type-meta:     clamp(12px, 0.75rem, 15px);     /* secondary references */
+
+  /* ── Line Height ── */
+  --leading-display: 0.92;   /* display + section titles */
+  --leading-heading: 1.1;
+  --leading-snug: 1.35;
+  --leading-body: 1.5;
+
+  /* ── Letter Spacing ── */
+  --tracking-tight: 0.01em;
+  --tracking-normal: 0.02em;
+  --tracking-wide: 0.05em;
+  --tracking-label: 0.12em;  /* uppercase mono labels */
+
+  /* ── Font Weight ── */
+  --weight-semibold: 600;
+  --weight-bold: 700;
 
   /* ── Scrollbar (Firefox) ── */
   scrollbar-width: thin;

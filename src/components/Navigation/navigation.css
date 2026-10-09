@@ -7,7 +7,7 @@
   pointer-events: none;
   z-index: var(--z-nav, 100);
   transition: color 0.5s ease;
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-family: var(--font-display);
 }
 
 /* Dark artwork background → light text */
@@ -27,8 +27,9 @@
   position: absolute;
   top: 24px;
   left: 24px;
-  font-size: 1.5rem;
-  letter-spacing: 0.1em;
+  font-size: var(--type-h3);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-wide);
   pointer-events: auto;
   cursor: default;
 }
@@ -39,20 +40,27 @@
   top: 24px;
   right: 48px;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 4px;
   pointer-events: auto;
 }
 
 .comic-nav__chapter {
-  font-size: 1.1rem;
-  letter-spacing: 0.08em;
+  font-size: var(--type-h4);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-wide);
 }
 
 .comic-nav__section-label {
   color: var(--accent);
-  font-size: 0.95rem;
-  letter-spacing: 0.05em;
+  font-size: var(--type-body);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-normal);
+}
+
+/* Accent on paper is only 3.1:1 — swap to the AA-safe ink variant */
+.comic-nav--on-light .comic-nav__section-label {
+  color: var(--accent-ink);
 }
 
 /* ── Chapter filmstrip — bottom center ── */
@@ -144,7 +152,6 @@
   .comic-nav__monogram {
     top: 16px;
     left: 16px;
-    font-size: 1.2rem;
   }
 
   .comic-nav__filmstrip {

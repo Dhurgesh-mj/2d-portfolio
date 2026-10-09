@@ -34,10 +34,11 @@
 }
 
 .comic-loading-screen__text {
-  font-family: var(--font-heading), 'Bebas Neue', sans-serif;
+  font-family: var(--font-heading);
   color: var(--paper);
-  font-size: 2.5rem;
-  letter-spacing: 0.1em;
+  font-size: var(--type-h1);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-wide);
   margin: 0;
 }
 
@@ -68,10 +69,11 @@
 }
 
 .comic-loading-screen__percent {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: var(--type-meta);
+  line-height: var(--leading-snug);
   color: var(--muted, #a0a0a0);
-  letter-spacing: 0.1em;
+  letter-spacing: var(--tracking-normal);
   margin-top: -8px;
 }
 
@@ -79,9 +81,10 @@
   position: absolute;
   bottom: 32px;
   right: 32px;
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: 1rem;
-  letter-spacing: 0.1em;
+  font-family: var(--font-display);
+  font-size: var(--type-label);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-normal);
   color: var(--muted, #a0a0a0);
   background: transparent;
   border: 1.5px solid var(--mid-gray, #555);
@@ -108,9 +111,11 @@
   flex-direction: column;
   gap: 4px;
   min-height: 5.5rem;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
+  max-width: 26rem;
+  font-family: var(--font-mono);
+  font-size: var(--type-label);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-normal);
   color: var(--muted, #a0a0a0);
   text-align: left;
   width: 100%;
@@ -118,7 +123,7 @@
 
 .boot-line__prompt {
   color: var(--accent, #4A90B8);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   margin-right: 6px;
 }
 

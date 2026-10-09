@@ -74,7 +74,8 @@
   border: 3px solid var(--ink, #0A0A0A);
   box-shadow: 5px 5px 0 rgba(10, 10, 10, 0.25);
   padding: 1.2rem 1.35rem;
-  width: 23.125rem;
+  /* 25rem keeps --type-body at a 45-70 character measure now that body is 16px */
+  width: 25rem;
   max-width: 40vw;
   z-index: 12;
   box-sizing: border-box;
@@ -101,18 +102,6 @@
 }
 .mission-title {
   --lp: calc(max(0, min(1, (var(--p, 0) - 0.3) * 4)));
-  opacity: var(--lp);
-  clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--lp)) * -6px));
-}
-.mission-role-tag {
-  --lp: calc(max(0, min(1, (var(--p, 0) - 0.4) * 4)));
-  opacity: var(--lp);
-  clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--lp)) * -6px));
-}
-.mission-desc {
-  --lp: calc(max(0, min(1, (var(--p, 0) - 0.5) * 4)));
   opacity: var(--lp);
   clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
   transform: translateX(calc((1 - var(--lp)) * -6px));
@@ -166,20 +155,17 @@
   right: calc(5% + max(0px, (100% - 100vw) + var(--img-x, 0px)));
 }
 
-.mission-panel--right-d {
-  top: 30%;
-  right: calc(7% + max(0px, (100% - 100vw) + var(--img-x, 0px)));
-}
-
 /* ---- Badge ---- */
 .mission-badge {
   display: inline-block;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  background-color: var(--accent, #4A90B8);
-  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: var(--type-label);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-label);
+  /* --accent-ink, not --accent: white on #4A90B8 is only 3.5:1 */
+  background-color: var(--accent-ink);
+  color: var(--white);
   padding: 2px 8px;
   margin-bottom: 0.45rem;
   border: 1px solid var(--ink, #0A0A0A);
@@ -187,44 +173,33 @@
 
 /* ---- Title ---- */
 .mission-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.7rem;
-  line-height: 1.05;
+  font-family: var(--font-display);
+  font-size: var(--type-h3);
+  line-height: var(--leading-heading);
   color: var(--ink, #0A0A0A);
   margin: 0 0 0.2rem 0;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-/* ---- Role tag ---- */
-.mission-role-tag {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--ink, #0A0A0A);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.35rem;
-  opacity: 0.7;
+  letter-spacing: var(--tracking-tight);
 }
 
 /* ---- Tech ---- */
 .mission-tech {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: var(--type-label);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-semibold);
   color: var(--mid-gray, #555555);
   margin-bottom: 0.65rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--tracking-normal);
 }
 
 /* ---- Description ---- */
 .mission-desc {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.84rem;
-  line-height: 1.45;
-  color: #1a1a1a;
+  font-family: var(--font-sans);
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
+  color: var(--text-primary);
   margin: 0 0 0.85rem 0;
 }
 
@@ -242,12 +217,13 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: var(--type-label);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-bold);
   color: var(--ink, #0A0A0A);
   text-decoration: none;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--tracking-normal);
   position: relative;
   padding: 8px 14px;
   border: 2px solid var(--ink, #0A0A0A);
@@ -337,7 +313,7 @@
 @media (max-width: 768px) {
   .comic-mission-panel {
     width: 88%;
-    max-width: 21.25rem;
+    max-width: 23rem;
     padding: 1rem 1.1rem;
     box-shadow: 4px 4px 0 rgba(10, 10, 10, 0.22);
     /* True viewport center inside the oversized overlay */
@@ -347,13 +323,9 @@
     top: 10% !important;
   }
 
-  .mission-title {
-    font-size: 1.4rem;
-  }
-
+  /* Type sizes are NOT overridden here — --type-* already floors body copy
+     at 16px and titles at 20px, which is what mobile needs. */
   .mission-desc {
-    font-size: 0.8rem;
-    line-height: 1.4;
     margin-bottom: 0.7rem;
   }
 }
@@ -361,22 +333,12 @@
 @media (max-width: 430px) {
   .comic-mission-panel {
     width: 92%;
-    max-width: 19.375rem;
+    max-width: none;
     padding: 0.85rem 0.95rem;
     top: 8% !important;
   }
 
-  .mission-title {
-    font-size: 1.25rem;
-  }
-
-  .mission-desc {
-    font-size: 0.76rem;
-    line-height: 1.35;
-  }
-
   .mission-badge {
-    font-size: 0.6rem;
     padding: 1px 6px;
   }
 }

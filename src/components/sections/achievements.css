@@ -26,7 +26,8 @@
   position: absolute;
   right: calc(5% + max(0px, (100% - 100vw) + var(--img-x, 0px)));
   top: 14%;
-  width: 23.75rem;
+  /* 26rem keeps --type-body at a 45-70 character measure inside the card */
+  width: 26rem;
   max-width: 42vw;
   display: flex;
   flex-direction: column;
@@ -116,22 +117,24 @@
 /* Marker symbol — inline decorative glyph */
 .milestone-marker {
   display: inline-block;
-  font-size: 0.7rem;
-  color: var(--accent, #4A90B8);
+  font-size: var(--type-label);
+  line-height: var(--leading-snug);
+  color: var(--accent-ink, #2E5F80);
   margin-right: 6px;
   vertical-align: middle;
 }
 
 /* Label — small mono tag */
 .milestone-label {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-family: var(--font-mono);
+  font-size: var(--type-label);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
-  color: var(--ink, #0A0A0A);
-  background: var(--accent, #4A90B8);
-  color: #fff;
+  /* --accent-ink, not --accent: white on #4A90B8 is only 3.5:1 */
+  background: var(--accent-ink, #2E5F80);
+  color: var(--white);
   padding: 1px 6px;
   display: inline-block;
   margin-bottom: 0.35rem;
@@ -139,20 +142,21 @@
 
 /* Caption text */
 .milestone-caption {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.82rem;
-  line-height: 1.4;
-  color: #222;
+  font-family: var(--font-sans);
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
+  color: var(--text-secondary);
   margin: 0 0 0.3rem 0;
 }
 
 /* Source — tiny reference */
 .milestone-source {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.62rem;
+  font-family: var(--font-mono);
+  font-size: var(--type-meta);
+  line-height: var(--leading-snug);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--mid-gray, #555);
+  letter-spacing: var(--tracking-normal);
+  color: var(--text-muted);
   border-top: 1px solid rgba(10, 10, 10, 0.15);
   padding-top: 0.25rem;
   display: block;
@@ -208,10 +212,6 @@
   .milestone-card {
     padding: 0.55rem 0.75rem;
   }
-
-  .milestone-caption {
-    font-size: 0.78rem;
-  }
 }
 
 @media (max-width: 430px) {
@@ -223,15 +223,6 @@
   .milestone-card {
     padding: 0.45rem 0.6rem;
     box-shadow: 2px 2px 0 rgba(10, 10, 10, 0.18);
-  }
-
-  .milestone-caption {
-    font-size: 0.74rem;
-    line-height: 1.35;
-  }
-
-  .milestone-source {
-    font-size: 0.58rem;
   }
 }
 

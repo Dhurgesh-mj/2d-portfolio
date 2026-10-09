@@ -40,11 +40,11 @@
 }
 
 .hero-name {
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: clamp(3.5rem, 8vw, 6rem);
-  line-height: 0.9;
+  font-family: var(--font-display);
+  font-size: var(--type-display);
+  line-height: var(--leading-display);
   margin: 0;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--tracking-wide);
   text-shadow:
     2px 2px 0 var(--ink, #0a0a0a),
     -1px 0px 0 var(--accent-cyan, rgba(0, 229, 255, 0.5)),
@@ -55,12 +55,13 @@
 }
 
 .hero-role {
-  font-family: var(--font-sans, sans-serif);
-  font-size: clamp(0.9rem, 1.8vw, 1.15rem);
+  font-family: var(--font-sans);
+  font-size: var(--type-body-lg);
+  line-height: var(--leading-snug);
   margin: 0;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: var(--tracking-wide);
   color: var(--paper, #fdfbf7);
   background-color: var(--ink, #0a0a0a);
   padding: 6px 14px;
@@ -81,16 +82,18 @@
 }
 
 .scroll-hint__label {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
+  font-family: var(--font-mono);
+  font-size: var(--type-label);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-label);
   color: var(--muted, #a0a0a0);
   text-transform: uppercase;
 }
 
 .scroll-hint__arrow {
-  font-size: 0.7rem;
+  font-size: var(--type-label);
+  line-height: var(--leading-snug);
   color: var(--accent, #4A90B8);
   animation: scroll-bounce 1.6s ease-in-out infinite;
 }
@@ -100,7 +103,9 @@
   50%        { transform: translateY(4px); opacity: 0.5; }
 }
 
-/* ── Mobile ── */
+/* ── Mobile ──
+   Left-aligned, matching About / Skills / Projects / Achievements. Two of the
+   six sections used to centre here, which read as drift rather than intent. */
 @media (max-width: 768px) {
   .hero-content {
     right: auto;
@@ -109,8 +114,7 @@
     transform: translateX(-50%);
     top: auto;
     bottom: 10%;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
     width: 90%;
   }
 }

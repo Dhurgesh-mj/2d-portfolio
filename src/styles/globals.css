@@ -7,9 +7,12 @@
 html {
   scroll-behavior: smooth;
   /* 
-    Scale root font-size perfectly with the canvas on large/ultrawide screens.
-    1920x1080 baseline. UI elements perfectly match the artwork scale.
-    We clamp minimum size to 16px to maintain readability on laptops/mobile.
+    Scale root font-size with the canvas so layout (padding, gaps, panel widths)
+    matches the zoomed artwork. 1920x1080 baseline, floored at 16px.
+
+    Because rem is therefore viewport-dependent, TYPE never reads a raw rem —
+    it binds to the --type-* roles in variables.css, each of which clamp()s to
+    a px band. See the note on that block.
   */
   font-size: max(16px, calc(16px * var(--img-scale, 1)));
 }

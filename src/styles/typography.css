@@ -1,48 +1,28 @@
-.chapter-label {
-  font-family: 'Bebas Neue', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  font-size: var(--text-sm);
-  color: var(--accent);
-}
+/* ========================================
+   SHARED TYPE LAYER
+   ------------------------------------------------------------
+   Type VALUES live in variables.css as tokens:
+     --font-display / --font-heading, --font-sans / --font-body, --font-mono
+     --type-display / --type-h1 / --type-h3 / --type-h4
+     --type-body-lg / --type-body / --type-label / --type-meta
+     --leading-display / --leading-heading / --leading-snug / --leading-body
+     --tracking-tight / --tracking-normal / --tracking-wide / --tracking-label
+     --weight-semibold / --weight-bold
 
-.title-display {
-  font-family: 'Bebas Neue', sans-serif;
-  font-weight: 700;
-  font-size: var(--text-7xl);
-  line-height: 0.9;
-  text-transform: uppercase;
-  color: var(--paper);
-}
+   Component CSS binds to those tokens and owns nothing else. Raw font sizes
+   are not permitted — see .chapter-label in pixelDecoration.css for the
+   reference implementation.
 
-.section-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: var(--text-5xl);
-  line-height: 1;
-  text-transform: uppercase;
-  color: var(--paper);
-}
-
-.body-text {
-  font-family: 'Inter', sans-serif;
-  font-size: var(--text-base);
-  line-height: 1.6;
-  color: var(--light-gray);
-}
-
-.meta-text {
-  font-family: 'Inter', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-size: var(--text-xs);
-  color: var(--mid-gray);
-}
-
-.pixel-label {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: var(--text-xs);
-  text-transform: uppercase;
-}
+   Role map, so a new rule knows what to reach for:
+     --type-display    hero name, contact title (one per viewport, >= 40px)
+     --type-h1         loading screen + error boundary headline
+     --type-h3         card titles (project / skill / interests)
+     --type-h4         inline sub-headings (toolchain, nav chapter)
+     --type-body-lg    lead copy, taglines, pill headings
+     --type-body       section + card body copy (16px floor)
+     --type-label      uppercase mono badge / button / tag
+     --type-meta       secondary reference line under a card
+   ======================================== */
 
 /* ── Marker-swipe highlight ──
    Hand-drawn highlighter stroke that draws itself left-to-right as the
@@ -67,14 +47,5 @@
 @media (prefers-reduced-motion: reduce) {
   .mark {
     background-size: 100% 82%;
-  }
-}
-
-@media (max-width: 768px) {
-  .title-display {
-    font-size: var(--text-5xl);
-  }
-  .section-title {
-    font-size: var(--text-4xl);
   }
 }

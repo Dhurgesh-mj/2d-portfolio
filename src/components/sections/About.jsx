@@ -43,7 +43,8 @@ const About = ({ progress, sectionProgress, isActive }) => {
         </div>
 
         <div className="about-interests" style={{ '--p': pInterests }}>
-          <h3 className="interests-title">Interests</h3>
+          {/* Chapter h2 — this section has no other heading */}
+          <h2 className="interests-title">Interests</h2>
           <ul className="interests-list">
             {interests.map((interest, i) => {
               // Ensure the stagger completely finishes before pInterests reaches 1.0

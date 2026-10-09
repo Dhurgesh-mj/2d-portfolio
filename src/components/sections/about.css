@@ -39,10 +39,11 @@
 
 /* ── Interests ── */
 .interests-title {
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: 1.5rem;
+  font-family: var(--font-display);
+  font-size: var(--type-h3);
+  line-height: var(--leading-heading);
   margin: 0 0 0.5rem 0;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--tracking-wide);
   color: var(--paper);
   background-color: var(--ink);
   padding: 4px 10px;
@@ -69,11 +70,12 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  font-family: var(--font-sans, sans-serif);
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-size: var(--type-label);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-semibold);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-normal);
   padding: 4px 10px;
   border: 1.5px solid rgba(244, 240, 231, 0.35);
   background: transparent;
@@ -90,8 +92,9 @@
 /* ── Location ── */
 .about-location {
   margin-top: 0.5rem;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: var(--type-meta);
+  line-height: var(--leading-snug);
   color: var(--muted, #a0a0a0);
   border-top: 2px dashed var(--muted, #a0a0a0);
   padding-top: 0.5rem;

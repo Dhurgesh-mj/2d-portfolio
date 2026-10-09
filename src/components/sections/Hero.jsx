@@ -43,9 +43,11 @@ const Hero = ({ progress, sectionProgress, isActive }) => {
           <SplitText text={name} p={pName} />
         </h1>
 
-        <h2 className="hero-role" style={{ '--p': pRole }}>
+        {/* A styled badge, not a section heading — it was an h2 sitting above
+            h3 card titles in later chapters, inverting the outline. */}
+        <p className="hero-role" style={{ '--p': pRole }}>
           <span className="mark">{role}</span>
-        </h2>
+        </p>
 
         <div className="hero-tagline" style={{ '--p': pTagline }}>
           <ComicTextBox variant="dark">
