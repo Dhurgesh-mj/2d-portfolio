@@ -6,20 +6,22 @@
   height: 16px;
   z-index: var(--z-cursor);
   pointer-events: none;
-  transition: scale var(--duration-fast) steps(2);
   will-change: transform;
+  /* Difference blend with white bars: the reticle renders as the inverse of
+     whatever is beneath it, so it stays visible on every surface. The old
+     paper fill was paper-on-paper over the light cards (only a 1px outline
+     left), and the accent hot colour washed out on the blue artwork — with the
+     native cursor hidden, that meant no visible cursor at all over cards. */
+  mix-blend-mode: difference;
 }
 
 .pixel-cursor__h,
 .pixel-cursor__v {
   position: absolute;
-  background: var(--paper);
-  /* Ink outline so the reticle reads on light and dark art alike */
-  box-shadow:
-    1px 0 0 var(--ink),
-    -1px 0 0 var(--ink),
-    0 1px 0 var(--ink),
-    0 -1px 0 var(--ink);
+  background: #fff;
+  transition:
+    scale var(--duration-fast) steps(2),
+    transform var(--duration-fast) steps(2);
 }
 
 .pixel-cursor__h {
@@ -36,14 +38,17 @@
   height: 16px;
 }
 
-/* Hot state — reticle rotates into an X and grows over interactives */
-.pixel-cursor--hot {
-  scale: 1.6;
-}
-
+/* Hot state — the bars grow into an X over interactives. The growth lives on
+   the bars, NOT on .pixel-cursor itself: the JS positions the box via the
+   `transform` property every frame, and the individual `scale` property
+   applies BEFORE `transform` in the cascade order — so a scale on the box
+   would multiply the translate vector and fling the reticle to ~1.6x its
+   coordinates the moment it went hot. Shape and scale carry the feedback, not
+   colour: under difference blending any fill colour would shift hue against
+   the background, while white always inverts to maximum contrast. */
 .pixel-cursor--hot .pixel-cursor__h,
 .pixel-cursor--hot .pixel-cursor__v {
-  background: var(--accent);
+  scale: 1.6;
 }
 
 .pixel-cursor--hot .pixel-cursor__h {
