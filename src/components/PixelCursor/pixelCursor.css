@@ -6,7 +6,7 @@
   height: 16px;
   z-index: var(--z-cursor);
   pointer-events: none;
-  transition: scale 0.15s steps(2);
+  transition: scale var(--duration-fast) steps(2);
   will-change: transform;
 }
 

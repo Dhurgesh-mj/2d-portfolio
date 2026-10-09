@@ -28,7 +28,7 @@
   vertical-align: text-bottom;
   background-color: var(--accent-cyan);
   box-shadow: var(--shadow-chip-press);
-  animation: cursor-blink 0.85s steps(2) infinite;
+  animation: cursor-blink var(--duration-cursor) steps(2) infinite;
 }
 
 @keyframes cursor-blink {

@@ -30,7 +30,7 @@
   /* Was 0.9s steps(4) = a 4.4Hz full-viewport luminance flicker running for the
      entire 2200vh scroll. 1.6s steps(3) drops it to ~1.9Hz — still reads as film
      stock, no longer a strobe. Opacity also dropped 0.09 -> 0.06. */
-  animation: grain-shift 1.6s steps(3) infinite;
+  animation: grain-shift var(--duration-grain) steps(3) infinite;
 }
 
 /* steps(3) — three stops, matching the keyframe count. Previously steps(4)

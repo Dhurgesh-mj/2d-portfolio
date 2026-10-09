@@ -38,7 +38,7 @@
   width: 6px;
   height: 6px;
   border: 1px solid;
-  transition: all 0.2s ease;
+  transition: all var(--duration-normal) var(--ease-standard);
 }
 
 .pixel-burst {

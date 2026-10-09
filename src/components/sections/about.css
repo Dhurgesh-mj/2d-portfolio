@@ -7,7 +7,7 @@
   z-index: var(--z-content);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity var(--duration-slow) var(--ease-standard);
   color: var(--paper);
 }
 
@@ -35,7 +35,10 @@
 .about-location {
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--p, 0)) * -12px));
+  /* Enter from the side you travelled from. --scroll-dir is ±1 (CameraRig
+     publishes the sign of the per-frame progress delta; it was discarded
+     before). Falls back to 1 where the var is unset — touch, reduced motion. */
+  transform: translateX(calc((1 - var(--p, 0)) * -12px * var(--scroll-dir, 1)));
   will-change: opacity, clip-path, transform;
 }
 
@@ -89,7 +92,7 @@
   border: 1.5px solid rgba(244, 240, 231, 0.35);
   background: transparent;
   color: var(--paper);
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: background var(--duration-fast) var(--ease-standard),border-color var(--duration-fast) var(--ease-standard);
   cursor: default;
 }
 
@@ -182,7 +185,7 @@
   .about-location,
   .interest-item,
   .experience-item {
-    transition: opacity 0.1s;
+    transition: opacity var(--duration-fast);
     transform: none;
   }
 }

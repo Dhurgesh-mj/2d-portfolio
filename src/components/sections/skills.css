@@ -7,7 +7,7 @@
   z-index: var(--z-content);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity var(--duration-slow) var(--ease-standard);
 }
 
 /* pointer-events only — inline style controls opacity */
@@ -63,7 +63,11 @@
 }
 
 .skill-item .comic-panel__inner {
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition: box-shadow var(--duration-fast) var(--ease-standard),transform var(--duration-fast) var(--ease-standard);
+  /* Per-element depth inside the chapter. The page only has three global
+     parallax layers; each card carries its own --p-item, so the grid can
+     settle at slightly different rates as it deals in. */
+  transform: translateY(calc((1 - var(--p-item, 0)) * 10px));
 }
 
 .skill-item:hover .comic-panel__inner {
@@ -121,7 +125,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .skill-item {
-    transition: opacity 0.1s;
+    transition: opacity var(--duration-fast);
     transform: none;
   }
 }
@@ -151,7 +155,7 @@
   letter-spacing: var(--tracking-wide);
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--p, 0)) * -4px));
+  transform: translateX(calc((1 - var(--p, 0)) * -4px * var(--scroll-dir, 1)));
 }
 
 .toolchain-line {
@@ -187,7 +191,7 @@
   
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--p, 0)) * -4px));
+  transform: translateX(calc((1 - var(--p, 0)) * -4px * var(--scroll-dir, 1)));
   will-change: opacity, clip-path, transform;
 }
 
@@ -216,7 +220,7 @@
   color: var(--ink);
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--p, 0)) * -4px));
+  transform: translateX(calc((1 - var(--p, 0)) * -4px * var(--scroll-dir, 1)));
   will-change: opacity, clip-path, transform;
 }
 

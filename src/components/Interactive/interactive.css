@@ -4,7 +4,7 @@
     perspective(800px)
     rotateX(var(--rx, 0deg))
     rotateY(var(--ry, 0deg));
-  transition: transform 0.18s ease-out;
+  transition: transform var(--duration-fast) var(--ease-decelerate);
   transform-style: preserve-3d;
   will-change: transform;
 }
@@ -23,7 +23,7 @@
     rgba(0, 229, 255, 0.12) 100%
   );
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--duration-normal) var(--ease-standard);
 }
 
 .tilt:hover::after {
@@ -32,7 +32,7 @@
 
 .magnetic {
   display: inline-block;
-  transition: transform 0.18s ease-out;
+  transition: transform var(--duration-fast) var(--ease-decelerate);
   will-change: transform;
 }
 

@@ -4,9 +4,7 @@ import ComicPanel from '../ComicPanel/ComicPanel';
 import { Decode } from '../TextFX/TextFX';
 import { Tilt } from '../Interactive/Interactive';
 import { portfolio } from '../../data/portfolio';
-
-const clamp = (val, min, max) => Math.min(max, Math.max(min, val));
-const mapRange = (val, inMin, inMax) => clamp((val - inMin) / (inMax - inMin), 0, 1);
+import { mapRange, staggerRange } from '../../lib/progress';
 
 // Derive toolchain from portfolio.skills — no more hardcoded JSX
 const TOOLCHAIN_CATEGORIES = ['Security', 'Systems', 'Tools'];
@@ -32,8 +30,16 @@ const Skills = ({ progress, sectionProgress, isActive }) => {
 
   const toolchainCols = buildToolchainCols(skills);
 
+  // Even, shared steps instead of hand-tuned per-list arithmetic
+  // (the toolchain previously used a 0.02 column step and a 0.03 row step in
+  // the same list, so its rhythm was uneven in two directions at once).
+  const cardStagger = staggerRange(skills.length, 0.15, 0.62);
+  const maxCols = Math.max(1, ...toolchainCols.map((c) => c.length));
+  const toolStagger = staggerRange(maxCols, 0.48, 0.68);
+
   // Stagger editorial words for the "BUILD // BREAK // ANALYZE // DEFEND" line
   const EDITORIAL_WORDS = ['BUILD', 'BREAK', 'ANALYZE', 'DEFEND'];
+  const editorialStagger = staggerRange(EDITORIAL_WORDS.length, 0.70, 0.84);
 
   return (
     <section
@@ -48,7 +54,7 @@ const Skills = ({ progress, sectionProgress, isActive }) => {
 
         <div className="skills-grid">
           {skills.map((skill, index) => {
-            const pItem = mapRange(sp, 0.15 + (index * 0.05), 0.30 + (index * 0.05));
+            const pItem = mapRange(sp, cardStagger.start(index), cardStagger.end(index));
             return (
               <div key={index} className="skill-item" style={{ '--p-item': pItem }}>
                 <Tilt max={6}>
@@ -76,12 +82,15 @@ const Skills = ({ progress, sectionProgress, isActive }) => {
             {toolchainCols.map((col, ci) => (
               <div key={ci} className="toolchain-col">
                 {col.map((item, ii) => {
-                  const baseDelay = 0.50 + ci * 0.02 + ii * 0.03;
+                  // One shared step across the whole grid — previously the
+                  // column step (0.02) and the row step (0.03) differed, so
+                  // the rhythm was uneven in two directions at once.
+                  const at = toolStagger.start(ci) + ii * toolStagger.step * 0.4;
                   return (
                     <span
                       key={ii}
                       className="tc-item"
-                      style={{ '--p': mapRange(sp, baseDelay, baseDelay + 0.10) }}
+                      style={{ '--p': mapRange(sp, at, at + toolStagger.duration) }}
                     >
                       {item}
                     </span>
@@ -94,7 +103,7 @@ const Skills = ({ progress, sectionProgress, isActive }) => {
           {/* Staggered editorial words */}
           <div className="toolchain-editorial">
             {EDITORIAL_WORDS.map((word, i) => {
-              const pWord = mapRange(sp, 0.70 + i * 0.03, 0.78 + i * 0.03);
+              const pWord = mapRange(sp, editorialStagger.start(i), editorialStagger.end(i));
               return (
                 <React.Fragment key={word}>
                   <span className="editorial-word" style={{ '--p': pWord }}>

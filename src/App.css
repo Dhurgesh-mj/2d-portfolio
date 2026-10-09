@@ -23,9 +23,15 @@
    ======================== */
 
 .comic-canvas-wrapper {
-  /* Art drifts least (far plane) + 4% overscan so edges never show */
+  /* Art drifts least (far plane) + 4% overscan so edges never show.
+     --vel is already published by CameraRig every frame (smoothed, attack
+     0.35 / release 0.08, clamped 0-3) and was read by no CSS at all. The slow
+     release is the point: a flick overshoots then settles, like paper.
+     Falls back to 0 on touch, where CameraRig bails early and never sets it. */
   transform:
     translate(calc(var(--cam-x, 0) * -14px), calc(var(--cam-y, 0) * -10px))
+    skewY(calc(var(--vel, 0) * -0.35deg))
+    scaleY(calc(1 + var(--vel, 0) * 0.006))
     scale(1.04);
 }
 
@@ -50,9 +56,14 @@
 }
 /* Page-turn entry wipe: a slanted reveal band sweeps across the incoming
    chapter. Gated on .is-live so it plays after the loader lifts, and only
-   when .is-active is (re)applied on chapter entry. */
+   when .is-active is (re)applied on chapter entry.
+
+   This is the QUIET transition — five of six chapters use it unchanged. The
+   sixth (Projects) is the peak and gets a 3D turn instead, below. Per the Von
+   Restorff effect, giving every chapter a distinct entrance means none of them
+   is remembered; the differentiation has to be rare to register. */
 .comic-scroll.is-live .comic-overlay > section.is-active {
-  animation: page-turn-in 0.55s cubic-bezier(0.6, 0, 0.3, 1);
+  animation: page-turn-in var(--duration-page) var(--ease-standard);
 }
 
 @keyframes page-turn-in {
@@ -64,8 +75,38 @@
   }
 }
 
+/* ── PEAK: Projects ──
+   The one chapter the reader actually came for, so it is the one chapter that
+   turns. rotateY around the left gutter plus a fold shadow falling away from
+   the spine sells the dimensionality without any 3D geometry.
+
+   Scoped to .projects-section on purpose — everything else keeps the flat wipe. */
+.comic-sticky {
+  perspective: 1400px;
+}
+
+.comic-scroll.is-live .comic-overlay > .projects-section.is-active {
+  animation: page-turn-3d var(--duration-page) var(--ease-decelerate);
+  transform-origin: left center;
+}
+
+@keyframes page-turn-3d {
+  from {
+    transform: rotateY(-26deg) translateZ(-140px);
+    opacity: 0;
+    /* the fold: a hard shadow lifting off the gutter */
+    box-shadow: 70px 0 90px -34px rgba(10, 10, 10, 0.7);
+  }
+  to {
+    transform: rotateY(0deg) translateZ(0);
+    opacity: 1;
+    box-shadow: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .comic-scroll.is-live .comic-overlay > section.is-active {
+  .comic-scroll.is-live .comic-overlay > section.is-active,
+  .comic-scroll.is-live .comic-overlay > .projects-section.is-active {
     animation: none;
   }
 }

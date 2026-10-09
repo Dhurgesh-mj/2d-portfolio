@@ -2,7 +2,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform var(--duration-normal) var(--ease-standard),box-shadow var(--duration-normal) var(--ease-standard);
   margin-bottom: 40px;
 }
 
@@ -76,7 +76,7 @@
 
 .comic-panel:hover .comic-panel__inner::before {
   opacity: 1;
-  animation: shine-sweep 0.55s ease;
+  animation: shine-sweep var(--duration-page) var(--ease-standard);
 }
 
 @keyframes shine-sweep {

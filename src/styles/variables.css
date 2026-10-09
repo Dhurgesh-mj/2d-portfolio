@@ -127,6 +127,37 @@
   --weight-semibold: 600;
   --weight-bold: 700;
 
+  /* ── Motion ──
+     Duration ceilings follow the felt-experience guidance: 150-300ms for UI
+     response, 400-600ms for transitions that carry meaning. Nothing exceeds
+     600ms — past that a transition outlasts the user's patience for the task. */
+  --duration-instant: 80ms;   /* focus rings — must feel immediate */
+  --duration-fast:   160ms;   /* chips, tooltips, underline draws */
+  --duration-normal: 240ms;   /* panels, buttons, cards */
+  --duration-slow:   400ms;   /* meaningful transitions */
+  --duration-page:   600ms;   /* chapter transition — hard ceiling */
+
+  /* Loop periods are their own scale — a 7s ambient flicker is not a
+     transition, so it must not borrow --duration-page. */
+  --duration-cursor: 850ms;   /* text block cursor blink */
+  --duration-grain:  1600ms;  /* film grain step */
+  --duration-neon:   7000ms;  /* contact lamp flicker */
+  --duration-arrow:  1600ms;  /* scroll hint bounce */
+  --duration-shimmer: 1400ms; /* project skeleton sweep */
+
+  /* Linear is reserved for true loops (progress, shimmer). Anything that
+     touches human feeling gets a curve. */
+  --ease-standard:   cubic-bezier(0.2, 0, 0, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);      /* entering */
+  --ease-snap:       cubic-bezier(0.34, 1.56, 0.64, 1); /* tactile overshoot */
+  --ease-loop:       linear;                          /* spinners, shimmer only */
+
+  /* NOTE: there are deliberately no --stagger-* duration tokens. Every reveal
+     on this site is scroll-linked, not wall-clock driven, so "stagger by 40ms"
+     is not a meaningful instruction — the same fraction of chapter progress
+     takes a different amount of real time on every flick. Staggering is done in
+     progress space instead; see src/lib/progress.js. */
+
   /* ── Scrollbar (Firefox) ── */
   scrollbar-width: thin;
   scrollbar-color: var(--mid-gray) var(--charcoal);

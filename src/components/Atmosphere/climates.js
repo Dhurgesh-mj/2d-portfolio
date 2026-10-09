@@ -21,6 +21,21 @@ const STOPS = [
   { p: 1.0, rain: 0.0, mote: 0.0, ember: 0.2, dust: 1.0 },
 ];
 
+/**
+ * Smoothstep — same curve cineCam.js already uses for its per-chapter camera.
+ *
+ * These weights used to blend linearly, which is mechanically wrong for weather:
+ * a constant rate of change means rain dissolves into motes at a fixed
+ * gradient no matter how fast you scroll, so the crossfade reads as a slider
+ * rather than as weather turning over. Smoothstep gives zero derivative at both
+ * ends of each span, so every transition eases in AND out — the crossfade
+ * breathes instead of ramping.
+ *
+ * Linear is still correct for genuinely continuous motion (a progress bar). It
+ * is not correct for anything that should feel like it has weight.
+ */
+const smoothstep = (t) => t * t * (3 - 2 * t);
+
 export function getClimateWeights(progress) {
   const p = Math.min(1, Math.max(0, progress));
 
@@ -29,7 +44,7 @@ export function getClimateWeights(progress) {
     const b = STOPS[i + 1];
     if (p >= a.p && p <= b.p) {
       const span = b.p - a.p || 1;
-      const t = (p - a.p) / span;
+      const t = smoothstep((p - a.p) / span);
       return {
         rain: a.rain + (b.rain - a.rain) * t,
         mote: a.mote + (b.mote - a.mote) * t,

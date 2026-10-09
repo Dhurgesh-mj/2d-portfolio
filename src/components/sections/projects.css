@@ -23,7 +23,7 @@
 }
 
 .project-skeleton {
-  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  animation: skeleton-shimmer var(--duration-shimmer) var(--ease-standard) infinite;
   background: linear-gradient(
     90deg,
     var(--skeleton-base) 25%,
@@ -92,43 +92,43 @@
   opacity: var(--lp);
   transform: scale(var(--lp));
   transform-origin: center;
-  transition: transform 0.2s ease;
+  transition: transform var(--duration-normal) var(--ease-standard);
 }
 .mission-badge {
   --lp: calc(max(0, min(1, (var(--p, 0) - 0.2) * 4)));
   opacity: var(--lp);
   clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--lp)) * -6px));
+  transform: translateX(calc((1 - var(--lp)) * -6px * var(--scroll-dir, 1)));
 }
 .mission-title {
   --lp: calc(max(0, min(1, (var(--p, 0) - 0.3) * 4)));
   opacity: var(--lp);
   clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--lp)) * -6px));
+  transform: translateX(calc((1 - var(--lp)) * -6px * var(--scroll-dir, 1)));
 }
 .mission-role {
   --lp: calc(max(0, min(1, (var(--p, 0) - 0.4) * 4)));
   opacity: var(--lp);
   clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--lp)) * -6px));
+  transform: translateX(calc((1 - var(--lp)) * -6px * var(--scroll-dir, 1)));
 }
 .mission-tech {
   --lp: calc(max(0, min(1, (var(--p, 0) - 0.5) * 4)));
   opacity: var(--lp);
   clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--lp)) * -6px));
+  transform: translateX(calc((1 - var(--lp)) * -6px * var(--scroll-dir, 1)));
 }
 .mission-desc {
   --lp: calc(max(0, min(1, (var(--p, 0) - 0.6) * 4)));
   opacity: var(--lp);
   clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--lp)) * -6px));
+  transform: translateX(calc((1 - var(--lp)) * -6px * var(--scroll-dir, 1)));
 }
 .mission-footer {
   --lp: calc(max(0, min(1, (var(--p, 0) - 0.7) * 3)));
   opacity: var(--lp);
   clip-path: inset(0 calc(100% - var(--lp) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--lp)) * -6px));
+  transform: translateX(calc((1 - var(--lp)) * -6px * var(--scroll-dir, 1)));
 }
 
 /* Paper/halftone texture */
@@ -252,7 +252,7 @@
   padding: 8px 14px;
   border: 2px solid var(--ink);
   overflow: hidden;
-  transition: color 0.25s ease;
+  transition: color var(--duration-normal) var(--ease-standard);
 }
 
 /* Solid ink sweep on hover */
@@ -264,7 +264,7 @@
   width: 0;
   height: 100%;
   background: var(--ink);
-  transition: width 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+  transition: width var(--duration-normal) var(--ease-decelerate);
   z-index: 0;
 }
 
@@ -284,7 +284,7 @@
 
 .mission-link__arrow {
   display: inline-block;
-  transition: transform 0.2s ease;
+  transition: transform var(--duration-normal) var(--ease-standard);
 }
 
 .mission-link:hover .mission-link__arrow {
@@ -294,6 +294,7 @@
 /* Focus states for keyboard accessibility */
 .mission-link:focus-visible {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  transition-duration: var(--duration-instant);
   outline-offset: 3px;
   box-shadow: 0 0 0 1px var(--focus-ring-offset);
 }
@@ -314,7 +315,7 @@
 .comic-mission-panel:hover .mission-title {
   transform: translateX(2px);
   text-shadow: 1px 1px 0 rgba(0, 229, 255, 0.5);
-  transition: all 0.2s ease;
+  transition: all var(--duration-normal) var(--ease-standard);
 }
 
 /* ---- Responsive ---- */
@@ -371,7 +372,7 @@
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
   .comic-mission-panel, .mission-badge, .mission-title, .mission-role, .mission-tech, .mission-desc, .mission-footer {
-    transition: opacity 0.1s linear !important;
+    transition: opacity var(--duration-fast) var(--ease-loop) !important;
     clip-path: none !important;
     transform: none !important;
   }

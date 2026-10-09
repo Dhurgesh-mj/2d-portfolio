@@ -8,7 +8,7 @@
   pointer-events: none;
   /* Opacity driven by inline style — transition applies to those changes */
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity var(--duration-slow) var(--ease-standard);
   color: var(--paper);
 }
 
@@ -37,22 +37,31 @@
 .hero-tagline {
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--p, 0)) * -12px));
+  transform: translateX(calc((1 - var(--p, 0)) * -12px * var(--scroll-dir, 1)));
   will-change: opacity, clip-path, transform;
 }
 
 /* The one display exception — the hero name gets its own, larger role so the
-   page's first read keeps its punch after the type system was unified. */
+   page's first read keeps its punch after the type system was unified.
+
+   PEAK 1 (of 2). The name arrives mis-registered in cyan and magenta and
+   converges to true black — the way a two-colour comic press sheet has to be
+   pulled into register. The site already uses this RGB-split language
+   (PixelCorner, the marker squares, .contact-title), so this is the language
+   itself being used as the opening statement rather than as decoration.
+
+   Scroll-driven rather than timed, so it holds if the reader stalls. */
 .hero-name {
   font-family: var(--font-display);
   font-size: var(--type-display-lg);
   line-height: var(--leading-display);
   margin: 0;
   letter-spacing: var(--tracking-wide);
+  color: var(--paper);
   text-shadow:
     2px 2px 0 var(--ink),
-    -1px 0px 0 var(--accent-cyan),
-    1px 0px 0 var(--accent-magenta);
+    calc(var(--p, 0) * -5px) 0 0 var(--accent-cyan),
+    calc(var(--p, 0) * 5px) 0 0 var(--accent-magenta);
   /* Allow wrapping on very small screens */
   overflow-wrap: break-word;
   word-break: break-word;
@@ -99,7 +108,7 @@
   font-size: var(--type-label);
   line-height: var(--leading-snug);
   color: var(--accent);
-  animation: scroll-bounce 1.6s ease-in-out infinite;
+  animation: scroll-bounce var(--duration-arrow) var(--ease-standard) infinite;
 }
 
 @keyframes scroll-bounce {
@@ -128,7 +137,7 @@
   .hero-role,
   .hero-tagline,
   .hero-scroll-hint {
-    transition: opacity 0.1s;
+    transition: opacity var(--duration-fast);
     transform: none;
   }
   .scroll-hint__arrow {

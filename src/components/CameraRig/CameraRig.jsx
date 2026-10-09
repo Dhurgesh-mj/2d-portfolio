@@ -53,14 +53,18 @@ export function CameraRig({ targetRef, getProgress }) {
       const dt = Math.max(1, now - lastT) / 1000;
       lastT = now;
       const p = getProgressRef.current ? getProgressRef.current() : lastP;
-      const instant = Math.abs(p - lastP) / dt;
+      const delta = p - lastP;
+      const instant = Math.abs(delta) / dt;
       lastP = p;
       const target = Math.min(3, instant);
       rigState.vel += (target - rigState.vel) * (target > rigState.vel ? 0.35 : 0.08);
+      // Keep the sign so layers can respond to travel direction, not just speed.
+      rigState.dir = delta > 0.0001 ? 1 : delta < -0.0001 ? -1 : 0;
 
       el.style.setProperty('--cam-x', rigState.x.toFixed(4));
       el.style.setProperty('--cam-y', rigState.y.toFixed(4));
       el.style.setProperty('--vel', rigState.vel.toFixed(4));
+      el.style.setProperty('--scroll-dir', String(rigState.dir));
       // spotlight pool follows the pointer (percentages for gradient stops)
       el.style.setProperty('--spot-x', `${((rigState.x + 0.5) * 100).toFixed(2)}%`);
       el.style.setProperty('--spot-y', `${((rigState.y + 0.5) * 100).toFixed(2)}%`);

@@ -10,7 +10,7 @@
   z-index: var(--z-content);
   pointer-events: none;
   opacity: var(--p, 0);
-  transition: opacity 0.5s ease;
+  transition: opacity var(--duration-slow) var(--ease-standard);
 }
 
 .contact-section.is-active {
@@ -45,13 +45,18 @@
   letter-spacing: var(--tracking-wide);
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--p, 0)) * -12px));
+  transform: translateX(calc((1 - var(--p, 0)) * -12px * var(--scroll-dir, 1)));
   will-change: opacity, clip-path, transform;
-  /* Filter-only flicker: never touches the progress-driven opacity/transform */
-  animation: neon-flicker 7s linear infinite;
+  /* Filter-only flicker: never touches the progress-driven opacity/transform.
+     `ease-in-out` between keyframe stops so each stutter punches and settles
+     like a filament rather than ramping like a bug. */
+  animation: neon-flicker var(--duration-neon) ease-in-out infinite;
 }
 
-/* Lamplight neon flicker — two brief stutters per cycle, mostly steady */
+/* Lamplight neon flicker — two brief stutters per cycle, mostly steady.
+   Was `linear`, which is mechanically wrong for a lamp: linear means constant
+   brightness slope through every stutter, so it reads as a rendering glitch.
+   ease-in-out gives the filament the punch-and-settle of a real one. */
 @keyframes neon-flicker {
   0%, 100% { filter: brightness(1); }
   3%  { filter: brightness(1.3); }
@@ -64,6 +69,7 @@
   72% { filter: brightness(1); }
   73% { filter: brightness(1.18); }
   74% { filter: brightness(1); }
+  100% { filter: brightness(1); }
 }
 
 /* The Tagline "Let's build something." styled like a comic caption */
@@ -79,7 +85,7 @@
   box-shadow: var(--shadow-chip);
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--p, 0)) * -12px));
+  transform: translateX(calc((1 - var(--p, 0)) * -12px * var(--scroll-dir, 1)));
   will-change: opacity, clip-path, transform;
 }
 
@@ -90,7 +96,7 @@
   width: 100%;
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--p, 0)) * -12px));
+  transform: translateX(calc((1 - var(--p, 0)) * -12px * var(--scroll-dir, 1)));
   will-change: opacity, clip-path, transform;
 }
 
@@ -112,7 +118,7 @@
   padding: 12px var(--space-md);
   border: 2px solid var(--paper);
   overflow: hidden;
-  transition: color 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+  transition: color var(--duration-normal) var(--ease-standard),transform var(--duration-fast) var(--ease-standard),box-shadow var(--duration-fast) var(--ease-standard),background-color var(--duration-normal) var(--ease-standard);
 }
 
 /* ── Hierarchy ──
@@ -139,7 +145,7 @@
   width: 6px;
   height: 100%;
   background: var(--accent);
-  transition: width 0.2s ease;
+  transition: width var(--duration-normal) var(--ease-standard);
 }
 
 /* Button reset for email copy-to-clipboard */
@@ -184,7 +190,7 @@
   width: 0;
   height: 2px;
   background: currentColor;
-  transition: width 0.2s ease;
+  transition: width var(--duration-normal) var(--ease-standard);
 }
 .contact-link:hover .contact-link__text::after {
   width: calc(100% - 10px);
@@ -194,11 +200,36 @@
   margin-left: auto;
   padding-left: 0;
   color: var(--accent);
-  transition: transform 0.2s ease;
+  transition: transform var(--duration-normal) var(--ease-standard);
 }
 
 .contact-link--primary .contact-link__arrow {
   color: var(--accent-ink);
+}
+
+/* ── Acknowledgement states ──
+   The end of the experience is what people remember, and a micro-win that
+   silently reverts reads as a bug. The confirmed state holds long enough to
+   actually land, then eases back rather than snapping. */
+.contact-link.is-confirmed {
+  background: var(--accent-ink);
+  border-color: var(--accent-ink);
+  color: var(--white);
+}
+
+.contact-link.is-confirmed .contact-link__arrow {
+  color: var(--white);
+  animation: confirm-pop var(--duration-slow) var(--ease-snap);
+}
+
+@keyframes confirm-pop {
+  from { transform: scale(0.4); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.contact-link.is-failed {
+  background: var(--ink);
+  border-color: var(--paper);
 }
 
 .contact-link:hover .contact-link__arrow {
@@ -207,6 +238,7 @@
 
 .contact-link:focus-visible {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  transition-duration: var(--duration-instant);
   outline-offset: 3px;
   box-shadow: 0 0 0 1px var(--focus-ring-offset);
 }
@@ -231,6 +263,11 @@
     transition: opacity 0.1s linear !important;
     clip-path: none !important;
     transform: none;
+    animation: none;
+  }
+
+  /* the acknowledgement itself still needs to read - only its motion goes */
+  .contact-link.is-confirmed .contact-link__arrow {
     animation: none;
   }
 }

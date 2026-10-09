@@ -2,13 +2,11 @@ import React from 'react';
 import './achievements.css';
 import { PixelMarker, PixelCorner } from '../PixelDecoration/PixelDecoration';
 import { portfolio } from '../../data/portfolio';
+import { mapRange, staggerRange } from '../../lib/progress';
 
 // Achievements come from portfolio.js — this used to hardcode the list inline,
 // the only section that ignored the data file.
 const MILESTONES = portfolio.achievements;
-
-const clamp = (val, min, max) => Math.min(max, Math.max(min, val));
-const mapRange = (val, inMin, inMax) => clamp((val - inMin) / (inMax - inMin), 0, 1);
 
 /* CVE IDs get a marker-swipe highlight; all other text renders as-is */
 const CVE_RE = /(CVE-\d+-\d+)/g;
@@ -25,6 +23,9 @@ const Achievements = ({ progress, sectionProgress, isActive }) => {
   // Draw the timeline rule once the city is established
   const pRule = mapRange(sp, 0.25, 0.85);
 
+  // Cards deal in evenly across the second half of the chapter
+  const stagger = staggerRange(MILESTONES.length, 0.28, 0.86);
+
   return (
     <section
       className={`achievements-section ${isActive ? 'is-active' : ''}`}
@@ -39,10 +40,10 @@ const Achievements = ({ progress, sectionProgress, isActive }) => {
         <div className="achievements-rule" style={{ '--p-rule': pRule }} />
 
         {MILESTONES.map((m, i) => {
-          // Milestones wait for the city scene: first card lands ~frame 125
-          const enterAt = 0.30 + i * 0.13;
-          const pPip = mapRange(sp, enterAt, enterAt + 0.05);
-          const pCard = mapRange(sp, enterAt + 0.04, enterAt + 0.15);
+          // Even step across the whole strip; the last card finishes exactly on
+          // 0.84 rather than wherever the old `0.30 + i * 0.13` landed.
+          const pPip = mapRange(sp, stagger.start(i), stagger.start(i) + stagger.duration * 0.35);
+          const pCard = mapRange(sp, stagger.start(i) + stagger.duration * 0.3, stagger.end(i));
           
           // Legacy visibility logic for fallback
           const isVisible = isActive && sp >= enterAt;

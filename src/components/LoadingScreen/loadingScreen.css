@@ -7,7 +7,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: opacity 0.5s ease-out;
+  transition: opacity var(--duration-slow) var(--ease-decelerate);
   opacity: 1;
 }
 
@@ -54,7 +54,7 @@
 .comic-loading-screen__progress-bar {
   height: 100%;
   background-color: var(--paper);
-  transition: width 0.1s linear;
+  transition: width var(--duration-fast) var(--ease-loop);
   background-image: linear-gradient(
     45deg,
     var(--mid-gray) 25%,
@@ -90,7 +90,7 @@
   border: 1.5px solid var(--mid-gray);
   padding: 6px 16px;
   cursor: pointer;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition: color var(--duration-fast) var(--ease-standard),border-color var(--duration-fast) var(--ease-standard);
   pointer-events: auto;
 }
 
@@ -101,6 +101,7 @@
 
 .comic-loading-screen__skip:focus-visible {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  transition-duration: var(--duration-instant);
   outline-offset: 3px;
   box-shadow: 0 0 0 1px var(--focus-ring-offset);
   color: var(--paper);
@@ -139,7 +140,7 @@
   margin-left: 6px;
   vertical-align: text-bottom;
   background-color: var(--accent-cyan);
-  animation: cursor-blink 0.85s steps(2) infinite;
+  animation: cursor-blink var(--duration-cursor) steps(2) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

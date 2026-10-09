@@ -9,6 +9,7 @@ const mapRange = (val, inMin, inMax) => clamp((val - inMin) / (inMax - inMin), 0
 const Contact = ({ progress, sectionProgress, isActive }) => {
   const sp = sectionProgress || 0;
   const [copied, setCopied] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
 
   const pTitle   = mapRange(sp, 0.20, 0.40);
   const pTagline = mapRange(sp, 0.35, 0.55);
@@ -18,13 +19,15 @@ const Contact = ({ progress, sectionProgress, isActive }) => {
 
   const handleEmailClick = useCallback((e) => {
     e.preventDefault();
+    setCopyFailed(false);
     navigator.clipboard.writeText(email)
       .then(() => {
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        setTimeout(() => setCopied(false), 2600);
       })
       .catch(() => {
-        // Fallback: open mailto if clipboard fails
+        // Fallback: open mailto so the visitor still has a route out
+        setCopyFailed(true);
         window.location.href = `mailto:${email}`;
       });
   }, [email]);
@@ -52,15 +55,16 @@ const Contact = ({ progress, sectionProgress, isActive }) => {
           {email && (
             <Magnetic strength={6} className="magnetic--block">
               <button
-                className="contact-link contact-link--email contact-link--primary"
+                className={`contact-link contact-link--email contact-link--primary${copied ? ' is-confirmed' : ''}${copyFailed ? ' is-failed' : ''}`}
                 onClick={handleEmailClick}
-                title={copied ? 'Copied!' : `Copy ${email}`}
-                aria-label={copied ? 'Email copied to clipboard' : `Copy email address: ${email}`}
+                title={copied ? 'Copied to clipboard' : copyFailed ? 'Opening your mail app' : `Copy ${email}`}
+                aria-live="polite"
+                aria-label={copied ? 'Email address copied to clipboard' : copyFailed ? 'Could not copy, opening your mail app' : `Copy email address: ${email}`}
               >
                 <span className="contact-link__text">
-                  {copied ? 'COPIED ✓' : 'EMAIL'}
+                  {copied ? 'COPIED' : copyFailed ? 'OPENING MAIL' : 'EMAIL'}
                 </span>
-                <span className="contact-link__arrow">{copied ? '' : '→'}</span>
+                <span className="contact-link__arrow">{copied ? '✓' : copyFailed ? '' : '→'}</span>
               </button>
             </Magnetic>
           )}

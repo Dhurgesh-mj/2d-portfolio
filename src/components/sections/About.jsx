@@ -4,9 +4,7 @@ import ComicTextBox from '../ComicTextBox/ComicTextBox';
 import { PixelMarker } from '../PixelDecoration/PixelDecoration';
 import { Typewriter } from '../TextFX/TextFX';
 import { portfolio } from '../../data/portfolio';
-
-const clamp = (val, min, max) => Math.min(max, Math.max(min, val));
-const mapRange = (val, inMin, inMax) => clamp((val - inMin) / (inMax - inMin), 0, 1);
+import { mapRange, staggerRange } from '../../lib/progress';
 
 const About = ({ progress, sectionProgress, isActive }) => {
   const sp = sectionProgress || 0;
@@ -20,6 +18,10 @@ const About = ({ progress, sectionProgress, isActive }) => {
   const globalOpacity = 1 - exitP;
 
   const { bio, interests, experience, location } = portfolio.about;
+
+  // Even steps that land every list on the same finish line
+  const interestStagger = staggerRange(interests.length, 0.40, 0.62);
+  const experienceStagger = staggerRange(experience.length, 0.62, 0.80);
 
   return (
     <section
@@ -42,9 +44,11 @@ const About = ({ progress, sectionProgress, isActive }) => {
           <h2 className="interests-title">Interests</h2>
           <ul className="interests-list">
             {interests.map((interest, i) => {
-              // Ensure the stagger completely finishes before pInterests reaches 1.0
-              const staggerStart = (i / (interests.length - 1)) * 0.5;
-              const pItem = mapRange(pInterests, staggerStart, staggerStart + 0.5);
+              const pItem = mapRange(
+                pInterests,
+                interestStagger.start(i),
+                interestStagger.end(i)
+              );
               return (
                 <li key={i} className="interest-item" style={{ '--p-item': pItem }}>
                   <PixelMarker active /> <span>{interest}</span>
@@ -59,8 +63,11 @@ const About = ({ progress, sectionProgress, isActive }) => {
           <h2 className="experience-title">Experience</h2>
           <ul className="experience-list">
             {experience.map((role, i) => {
-              const staggerStart = (i / Math.max(1, experience.length - 1)) * 0.55;
-              const pItem = mapRange(pExperience, staggerStart, staggerStart + 0.45);
+              const pItem = mapRange(
+                pExperience,
+                experienceStagger.start(i),
+                experienceStagger.end(i)
+              );
               return (
                 <li key={role.organization} className="experience-item" style={{ '--p-item': pItem }}>
                   <span className="experience-role">{role.role}</span>

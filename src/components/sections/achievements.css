@@ -13,7 +13,7 @@
   pointer-events: none;
   overflow: hidden;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity var(--duration-slow) var(--ease-standard);
 }
 
 /* pointer-events only — inline style owns opacity */
@@ -52,7 +52,7 @@
   background: var(--paper);
   opacity: var(--p-rule, 0);
   height: calc(var(--p-rule, 0) * 100%);
-  transition: opacity 0.1s linear;
+  transition: opacity var(--duration-fast) var(--ease-loop);
 }
 
 /* Pip on the vertical rule */
@@ -73,7 +73,11 @@
   padding: var(--space-sm) var(--space-sm) var(--space-xs);
   box-shadow: var(--shadow-card);
   clip-path: inset(0 calc(100% - var(--p-card, 0) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--p-card, 0)) * 10px));
+  /* Per-element depth: the strip has three global parallax layers plus a
+     vertical rule, and each card settles at its own rate on --p-card. */
+  transform:
+    translateX(calc((1 - var(--p-card, 0)) * 10px))
+    translateY(calc((1 - var(--p-card, 0)) * 12px));
   will-change: clip-path, transform;
 }
 
@@ -85,7 +89,7 @@
   pointer-events: none;
   background: linear-gradient(115deg, transparent 55%, rgba(255, 255, 255, 0.28) 82%, rgba(0, 229, 255, 0.12) 100%);
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--duration-normal) var(--ease-standard);
   z-index: 2;
 }
 
@@ -167,7 +171,7 @@
 /* Stamp-in: the card slams down with a shadow punch when it enters.
    Box-shadow only — never touches the progress-driven clip-path/transform. */
 .milestone--visible .milestone-card {
-  animation: stamp-hit 0.32s steps(3);
+  animation: stamp-hit var(--duration-normal) steps(3);
 }
 
 @keyframes stamp-hit {
@@ -189,7 +193,7 @@
 .milestone-card:hover .milestone-label {
   transform: translateX(2px);
   text-shadow: 1px 1px 0 rgba(0, 229, 255, 0.5);
-  transition: all 0.2s ease;
+  transition: all var(--duration-normal) var(--ease-standard);
 }
 
 /* ---- Responsive ---- */
@@ -232,7 +236,7 @@
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
   .milestone {
-    transition: opacity 0.1s linear !important;
+    transition: opacity var(--duration-fast) var(--ease-loop) !important;
     transform: none !important;
   }
   .milestone--visible .milestone-card {

@@ -66,11 +66,23 @@ body {
   border: 0;
 }
 
-/* Reduced Motion */
+/* Reduced Motion
+   The :root override collapses every duration and stagger token at once, so
+   component CSS only needs to keep the transform/opacity reset — not a
+   per-file duration override for each of the 17 files that animate. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
+
+  :root {
+    --duration-instant: 1ms;
+    --duration-fast: 1ms;
+    --duration-normal: 1ms;
+    --duration-slow: 1ms;
+    --duration-page: 1ms;
+  }
+
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
