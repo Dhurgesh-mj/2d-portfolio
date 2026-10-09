@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: var(--z-content, 10);
+  z-index: var(--z-content);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -26,7 +26,7 @@
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-sm);
   /* 44rem / 2 columns keeps --type-body at a readable measure in the grid */
   max-width: 44rem;
   width: 48%;
@@ -35,7 +35,7 @@
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.4rem;
+  gap: var(--space-xs);
   max-height: 62vh;
   overflow-y: auto;
   scrollbar-width: none;
@@ -51,8 +51,8 @@
 }
 
 .skills-grid .comic-panel__inner {
-  padding: 0.5rem 0.6rem;
-  box-shadow: 3px 3px 0 rgba(10,10,10,0.15);
+  padding: var(--space-xs) var(--space-xs);
+  box-shadow: var(--shadow-comic-light);
 }
 
 .skill-item {
@@ -67,7 +67,7 @@
 }
 
 .skill-item:hover .comic-panel__inner {
-  box-shadow: 5px 5px 0 rgba(10, 10, 10, 0.25);
+  box-shadow: var(--shadow-panel);
   transform: translate(-1px, -1px);
 }
 
@@ -75,10 +75,10 @@
   font-family: var(--font-mono);
   font-size: var(--type-meta);
   line-height: var(--leading-snug);
-  color: var(--mid-gray, #555555);
+  color: var(--mid-gray);
   text-transform: uppercase;
   letter-spacing: var(--tracking-normal);
-  margin-bottom: 0.15rem;
+  margin-bottom: var(--space-2xs);
 }
 
 .skill-name {
@@ -86,7 +86,7 @@
   font-size: var(--type-h4);
   margin: 0 0 0.25rem 0;
   line-height: var(--leading-heading);
-  color: var(--ink, #0a0a0a);
+  color: var(--ink);
 }
 
 .skill-desc {
@@ -115,7 +115,7 @@
 
   .skills-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
+    gap: var(--space-xs);
   }
 }
 
@@ -128,18 +128,18 @@
 
 /* ---- Security Toolchain ---- */
 .skills-toolchain {
-  margin-top: 1rem;
+  margin-top: var(--space-md);
   padding: 0 0.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: var(--space-sm);
   position: relative;
 }
 
 .toolchain-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--space-sm);
   width: 100%;
 }
 
@@ -147,7 +147,7 @@
   font-family: var(--font-display);
   font-size: var(--type-h4);
   line-height: var(--leading-heading);
-  color: var(--ink, #0a0a0a);
+  color: var(--ink);
   letter-spacing: var(--tracking-wide);
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
@@ -157,7 +157,7 @@
 .toolchain-line {
   flex: 1;
   height: 1px;
-  background-color: var(--ink, #0a0a0a);
+  background-color: var(--ink);
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
   transform-origin: left;
@@ -166,14 +166,14 @@
 .toolchain-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  padding-left: 0.25rem;
+  gap: var(--space-md);
+  padding-left: var(--space-2xs);
 }
 
 .toolchain-col {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: var(--space-2xs);
 }
 
 .tc-item {
@@ -193,7 +193,7 @@
 
 /* Subtle accent usage only on the first item of each column for print registration style */
 .toolchain-col .tc-item:first-child {
-  color: var(--ink, #0a0a0a);
+  color: var(--ink);
   font-weight: var(--weight-bold);
   text-shadow: 1px 1px 0 rgba(0, 229, 255, 0.2);
 }
@@ -202,8 +202,8 @@
 .toolchain-editorial {
   display: flex;
   align-items: center;
-  gap: 0.2rem;
-  margin-top: 0.25rem;
+  gap: var(--space-2xs);
+  margin-top: var(--space-2xs);
   flex-wrap: wrap;
 }
 
@@ -213,7 +213,7 @@
   line-height: var(--leading-snug);
   font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-label);
-  color: var(--ink, #0a0a0a);
+  color: var(--ink);
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
   transform: translateX(calc((1 - var(--p, 0)) * -4px));
@@ -225,7 +225,7 @@
   font-size: var(--type-label);
   line-height: var(--leading-snug);
   font-weight: var(--weight-bold);
-  color: var(--accent-ink, #2E5F80);
+  color: var(--accent-ink);
   opacity: var(--p, 0);
 }
 
@@ -241,13 +241,13 @@
 .marker-square {
   width: 4px;
   height: 4px;
-  background-color: var(--ink, #0a0a0a);
+  background-color: var(--ink);
 }
 
 .marker-line {
   width: 24px;
   height: 1px;
-  background-color: var(--ink, #0a0a0a);
+  background-color: var(--ink);
 }
 
 @media (max-width: 768px) {

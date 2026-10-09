@@ -93,6 +93,9 @@ export const portfolio = {
     email: 'dhurgeshj@gmail.com',
     github: 'https://github.com/Dhurgesh-mj',
     linkedin: 'https://www.linkedin.com/in/dhurgesh-mj/',
+    // Drop a PDF at public/dhurgesh-mj-cv.pdf and it appears automatically.
+    // The whole link is gated on the file existing, so no dead download.
+    cv: '/dhurgesh-mj-cv.pdf',
     tagline: 'Got something that needs breaking first? Open to offensive-security internships, malware research collabs, and bounty team-ups.'
   }
 };

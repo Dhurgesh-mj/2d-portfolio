@@ -9,7 +9,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: var(--z-content, 10);
+  z-index: var(--z-content);
   pointer-events: none;
   overflow: hidden;
   opacity: 0;
@@ -33,7 +33,7 @@
   max-width: 42vw;
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: var(--space-md);
   padding-left: 28px;
 }
 
@@ -49,7 +49,7 @@
   left: 10px;
   top: 0;
   width: 2px;
-  background: var(--paper, #F4F0E7);
+  background: var(--paper);
   opacity: var(--p-rule, 0);
   height: calc(var(--p-rule, 0) * 100%);
   transition: opacity 0.1s linear;
@@ -68,10 +68,10 @@
 /* Annotation card — ink-bordered, paper bg, halftone overlay */
 .milestone-card {
   position: relative;
-  background: var(--paper, #F4F0E7);
-  border: 2px solid var(--ink, #0A0A0A);
-  padding: 0.7rem 0.9rem 0.6rem;
-  box-shadow: 3px 3px 0 rgba(10, 10, 10, 0.22);
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: var(--space-sm) var(--space-sm) var(--space-xs);
+  box-shadow: var(--shadow-card);
   clip-path: inset(0 calc(100% - var(--p-card, 0) * 100%) 0 0);
   transform: translateX(calc((1 - var(--p-card, 0)) * 10px));
   will-change: clip-path, transform;
@@ -121,7 +121,7 @@
   display: inline-block;
   font-size: var(--type-label);
   line-height: var(--leading-snug);
-  color: var(--accent-ink, #2E5F80);
+  color: var(--accent-ink);
   margin-right: 6px;
   vertical-align: middle;
 }
@@ -135,11 +135,11 @@
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   /* --accent-ink, not --accent: white on #4A90B8 is only 3.5:1 */
-  background: var(--accent-ink, #2E5F80);
+  background: var(--accent-ink);
   color: var(--white);
   padding: 1px 6px;
   display: inline-block;
-  margin-bottom: 0.35rem;
+  margin-bottom: var(--space-2xs);
 }
 
 /* Caption text */
@@ -160,7 +160,7 @@
   letter-spacing: var(--tracking-normal);
   color: var(--text-muted);
   border-top: 1px solid rgba(10, 10, 10, 0.15);
-  padding-top: 0.25rem;
+  padding-top: var(--space-2xs);
   display: block;
 }
 
@@ -173,13 +173,13 @@
 @keyframes stamp-hit {
   0%   { box-shadow: 0 0 0 rgba(10, 10, 10, 0); }
   40%  { box-shadow: 7px 7px 0 rgba(10, 10, 10, 0.38); }
-  70%  { box-shadow: 2px 2px 0 rgba(10, 10, 10, 0.2); }
-  100% { box-shadow: 3px 3px 0 rgba(10, 10, 10, 0.22); }
+  70%  { box-shadow: var(--shadow-panel-active); }
+  100% { box-shadow: var(--shadow-card); }
 }
 
 /* ---- Hover: subtle ink shift ---- */
 .milestone-card:hover {
-  box-shadow: 4px 4px 0 var(--ink, #0a0a0a), -1px -1px 0 rgba(0, 229, 255, 0.4);
+  box-shadow: 4px 4px 0 var(--ink), -1px -1px 0 rgba(0, 229, 255, 0.4);
 }
 
 .milestone-card:hover::after {
@@ -209,23 +209,23 @@
     max-width: none;
     top: 8%;
     transform: none;      /* cancels the desktop vertical centring */
-    gap: 0.75rem;
+    gap: var(--space-sm);
   }
 
   .milestone-card {
-    padding: 0.55rem 0.75rem;
+    padding: var(--space-xs) var(--space-sm);
   }
 }
 
-@media (max-width: 430px) {
+@media (max-width: 480px) {
   .achievements-strip {
     top: 6%;
-    gap: 0.6rem;
+    gap: var(--space-xs);
   }
 
   .milestone-card {
-    padding: 0.45rem 0.6rem;
-    box-shadow: 2px 2px 0 rgba(10, 10, 10, 0.18);
+    padding: var(--space-xs) var(--space-xs);
+    box-shadow: var(--shadow-panel-active);
   }
 }
 

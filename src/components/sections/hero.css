@@ -4,12 +4,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: var(--z-content, 10);
+  z-index: var(--z-content);
   pointer-events: none;
   /* Opacity driven by inline style — transition applies to those changes */
   opacity: 0;
   transition: opacity 0.4s ease;
-  color: var(--paper, #fdfbf7);
+  color: var(--paper);
 }
 
 /* pointer-events only — no opacity override (inline style controls it) */
@@ -28,7 +28,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1.5rem;
+  gap: var(--space-lg);
   max-width: 36rem;
 }
 
@@ -50,9 +50,9 @@
   margin: 0;
   letter-spacing: var(--tracking-wide);
   text-shadow:
-    2px 2px 0 var(--ink, #0a0a0a),
-    -1px 0px 0 var(--accent-cyan, rgba(0, 229, 255, 0.5)),
-    1px 0px 0 var(--accent-magenta, rgba(255, 0, 100, 0.4));
+    2px 2px 0 var(--ink),
+    -1px 0px 0 var(--accent-cyan),
+    1px 0px 0 var(--accent-magenta);
   /* Allow wrapping on very small screens */
   overflow-wrap: break-word;
   word-break: break-word;
@@ -66,11 +66,11 @@
   font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
-  color: var(--paper, #fdfbf7);
-  background-color: var(--ink, #0a0a0a);
+  color: var(--paper);
+  background-color: var(--ink);
   padding: 6px 14px;
-  border: 2px solid var(--paper, #fdfbf7);
-  box-shadow: 4px 4px 0 rgba(10, 10, 10, 0.4);
+  border: 2px solid var(--paper);
+  box-shadow: var(--shadow-chip);
   display: inline-block;
 }
 
@@ -78,11 +78,11 @@
 .hero-scroll-hint {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-xs);
   opacity: var(--p, 0);
   transform: translateY(calc((1 - var(--p, 0)) * 8px));
   will-change: opacity, transform;
-  margin-top: 0.5rem;
+  margin-top: var(--space-xs);
 }
 
 .scroll-hint__label {
@@ -91,14 +91,14 @@
   line-height: var(--leading-snug);
   font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-label);
-  color: var(--muted, #a0a0a0);
+  color: var(--muted);
   text-transform: uppercase;
 }
 
 .scroll-hint__arrow {
   font-size: var(--type-label);
   line-height: var(--leading-snug);
-  color: var(--accent, #4A90B8);
+  color: var(--accent);
   animation: scroll-bounce 1.6s ease-in-out infinite;
 }
 

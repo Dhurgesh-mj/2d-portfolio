@@ -2,7 +2,7 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  z-index: var(--z-canvas, 1);
+  z-index: var(--z-canvas);
 }
 
 .comic-canvas-wrapper canvas {
@@ -13,7 +13,7 @@
 
 /* Depth-of-field beats: the art softens while text panels hold focus.
    Desktop only — blur is skipped on small GPUs and reduced motion. */
-@media (min-width: 769px) {
+@media (max-width: 768px) {
   .comic-canvas-wrapper {
     filter: blur(var(--dof, 0px));
   }

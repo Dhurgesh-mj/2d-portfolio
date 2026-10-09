@@ -81,6 +81,7 @@ const Projects = ({ progress, sectionProgress, isActive }) => {
         return (
           <div
             key={scene.id}
+            id={`project-${scene.missionNumber}`}
             className={`comic-mission-panel ${scene.positionClass}`}
             style={{
               // Inner staggered reveals key off focus (1 = fully centered).

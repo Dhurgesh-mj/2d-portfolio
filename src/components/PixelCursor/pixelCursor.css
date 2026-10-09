@@ -4,7 +4,7 @@
   left: -8px;
   width: 16px;
   height: 16px;
-  z-index: var(--z-cursor, 300);
+  z-index: var(--z-cursor);
   pointer-events: none;
   transition: scale 0.15s steps(2);
   will-change: transform;
@@ -13,13 +13,13 @@
 .pixel-cursor__h,
 .pixel-cursor__v {
   position: absolute;
-  background: var(--paper, #f4f0e7);
+  background: var(--paper);
   /* Ink outline so the reticle reads on light and dark art alike */
   box-shadow:
-    1px 0 0 var(--ink, #0a0a0a),
-    -1px 0 0 var(--ink, #0a0a0a),
-    0 1px 0 var(--ink, #0a0a0a),
-    0 -1px 0 var(--ink, #0a0a0a);
+    1px 0 0 var(--ink),
+    -1px 0 0 var(--ink),
+    0 1px 0 var(--ink),
+    0 -1px 0 var(--ink);
 }
 
 .pixel-cursor__h {
@@ -43,7 +43,7 @@
 
 .pixel-cursor--hot .pixel-cursor__h,
 .pixel-cursor--hot .pixel-cursor__v {
-  background: var(--accent, #4a90b8);
+  background: var(--accent);
 }
 
 .pixel-cursor--hot .pixel-cursor__h {

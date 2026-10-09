@@ -1,9 +1,13 @@
 import React, { useRef } from 'react';
 import './interactive.css';
 
-const prefersReducedMotion = () =>
+// Pointer-driven effects need a fine pointer AND no reduced-motion preference.
+// Reduced motion was checked before but pointer type was not — on touch the
+// listeners fire on tap and leave the element stuck mid-transform.
+const motionAllowed = () =>
   typeof window !== 'undefined' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.matchMedia('(pointer: fine)').matches &&
+  !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /**
  * Tilt — pointer-driven 3D tilt using CSS vars. Purely additive:
@@ -14,7 +18,7 @@ export function Tilt({ children, max = 7, className = '' }) {
 
   const handleMove = (e) => {
     const el = ref.current;
-    if (!el || prefersReducedMotion()) return;
+    if (!el || !motionAllowed()) return;
     const rect = el.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;
     const px = (e.clientX - rect.left) / rect.width - 0.5;
@@ -31,7 +35,13 @@ export function Tilt({ children, max = 7, className = '' }) {
   };
 
   return (
-    <div ref={ref} className={`tilt ${className}`} onMouseMove={handleMove} onMouseLeave={handleLeave}>
+    <div
+      ref={ref}
+      className={`tilt ${className}`}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      onTouchStart={handleLeave}
+    >
       {children}
     </div>
   );
@@ -46,7 +56,7 @@ export function Magnetic({ children, strength = 7, className = '' }) {
 
   const handleMove = (e) => {
     const el = ref.current;
-    if (!el || prefersReducedMotion()) return;
+    if (!el || !motionAllowed()) return;
     const rect = el.getBoundingClientRect();
     const dx = e.clientX - (rect.left + rect.width / 2);
     const dy = e.clientY - (rect.top + rect.height / 2);
@@ -62,7 +72,13 @@ export function Magnetic({ children, strength = 7, className = '' }) {
   };
 
   return (
-    <div ref={ref} className={`magnetic ${className}`} onMouseMove={handleMove} onMouseLeave={handleLeave}>
+    <div
+      ref={ref}
+      className={`magnetic ${className}`}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      onTouchStart={handleLeave}
+    >
       {children}
     </div>
   );

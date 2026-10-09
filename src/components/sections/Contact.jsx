@@ -14,7 +14,7 @@ const Contact = ({ progress, sectionProgress, isActive }) => {
   const pTagline = mapRange(sp, 0.35, 0.55);
   const pLinks   = mapRange(sp, 0.50, 0.70);
 
-  const { email, github, linkedin, tagline } = portfolio.contact;
+  const { email, github, linkedin, tagline, cv } = portfolio.contact;
 
   const handleEmailClick = useCallback((e) => {
     e.preventDefault();
@@ -52,7 +52,7 @@ const Contact = ({ progress, sectionProgress, isActive }) => {
           {email && (
             <Magnetic strength={6} className="magnetic--block">
               <button
-                className="contact-link contact-link--email"
+                className="contact-link contact-link--email contact-link--primary"
                 onClick={handleEmailClick}
                 title={copied ? 'Copied!' : `Copy ${email}`}
                 aria-label={copied ? 'Email copied to clipboard' : `Copy email address: ${email}`}
@@ -71,7 +71,7 @@ const Contact = ({ progress, sectionProgress, isActive }) => {
                 href={github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="contact-link"
+                className="contact-link contact-link--secondary"
               >
                 <span className="contact-link__text">GITHUB</span>
                 <span className="contact-link__arrow">→</span>
@@ -85,12 +85,23 @@ const Contact = ({ progress, sectionProgress, isActive }) => {
                 href={linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="contact-link"
+                className="contact-link contact-link--secondary"
               >
                 <span className="contact-link__text">LINKEDIN</span>
                 <span className="contact-link__arrow">→</span>
               </a>
             </Magnetic>
+          )}
+
+          {cv && (
+            <a
+              href={cv}
+              download
+              className="contact-link contact-link--secondary contact-link--cv"
+            >
+              <span className="contact-link__text">DOWNLOAD CV</span>
+              <span className="contact-link__arrow" aria-hidden="true">↓</span>
+            </a>
           )}
         </div>
       </div>

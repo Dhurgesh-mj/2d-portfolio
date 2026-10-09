@@ -1,7 +1,7 @@
 .comic-loading-screen {
   position: fixed;
   inset: 0;
-  z-index: var(--z-loading, 9999);
+  z-index: var(--z-loading);
   background-color: var(--ink);
   display: flex;
   flex-direction: column;
@@ -72,7 +72,7 @@
   font-family: var(--font-mono);
   font-size: var(--type-meta);
   line-height: var(--leading-snug);
-  color: var(--muted, #a0a0a0);
+  color: var(--muted);
   letter-spacing: var(--tracking-normal);
   margin-top: -8px;
 }
@@ -85,9 +85,9 @@
   font-size: var(--type-label);
   line-height: var(--leading-snug);
   letter-spacing: var(--tracking-normal);
-  color: var(--muted, #a0a0a0);
+  color: var(--muted);
   background: transparent;
-  border: 1.5px solid var(--mid-gray, #555);
+  border: 1.5px solid var(--mid-gray);
   padding: 6px 16px;
   cursor: pointer;
   transition: color 0.15s ease, border-color 0.15s ease;
@@ -100,8 +100,9 @@
 }
 
 .comic-loading-screen__skip:focus-visible {
-  outline: 2px solid var(--accent, #4A90B8);
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: 3px;
+  box-shadow: 0 0 0 1px var(--focus-ring-offset);
   color: var(--paper);
 }
 
@@ -116,13 +117,13 @@
   font-size: var(--type-label);
   line-height: var(--leading-snug);
   letter-spacing: var(--tracking-normal);
-  color: var(--muted, #a0a0a0);
+  color: var(--muted);
   text-align: left;
   width: 100%;
 }
 
 .boot-line__prompt {
-  color: var(--accent, #4A90B8);
+  color: var(--accent);
   font-weight: var(--weight-bold);
   margin-right: 6px;
 }
@@ -137,7 +138,7 @@
   height: 0.95em;
   margin-left: 6px;
   vertical-align: text-bottom;
-  background-color: var(--accent-cyan, rgba(0, 229, 255, 0.85));
+  background-color: var(--accent-cyan);
   animation: cursor-blink 0.85s steps(2) infinite;
 }
 

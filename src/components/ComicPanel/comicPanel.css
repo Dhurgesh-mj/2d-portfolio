@@ -40,7 +40,7 @@
 }
 
 .comic-panel:hover {
-  box-shadow: 7px 7px 0 rgba(10, 10, 10, 0.35);
+  box-shadow: var(--shadow-panel-hover);
 }
 
 /* Halftone overlay pseudo-element */

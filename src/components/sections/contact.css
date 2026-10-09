@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  z-index: var(--z-content, 10);
+  z-index: var(--z-content);
   pointer-events: none;
   opacity: var(--p, 0);
   transition: opacity 0.5s ease;
@@ -28,7 +28,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1.5rem;
+  gap: var(--space-lg);
   /* 28rem so --type-body-lg lands at a 45-70 character measure */
   max-width: 28rem;
   width: 25%;
@@ -40,8 +40,8 @@
   line-height: var(--leading-display);
   margin: 0;
   text-transform: uppercase;
-  color: var(--paper, #fdfbf7);
-  text-shadow: 2px 2px 0 var(--ink, #0a0a0a), -1px 0px 0 rgba(0, 229, 255, 0.5), 1px 0px 0 rgba(255, 0, 100, 0.4);
+  color: var(--paper);
+  text-shadow: 2px 2px 0 var(--ink), -1px 0px 0 rgba(0, 229, 255, 0.5), 1px 0px 0 rgba(255, 0, 100, 0.4);
   letter-spacing: var(--tracking-wide);
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
@@ -72,11 +72,11 @@
   font-size: var(--type-body-lg);
   line-height: var(--leading-body);
   margin: 0;
-  color: var(--paper, #fdfbf7);
+  color: var(--paper);
   background: var(--ink);
   padding: 8px 12px;
   border: 2px solid var(--paper);
-  box-shadow: 4px 4px 0 rgba(10, 10, 10, 0.4);
+  box-shadow: var(--shadow-chip);
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
   transform: translateX(calc((1 - var(--p, 0)) * -12px));
@@ -86,7 +86,7 @@
 .contact-links {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-sm);
   width: 100%;
   opacity: var(--p, 0);
   clip-path: inset(0 calc(100% - var(--p, 0) * 100%) 0 0);
@@ -97,25 +97,37 @@
 
 /* Editorial Comic Annotation Links */
 .contact-link {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 1rem;
+  gap: var(--space-md);
   font-family: var(--font-mono);
   font-size: var(--type-label);
   line-height: var(--leading-snug);
   font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-normal);
-  color: var(--paper, #fdfbf7);
   text-decoration: none;
-  padding: 10px 16px;
-  background: var(--ink);
-  border: 2px solid var(--paper);
   text-transform: uppercase;
-  position: relative;
+  padding: 12px var(--space-md);
+  border: 2px solid var(--paper);
   overflow: hidden;
-  box-shadow: 3px 3px 0 rgba(10, 10, 10, 0.5);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: color 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+}
+
+/* ── Hierarchy ──
+   EMAIL is the primary action; GITHUB / LINKEDIN are secondary. Previously all
+   three rendered identically, so a visitor had no signal what to do next. */
+.contact-link--primary {
+  color: var(--ink);
+  background: var(--paper);
+  box-shadow: var(--shadow-chip-strong);
+}
+
+.contact-link--secondary {
+  color: var(--paper);
+  background: var(--ink);
+  box-shadow: var(--shadow-chip);
 }
 
 /* Small registration offset marker on the button */
@@ -127,25 +139,33 @@
   width: 6px;
   height: 100%;
   background: var(--accent);
+  transition: width 0.2s ease;
 }
 
 /* Button reset for email copy-to-clipboard */
 .contact-link--email {
   appearance: none;
-  background: var(--ink);
-  cursor: pointer;
   width: 100%;
   text-align: left;
+  cursor: pointer;
 }
 
-.contact-link--email:active {
-  transform: translateX(2px);
-}
-
-/* Shared hover — applies to both the anchor and the button */
+/* ── States ──
+   The old hover changed only transform by 1px and left box-shadow identical to
+   rest, so the primary CTA gave almost no feedback. */
 .contact-link:hover {
-  transform: translateX(1px);
-  box-shadow: 3px 3px 0 rgba(10, 10, 10, 0.5);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 rgba(10, 10, 10, 0.45);
+}
+
+.contact-link:hover::before {
+  width: 10px;
+}
+
+.contact-link:active,
+.contact-link--email:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-chip-press);
 }
 
 
@@ -163,7 +183,7 @@
   left: 10px;
   width: 0;
   height: 2px;
-  background: var(--paper);
+  background: currentColor;
   transition: width 0.2s ease;
 }
 .contact-link:hover .contact-link__text::after {
@@ -171,9 +191,14 @@
 }
 
 .contact-link__arrow {
+  margin-left: auto;
   padding-left: 0;
   color: var(--accent);
   transition: transform 0.2s ease;
+}
+
+.contact-link--primary .contact-link__arrow {
+  color: var(--accent-ink);
 }
 
 .contact-link:hover .contact-link__arrow {
@@ -181,8 +206,9 @@
 }
 
 .contact-link:focus-visible {
-  outline: 2px solid var(--accent, #4A90B8);
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: 3px;
+  box-shadow: 0 0 0 1px var(--focus-ring-offset);
 }
 
 /* Left-aligned, matching every other section on mobile. */

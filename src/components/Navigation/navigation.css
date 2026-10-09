@@ -5,7 +5,7 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: var(--z-nav, 100);
+  z-index: var(--z-nav);
   transition: color 0.5s ease;
   font-family: var(--font-display);
 }
@@ -24,15 +24,85 @@
 
 /* Halo behind nav type. The theme flag is per-chapter, but the artwork keeps
    moving during a chapter transition — these keep the text legible through
-   the crossover. */
+   the crossover. Light chapters get a heavier halo because .vignette in
+   App.css darkens the corners by up to 50%, which is exactly where the nav
+   sits. */
 .comic-nav--on-dark .comic-nav__monogram,
-.comic-nav--on-dark .comic-nav__header {
+.comic-nav--on-dark .comic-nav__header,
+.comic-nav--on-dark .comic-nav__counter,
+.comic-nav--on-dark .comic-nav__hint {
   text-shadow: 0 0 6px rgba(10, 10, 10, 0.9), 0 1px 0 rgba(10, 10, 10, 0.8);
 }
 
 .comic-nav--on-light .comic-nav__monogram,
-.comic-nav--on-light .comic-nav__header {
-  text-shadow: 0 0 6px rgba(244, 240, 231, 0.9), 0 1px 0 rgba(244, 240, 231, 0.85);
+.comic-nav--on-light .comic-nav__header,
+.comic-nav--on-light .comic-nav__counter,
+.comic-nav--on-light .comic-nav__hint {
+  text-shadow:
+    0 0 4px rgba(244, 240, 231, 1),
+    0 0 10px rgba(244, 240, 231, 1),
+    0 1px 0 rgba(244, 240, 231, 1);
+}
+
+/* ── Chapter counter + keyboard hint ── */
+.comic-nav__counter {
+  position: absolute;
+  bottom: 22px;
+  left: 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  font-size: var(--type-label);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-wide);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.comic-nav__counter-num {
+  font-size: var(--type-h4);
+  line-height: var(--leading-heading);
+}
+
+.comic-nav__counter-sep,
+.comic-nav__counter-total {
+  opacity: 0.6;
+}
+
+.comic-nav__hint {
+  position: absolute;
+  bottom: 22px;
+  right: 24px;
+  font-size: var(--type-meta);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-normal);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* Thumbnail tooltip — hidden until hover/focus */
+.comic-nav__frame-tip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: var(--type-meta);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  padding: 3px 8px;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1px solid var(--nav-line, var(--paper));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+
+.comic-nav__frame:hover .comic-nav__frame-tip,
+.comic-nav__frame:focus-visible .comic-nav__frame-tip {
+  opacity: 1;
 }
 
 /* ── Monogram — top left ── */
@@ -101,7 +171,8 @@
   height: 48px;
   display: grid;
   place-items: center;
-  overflow: hidden;
+  position: relative;
+  overflow: visible;
   opacity: 0.38;
   transition: opacity 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
   cursor: pointer;
@@ -133,8 +204,9 @@
 }
 
 .comic-nav__frame:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: 2px;
+  box-shadow: 0 0 0 1px var(--focus-ring-offset);
   opacity: 1;
 }
 
@@ -182,5 +254,20 @@
   .comic-nav__frame img {
     width: 34px;
     height: 21px;
+  }
+
+  /* Counter stays (it's the only "where am I" cue on a narrow screen);
+     the keyboard hint is meaningless without a keyboard. */
+  .comic-nav__counter {
+    bottom: 16px;
+    left: 16px;
+  }
+
+  .comic-nav__hint {
+    display: none;
+  }
+
+  .comic-nav__frame-tip {
+    display: none;
   }
 }

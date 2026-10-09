@@ -14,7 +14,7 @@
 /* ── Decoder scramble glyphs ── */
 
 .decode__glyph {
-  color: var(--accent-cyan, rgba(0, 229, 255, 0.85));
+  color: var(--accent-cyan);
   text-shadow: 1px 1px 0 rgba(10, 10, 10, 0.6);
 }
 
@@ -26,8 +26,8 @@
   height: 1em;
   margin-left: 0.08em;
   vertical-align: text-bottom;
-  background-color: var(--accent-cyan, rgba(0, 229, 255, 0.85));
-  box-shadow: 2px 2px 0 rgba(10, 10, 10, 0.55);
+  background-color: var(--accent-cyan);
+  box-shadow: var(--shadow-chip-press);
   animation: cursor-blink 0.85s steps(2) infinite;
 }
 

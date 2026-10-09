@@ -20,7 +20,7 @@ html {
 body {
   background-color: var(--ink);
   color: var(--paper);
-  font-family: var(--font-sans, 'Inter', sans-serif);
+  font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

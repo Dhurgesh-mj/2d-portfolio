@@ -2,14 +2,13 @@
   /* ── Core Palette ── */
   --ink: #0A0A0A;
   --charcoal: #171717;
-  --dark-gray: #262626;
   --mid-gray: #555555;
   --light-gray: #B8B8B8;
   --muted: #a0a0a0;
   --paper: #F4F0E7;
   --cream: #E9E1D0;
   --white: #FAFAF7;
-  --paper-dark: #E0D8C6;
+  --paper-panel: #EFE8DB;   /* project mission-panel surface */
 
   /* ── Accent Colors ── */
   --accent: #4A90B8;         /* borders, rules, glows — never body text */
@@ -31,11 +30,41 @@
   --font-heading: var(--font-display);
   --font-body: var(--font-sans);
 
-  /* ── Borders & Shadows ── */
+  /* ── Borders, Shadows & Focus ── */
   --border-heavy: 3px;
   --border-light: 1px;
-  --shadow-comic: 6px 6px 0 rgba(10,10,10,0.3);
+  --shadow-comic:       6px 6px 0 rgba(10,10,10,0.3);
   --shadow-comic-light: 4px 4px 0 rgba(10,10,10,0.15);
+  /* Panel resting / raised / pressed. Every hard-coded box-shadow in a
+     component maps to one of these three. */
+  --shadow-panel:        5px 5px 0 rgba(10,10,10,0.25);
+  --shadow-panel-hover:  var(--shadow-panel-hover);
+  --shadow-panel-active: 2px 2px 0 rgba(10,10,10,0.25);
+  --shadow-chip:         3px 3px 0 rgba(10,10,10,0.4);
+  --shadow-chip-press:   2px 2px 0 rgba(10,10,10,0.4);
+  --shadow-chip-strong:  3px 3px 0 rgba(10,10,10,0.5);
+  --shadow-card:         3px 3px 0 rgba(10,10,10,0.22);
+  --skeleton-base:  #E8E0D0;
+  --skeleton-sheen: #F0E8D8;
+
+  /* Focus ring. --accent alone was 2.89:1 on the project panel surface and
+     failed WCAG 2.2 SC 2.4.11 (needs 3:1). --ink is 14.6:1 there, and the
+     --paper offset ring keeps it visible on dark chrome too. */
+  --focus-ring-color: var(--ink);
+  --focus-ring-offset: var(--paper);
+  --focus-ring-width: 2px;
+
+  /* ── Spacing Scale ──
+     4px base. Components snap to these instead of free-hand 0.35/0.45/0.55rem
+     nudges — 25 distinct spacing values collapsed to 8 steps. */
+  --space-3xs: 0.125rem;  /*  2px */
+  --space-2xs: 0.25rem;   /*  4px */
+  --space-xs:  0.5rem;    /*  8px */
+  --space-sm:  0.75rem;   /* 12px */
+  --space-md:  1rem;      /* 16px */
+  --space-lg:  1.5rem;    /* 24px */
+  --space-xl:  2rem;      /* 32px */
+  --space-2xl: 2.5rem;    /* 40px */
 
   /* ── Z-index Layers ── */
   --z-canvas: 1;
@@ -102,10 +131,11 @@
   scrollbar-width: thin;
   scrollbar-color: var(--mid-gray) var(--charcoal);
 
-  /* Breakpoints:
-     sm: 640px
-     md: 768px
-     lg: 1024px
-     xl: 1280px
+  /* Breakpoints — the only three. The old comment listed 640/768/1024/1280 but
+     640 and 1280 were never used, while 430 and 900 were used and undocumented.
+     769 also duplicated the 768 boundary in min-width form.
+        sm: 480px   (narrow phones)
+        md: 768px   (tablet / mobile ceiling)
+        lg: 1024px  (small laptop)
   */
 }

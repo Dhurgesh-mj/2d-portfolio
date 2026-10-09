@@ -9,7 +9,7 @@ import { useMediaQuery } from './hooks/useMediaQuery';
 import { Spotlight } from './components/Spotlight/Spotlight';
 import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 import { useScrollProgress } from './hooks/useScrollProgress';
-import Navigation from './components/Navigation/Navigation';
+import Navigation, { useChapterKeys } from './components/Navigation/Navigation';
 import LoadingScreen from './components/LoadingScreen/LoadingScreen';
 import Hero from './components/sections/Hero';
 import About from './components/sections/About';
@@ -115,6 +115,9 @@ function App() {
   }, [currentProgress]);
 
   const currentSectionIndex = SECTION_RANGES.findIndex(s => s.id === currentSection);
+
+  // Home / End jump to the first/last chapter (arrow keys stay native)
+  useChapterKeys(SECTION_RANGES);
 
   return (
     <>
