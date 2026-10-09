@@ -12,6 +12,12 @@
 }
 
 .spotlight__layer--base {
+  /* The base pool is ambient light, not a driven effect: Spotlight's rAF is the
+     only thing that ever gave it opacity, and that loop is skipped entirely
+     under prefers-reduced-motion — so the whole light layer vanished, base
+     included. Default it here so reduced motion keeps the ambient pool and the
+     rAF simply overrides it when motion is allowed. */
+  opacity: 0.6;
   background: radial-gradient(
     circle 44vmax at var(--spot-x, 50%) var(--spot-y, 45%),
     rgba(255, 255, 255, 0.13),

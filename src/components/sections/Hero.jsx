@@ -3,11 +3,9 @@ import './hero.css';
 import ComicTextBox from '../ComicTextBox/ComicTextBox';
 import { SplitText, Typewriter } from '../TextFX/TextFX';
 import { portfolio } from '../../data/portfolio';
+import { mapRange } from '../../lib/progress';
 
-const clamp = (val, min, max) => Math.min(max, Math.max(min, val));
-const mapRange = (val, inMin, inMax) => clamp((val - inMin) / (inMax - inMin), 0, 1);
-
-const Hero = ({ progress, sectionProgress, isActive }) => {
+const Hero = ({ sectionProgress, isActive }) => {
   const sp = sectionProgress || 0;
 
   // Staggered cinematic reveals
@@ -26,6 +24,7 @@ const Hero = ({ progress, sectionProgress, isActive }) => {
     <section
       className={`hero-section ${isActive ? 'is-active' : ''}`}
       aria-label="Introduction"
+      inert={!isActive}
       style={{
         pointerEvents: isActive ? 'auto' : 'none',
         opacity: isActive ? globalOpacity : 0,

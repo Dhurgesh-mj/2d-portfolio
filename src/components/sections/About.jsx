@@ -6,7 +6,7 @@ import { Typewriter } from '../TextFX/TextFX';
 import { portfolio } from '../../data/portfolio';
 import { mapRange, staggerRange } from '../../lib/progress';
 
-const About = ({ progress, sectionProgress, isActive }) => {
+const About = ({ sectionProgress, isActive }) => {
   const sp = sectionProgress || 0;
 
   const pBio = mapRange(sp, 0.15, 0.35);
@@ -30,7 +30,8 @@ const About = ({ progress, sectionProgress, isActive }) => {
     <section
       className={`about-section ${isActive ? 'is-active' : ''}`}
       aria-label="Identity and Background"
-      style={{ 
+      inert={!isActive}
+      style={{
         pointerEvents: isActive ? 'auto' : 'none',
         opacity: isActive ? globalOpacity : 0
       }}

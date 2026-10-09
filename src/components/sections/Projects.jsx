@@ -29,40 +29,27 @@ const PROJECT_SCENES = [
 
 //  calculateCoverflow lives in ./coverflow.js (unit-tested)
 
-// Skeleton placeholder for a single project card
-const ProjectSkeleton = ({ scene }) => (
-  <div className={`comic-mission-panel ${scene.positionClass} project-skeleton`}>
-    <div className="skeleton-badge" />
-    <div className="skeleton-title" />
-    <div className="skeleton-desc" />
-    <div className="skeleton-desc skeleton-desc--short" />
-    <div className="skeleton-footer" />
-  </div>
-);
-
-const Projects = ({ progress, sectionProgress, isActive }) => {
+const Projects = ({ sectionProgress, isActive }) => {
   const sp = sectionProgress || 0;
 
   // Curated list from portfolio.js. This used to fetch the GitHub API and
   // sort by stargazers, which meant the page showed whatever was most popular
   // rather than the work that fits — and rendered different content per visit.
+  // The skeleton that covered that fetch went with it: `loading` had been
+  // pinned to false, so ProjectSkeleton and its ~50 lines of CSS were
+  // unreachable while still implying an async load that no longer happens.
   const projects = portfolio.projects || [];
-  const loading = false;
 
   return (
     <section
       className={`projects-section ${isActive ? 'is-active' : ''}`}
       aria-label="Projects"
+      inert={!isActive}
       style={{ pointerEvents: isActive ? 'auto' : 'none' }}
     >
       {/* Chapter title lives in nav — mission panels only here */}
 
-      {/* Loading skeleton — show placeholders while GitHub API fetches */}
-      {loading && isActive && PROJECT_SCENES.map(scene => (
-        <ProjectSkeleton key={scene.id} scene={scene} />
-      ))}
-
-      {!loading && PROJECT_SCENES.map((scene, index) => {
+      {PROJECT_SCENES.map((scene, index) => {
         const project = projects[index];
         if (!project) return null;
 
@@ -93,9 +80,12 @@ const Projects = ({ progress, sectionProgress, isActive }) => {
               filter: state.filter,
               zIndex: state.zIndex,
               pointerEvents: state.focus > 0.45 ? 'auto' : 'none',
+              // pointer-events only stops the mouse — it does not stop Tab.
+              // Off-centre coverflow cards stayed keyboard-reachable otherwise.
+              inert: state.focus <= 0.45,
             }}
           >
-            <Tilt max={5} className="mission-tilt">
+            <Tilt max={5}>
               <div className="mission-corners">
                 <PixelCorner position="top-left" color="var(--ink)" size={5} />
                 <PixelCorner position="top-right" color="var(--ink)" size={5} />

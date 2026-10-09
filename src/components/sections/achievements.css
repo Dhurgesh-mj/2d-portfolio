@@ -49,9 +49,14 @@
   left: 10px;
   top: 0;
   width: 2px;
+  height: 100%;
   background: var(--paper);
   opacity: var(--p-rule, 0);
-  height: calc(var(--p-rule, 0) * 100%);
+  /* Was `height: calc(var(--p-rule) * 100%)` — the only reveal in the app that
+     animated a layout property, forcing reflow on every scroll tick. scaleY is
+     compositor-only and visually identical for a top-anchored rule. */
+  transform: scaleY(var(--p-rule, 0));
+  transform-origin: top center;
   transition: opacity var(--duration-fast) var(--ease-loop);
 }
 

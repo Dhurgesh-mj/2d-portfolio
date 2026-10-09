@@ -66,6 +66,16 @@ body {
   border: 0;
 }
 
+/* Blinking caret keyframes.
+   The typewriter cursor and the loading screen's boot-log cursor each declare
+   their own box (they differ in height and margin) but the @keyframes was
+   copied verbatim into both files, with a separate reduced-motion override in
+   each. One definition here so the blink can't drift apart. */
+@keyframes cursor-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
 /* Reduced Motion
    The :root override collapses every duration and stagger token at once, so
    component CSS only needs to keep the transform/opacity reset — not a

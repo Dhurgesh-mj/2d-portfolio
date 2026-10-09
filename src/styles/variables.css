@@ -31,21 +31,26 @@
   --font-body: var(--font-sans);
 
   /* ── Borders, Shadows & Focus ── */
-  --border-heavy: 3px;
-  --border-light: 1px;
+  /* NOTE: there are deliberately no --border-heavy / --border-light tokens;
+     nothing referenced them and panel borders are load-bearing in this style,
+     so they stay explicit at each use site rather than gaining a token that
+     invites divergence. */
   --shadow-comic:       6px 6px 0 rgba(10,10,10,0.3);
   --shadow-comic-light: 4px 4px 0 rgba(10,10,10,0.15);
   /* Panel resting / raised / pressed. Every hard-coded box-shadow in a
-     component maps to one of these three. */
+     component maps to one of these three.
+     NOTE: --shadow-panel-hover used to be `var(--shadow-panel-hover)`, a
+     self-reference. A custom property that references itself is guaranteed-
+     invalid at computed-value time, so every consumer resolved box-shadow to
+     its initial value `none` — panel hover shadows were silently dead, and
+     easy to miss because --shadow-chip-press right below it works. */
   --shadow-panel:        5px 5px 0 rgba(10,10,10,0.25);
-  --shadow-panel-hover:  var(--shadow-panel-hover);
+  --shadow-panel-hover:  8px 8px 0 rgba(10,10,10,0.28);
   --shadow-panel-active: 2px 2px 0 rgba(10,10,10,0.25);
   --shadow-chip:         3px 3px 0 rgba(10,10,10,0.4);
   --shadow-chip-press:   2px 2px 0 rgba(10,10,10,0.4);
   --shadow-chip-strong:  3px 3px 0 rgba(10,10,10,0.5);
   --shadow-card:         3px 3px 0 rgba(10,10,10,0.22);
-  --skeleton-base:  #E8E0D0;
-  --skeleton-sheen: #F0E8D8;
 
   /* Focus ring. --accent alone was 2.89:1 on the project panel surface and
      failed WCAG 2.2 SC 2.4.11 (needs 3:1). --ink is 14.6:1 there, and the
@@ -69,24 +74,18 @@
   /* ── Z-index Layers ── */
   --z-canvas: 1;
   --z-texture: 2;
-  --z-decoration: 3;
   --z-content: 10;
   --z-nav: 100;
   --z-loading: 200;
   --z-cursor: 300;
 
-  /* ── Typography Scale (base steps — 1rem == root, see globals.css) ── */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  --text-5xl: 3rem;
-  --text-6xl: 3.75rem;
-  --text-7xl: 4.5rem;
+  /* ── Typography ──
+     Note: there is deliberately no raw `--text-*` px/rem scale. An earlier
+     pass defined --text-xs … --text-7xl alongside the role tokens below, and
+     nothing ever referenced them — a second, competing way to size type.
+     Because globals.css scales the root font-size with --img-scale, a bare rem
+     token is non-deterministic anyway (16px at 1920, 28.7px at 3440), which is
+     exactly the failure the role tokens' px-floored clamps exist to prevent. */
 
   /* ── Type Roles ──
      Every text rule binds to one of these, never to a raw value.
@@ -143,7 +142,6 @@
   --duration-grain:  1600ms;  /* film grain step */
   --duration-neon:   7000ms;  /* contact lamp flicker */
   --duration-arrow:  1600ms;  /* scroll hint bounce */
-  --duration-shimmer: 1400ms; /* project skeleton sweep */
 
   /* Linear is reserved for true loops (progress, shimmer). Anything that
      touches human feeling gets a curve. */

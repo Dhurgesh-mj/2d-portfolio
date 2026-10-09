@@ -9,14 +9,12 @@
   justify-content: center;
   z-index: var(--z-content);
   pointer-events: none;
-  opacity: var(--p, 0);
-  transition: opacity var(--duration-slow) var(--ease-standard);
 }
 
-.contact-section.is-active {
-  opacity: 1;
-  pointer-events: auto;
-}
+/* `.contact-section.is-active { opacity: 1; pointer-events: auto }` used to live
+   here but was dead: Contact.jsx sets both inline from `isActive`, and an
+   inline style always beats the stylesheet. Kept the pointer-events: none
+   default only. */
 
 /* Placed intentionally in the negative space of the RIGHT PAGE (54% to 85%) */
 .contact-content {

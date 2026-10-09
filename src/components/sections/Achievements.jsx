@@ -17,7 +17,7 @@ const markCVEs = (text) =>
       : part
   );
 
-const Achievements = ({ progress, sectionProgress, isActive }) => {
+const Achievements = ({ sectionProgress, isActive }) => {
   const sp = sectionProgress || 0;
 
   // Draw the timeline rule once the city is established
@@ -30,6 +30,7 @@ const Achievements = ({ progress, sectionProgress, isActive }) => {
     <section
       className={`achievements-section ${isActive ? 'is-active' : ''}`}
       aria-label="Achievements"
+      inert={!isActive}
       style={{
         pointerEvents: isActive ? 'auto' : 'none',
         opacity: isActive ? 1 : 0,
@@ -45,7 +46,8 @@ const Achievements = ({ progress, sectionProgress, isActive }) => {
           const pPip = mapRange(sp, stagger.start(i), stagger.start(i) + stagger.duration * 0.35);
           const pCard = mapRange(sp, stagger.start(i) + stagger.duration * 0.3, stagger.end(i));
           
-          // Legacy visibility logic for fallback
+          // Not a fallback — this class is what fires the `stamp-hit` impact animation
+          // on .milestone-card the moment a milestone starts arriving.
           const isVisible = isActive && pCard > 0;
 
           return (

@@ -71,8 +71,12 @@ export function Typewriter({ text, p = 0 }) {
   const done = reduced || p >= 1;
 
   return (
-    <span className="typewriter">
-      <span>{text.slice(0, count)}</span>
+    <span className="typewriter" aria-label={text}>
+      {/* Without this, a screen reader reads whatever mid-word prefix happens to
+          be visible at that instant, and re-announces it on every scroll tick.
+          SplitText and Decode both already label-and-hide their internals;
+          this was the odd one out. */}
+      <span aria-hidden="true">{text.slice(0, count)}</span>
       {started && !done && <span className="typewriter__cursor" aria-hidden="true" />}
     </span>
   );

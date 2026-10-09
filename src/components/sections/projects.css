@@ -16,56 +16,7 @@
   perspective: 1200px;
 }
 
-/* ── Skeleton Loading ── */
-@keyframes skeleton-shimmer {
-  0%   { background-position: -400px 0; }
-  100% { background-position: 400px 0; }
-}
 
-.project-skeleton {
-  animation: skeleton-shimmer var(--duration-shimmer) var(--ease-standard) infinite;
-  background: linear-gradient(
-    90deg,
-    var(--skeleton-base) 25%,
-    var(--skeleton-sheen) 50%,
-    var(--skeleton-base) 75%
-  );
-  background-size: 800px 100%;
-  opacity: 0.45;
-  pointer-events: none;
-}
-
-.skeleton-badge {
-  height: 16px;
-  width: 80px;
-  background: rgba(10,10,10,0.15);
-  margin-bottom: var(--space-xs);
-}
-
-.skeleton-title {
-  height: 28px;
-  width: 75%;
-  background: rgba(10,10,10,0.15);
-  margin-bottom: var(--space-xs);
-}
-
-.skeleton-desc {
-  height: 12px;
-  width: 90%;
-  background: rgba(10,10,10,0.12);
-  margin-bottom: var(--space-2xs);
-}
-
-.skeleton-desc--short {
-  width: 60%;
-}
-
-.skeleton-footer {
-  height: 32px;
-  width: 55%;
-  background: rgba(10,10,10,0.15);
-  margin-top: var(--space-xs);
-}
 
 /* ---- Comic Mission Panel ---- */
 .comic-mission-panel {
@@ -81,12 +32,12 @@
   box-sizing: border-box;
 }
 
-/* Cinematic staggered reveals */
-.comic-mission-panel {
-  --lp-panel: calc(max(0, min(1, (var(--p, 0) - 0.0) * 3.33)));
-  clip-path: inset(0 calc(100% - var(--lp-panel) * 100%) 0 0);
-  transform: translateX(calc((1 - var(--lp-panel)) * 12px));
-}
+/* The old staggered wipe lived here, on a second `.comic-mission-panel` block:
+     --lp-panel + clip-path + translateX. All three are dead. Projects.jsx sets
+     inline `clipPath: 'none'` (coverflow retired the wipe) and an inline
+     `transform` from calculateCoverflow(), and an inline style always beats the
+     stylesheet. --lp-panel had no other consumer. The child rules below
+     (.mission-corners / -badge / -title / …) are live and unaffected. */
 .mission-corners {
   --lp: calc(max(0, min(1, (var(--p, 0) - 0.0) * 10)));
   opacity: var(--lp);

@@ -11,9 +11,12 @@
   height: 100%;
 }
 
-/* Depth-of-field beats: the art softens while text panels hold focus.
-   Desktop only — blur is skipped on small GPUs and reduced motion. */
-@media (max-width: 768px) {
+/* Depth-of-field: the art softens while text panels hold focus.
+   Desktop only — blur is skipped on small GPUs and reduced motion.
+   This was `max-width: 768px`, i.e. the inverse of what the comment describes,
+   which meant App's entire dofBlur computation was dead on desktop and the
+   effect only ever ran where it was not wanted. */
+@media (min-width: 769px) {
   .comic-canvas-wrapper {
     filter: blur(var(--dof, 0px));
   }

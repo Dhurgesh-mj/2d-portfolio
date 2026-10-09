@@ -7,8 +7,6 @@ import { portfolio } from '../../data/portfolio';
 import { mapRange, staggerRange } from '../../lib/progress';
 
 // Derive toolchain from portfolio.skills — no more hardcoded JSX
-const TOOLCHAIN_CATEGORIES = ['Security', 'Systems', 'Tools'];
-
 const buildToolchainCols = (skills) => {
   const securitySkills = skills.filter(s => s.category === 'Security' || s.category === 'Systems');
   const toolSkills     = skills.filter(s => s.category === 'Tools' || s.category === 'Languages');
@@ -21,7 +19,7 @@ const buildToolchainCols = (skills) => {
   ];
 };
 
-const Skills = ({ progress, sectionProgress, isActive }) => {
+const Skills = ({ sectionProgress, isActive }) => {
   const sp = sectionProgress || 0;
   const skills = portfolio.skills || [];
 
@@ -46,6 +44,7 @@ const Skills = ({ progress, sectionProgress, isActive }) => {
   return (
     <section
       className={`skills-section ${isActive ? 'is-active' : ''}`}
+      inert={!isActive || globalOpacity <= 0.1}
       style={{
         opacity: isActive ? globalOpacity : 0,
         pointerEvents: (isActive && globalOpacity > 0.1) ? 'auto' : 'none',

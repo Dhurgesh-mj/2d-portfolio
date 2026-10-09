@@ -2,11 +2,9 @@ import React, { useState, useCallback } from 'react';
 import './contact.css';
 import { Magnetic } from '../Interactive/Interactive';
 import { portfolio } from '../../data/portfolio';
+import { mapRange } from '../../lib/progress';
 
-const clamp = (val, min, max) => Math.min(max, Math.max(min, val));
-const mapRange = (val, inMin, inMax) => clamp((val - inMin) / (inMax - inMin), 0, 1);
-
-const Contact = ({ progress, sectionProgress, isActive }) => {
+const Contact = ({ sectionProgress, isActive }) => {
   const sp = sectionProgress || 0;
   const [copied, setCopied] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
@@ -36,6 +34,7 @@ const Contact = ({ progress, sectionProgress, isActive }) => {
     <section
       className={`contact-section ${isActive ? 'is-active' : ''}`}
       aria-label="Contact and Next Chapter"
+      inert={!isActive}
       style={{
         pointerEvents: isActive ? 'auto' : 'none',
         opacity: isActive ? 1 : 0,
@@ -101,7 +100,7 @@ const Contact = ({ progress, sectionProgress, isActive }) => {
             <a
               href={cv}
               download
-              className="contact-link contact-link--secondary contact-link--cv"
+              className="contact-link contact-link--secondary"
             >
               <span className="contact-link__text">DOWNLOAD CV</span>
               <span className="contact-link__arrow" aria-hidden="true">↓</span>

@@ -66,3 +66,12 @@
   transform: translate(-1px, -1px);
   box-shadow: var(--shadow-panel-hover);
 }
+
+/* The only control that appears when the app has crashed — exactly when
+   keyboard and screen-reader use matters most, and it was the one real button
+   with no focus ring. */
+.error-fallback__reload:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: 3px;
+  transition-duration: var(--duration-instant);
+}
