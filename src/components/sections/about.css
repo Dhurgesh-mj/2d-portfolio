@@ -18,7 +18,12 @@
 
 .about-content {
   position: absolute;
-  left: 5%;
+  /* `.comic-overlay` is wider than the viewport and offset by the camera pan
+     (--img-x), so a bare percentage resolves against the overlay and drifts
+     off-screen as the camera moves. Every other chapter compensates with
+     `(100% - 100vw) + var(--img-x)`; About was the only one using a raw `5%`,
+     which put the bio ~35px past the left edge of the viewport. */
+  left: calc(5% + max(0px, (100% - 100vw) + var(--img-x, 0px)));
   /* Centred in the page rather than pinned 20% from the top */
   top: 50%;
   transform: translateY(-50%);

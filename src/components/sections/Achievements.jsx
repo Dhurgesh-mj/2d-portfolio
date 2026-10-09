@@ -46,7 +46,7 @@ const Achievements = ({ progress, sectionProgress, isActive }) => {
           const pCard = mapRange(sp, stagger.start(i) + stagger.duration * 0.3, stagger.end(i));
           
           // Legacy visibility logic for fallback
-          const isVisible = isActive && sp >= enterAt;
+          const isVisible = isActive && pCard > 0;
 
           return (
             <div

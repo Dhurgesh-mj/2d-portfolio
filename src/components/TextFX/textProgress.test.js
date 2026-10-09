@@ -41,10 +41,30 @@ describe('decoder helpers', () => {
     expect(decodeCount('DECEPTOR', 1)).toBe(8);
   });
 
-  it('snaps fully resolved at/above 0.9 (focus hovers near 1)', () => {
+  it('resolves fully by the settle point so a card at rest shows no scramble', () => {
+    expect(decodeCount('ZEROCOPY', 0.85)).toBe(8);
     expect(decodeCount('ZEROCOPY', 0.9)).toBe(8);
-    expect(decodeCount('ZEROCOPY', 0.95)).toBe(8);
-    expect(decodeCount('ZEROCOPY', 0.899)).toBeLessThan(8);
+    expect(decodeCount('ZEROCOPY', 1)).toBe(8);
+  });
+
+  it('resolves a card whose focus settled just under the old 0.9 cliff', () => {
+    // Regression: coverflow's focus = 1 - |off| * 1.1 lands on values like
+    // 0.8916, which fell under the old `p >= 0.9` shortcut and left the last
+    // character scrambled forever.
+    expect(decodeCount('SHINOBI', 0.8916)).toBe(7);
+    expect(decodeCount('SUBDOMAINATOR', 0.8916)).toBe('SUBDOMAINATOR'.length);
+  });
+
+  it('settles continuously rather than popping the last glyph', () => {
+    let prev = 0;
+    for (let p = 0; p <= 1.0001; p += 0.01) {
+      const c = decodeCount('DECEPTOR', p);
+      // At most one character resolves per 1% of progress, otherwise the tail
+      // snaps and the final glyph appears out of nowhere.
+      expect(c - prev).toBeLessThanOrEqual(1);
+      prev = c;
+    }
+    expect(prev).toBe(8);
   });
 
   it('resolves monotonically with progress', () => {

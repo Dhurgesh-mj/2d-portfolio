@@ -21,4 +21,5 @@ Thumbs.db
 
 # local / tooling
 .playwright-mcp/
+.screens/
 *.local

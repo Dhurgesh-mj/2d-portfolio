@@ -39,7 +39,9 @@ const Skills = ({ progress, sectionProgress, isActive }) => {
 
   // Stagger editorial words for the "BUILD // BREAK // ANALYZE // DEFEND" line
   const EDITORIAL_WORDS = ['BUILD', 'BREAK', 'ANALYZE', 'DEFEND'];
-  const editorialStagger = staggerRange(EDITORIAL_WORDS.length, 0.70, 0.84);
+  // Ends at 0.82, before exitOpacity starts fading at 0.84, so the line is fully
+  // readable before the chapter dims.
+  const editorialStagger = staggerRange(EDITORIAL_WORDS.length, 0.68, 0.82);
 
   return (
     <section

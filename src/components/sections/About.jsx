@@ -12,7 +12,10 @@ const About = ({ progress, sectionProgress, isActive }) => {
   const pBio = mapRange(sp, 0.15, 0.35);
   const pInterests = mapRange(sp, 0.40, 0.60);
   const pExperience = mapRange(sp, 0.62, 0.78);
-  const pLocation = mapRange(sp, 0.82, 0.95);
+  // Must complete before exitP starts fading at 0.90 — otherwise the location
+  // wipes in while the chapter is already dimming and never reads at full
+  // opacity.
+  const pLocation = mapRange(sp, 0.78, 0.89);
   
   const exitP = mapRange(sp, 0.90, 1.0);
   const globalOpacity = 1 - exitP;

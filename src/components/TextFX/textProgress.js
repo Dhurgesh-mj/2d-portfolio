@@ -30,11 +30,24 @@ export function glyphAt(i, tick) {
   return set[(i * 7 + tick * 3) % set.length];
 }
 
+/** Fraction of progress after which the text is treated as fully resolved.
+ *  Early enough that a card at rest always reads clean. */
+const DECODE_SETTLE_AT = 0.85;
+
 /** How many leading characters of the decoder have resolved at progress `p`.
- *  Snaps to fully resolved at/above 0.9 — scroll-driven drivers (coverflow
- *  focus, lerped progress) hover near 1 without ever landing on it exactly,
- *  which used to leave the final glyph flickering forever. */
+ *
+ *  Resolves the tail slightly early and continuously, so a card that has come to
+ *  rest never shows a glyph still scrambling.
+ *
+ *  This used to snap via a hard `p >= 0.9` shortcut on the assumption that
+ *  scroll-driven drivers "hover near 1". They don't: coverflow's
+ *  `focus = 1 - |off| * 1.1` routinely settles at ~0.89, which fell *under* the
+ *  threshold and left the project's final character permanently scrambled —
+ *  a card parked on screen looking broken rather than mid-decode. A hard
+ *  threshold also makes the count jump discontinuously, so the last glyph pops
+ *  instead of settling. */
 export function decodeCount(text, p) {
-  if (p >= 0.9) return text.length;
-  return Math.floor(p * text.length + 0.0001);
+  if (p <= 0) return 0;
+  const settled = Math.min(1, p / DECODE_SETTLE_AT);
+  return Math.min(text.length, Math.ceil(settled * text.length));
 }

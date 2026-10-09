@@ -8,7 +8,7 @@ export const portfolio = {
     tagline: 'I break things so others can build them safer.'
   },
   about: {
-    bio: '19, second-year CS at SRMIST Chennai. While most of my peers are still in theory, I operate in the field — pentesting live targets, dissecting malware in isolated labs, and building the Python tools that don\u2019t exist yet. Certified Social Engineering Defense Practitioner (with Merit). Building toward red teaming and malware research: the engineer who finds CVEs before they\u2019re published.',
+    bio: 'I’m 19, a second-year CS student at SRMIST Chennai. While most of my peers are still in theory, I operate in the field — pentesting live targets, dissecting malware in isolated labs, and building the Python tools that don\u2019t exist yet. Certified Social Engineering Defense Practitioner (with Merit). Building toward red teaming and malware research: the engineer who finds CVEs before they\u2019re published.',
     interests: ['Bug Bounty', 'Malware Analysis', 'Python Tooling', 'CTF Challenges', 'OSINT & Recon'],
     // Surfaced in the About chapter — previously declared here and rendered nowhere.
     experience: [

@@ -282,8 +282,18 @@
   transform: translate(calc(var(--p, 0) * 4px), calc(var(--p, 0) * -2px));
 }
 
+/* The label must never be squeezed. As a flex item with the default
+   `flex-shrink: 1` it was being compressed a few px narrower than its own
+   content, and the parent's `overflow: hidden` (needed for the hover fill)
+   shaved the tail off the last glyph — "GITHUB REPOSITOR|". */
+.mission-link__text {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 .mission-link__arrow {
   display: inline-block;
+  flex-shrink: 0;
   transition: transform var(--duration-normal) var(--ease-standard);
 }
 
