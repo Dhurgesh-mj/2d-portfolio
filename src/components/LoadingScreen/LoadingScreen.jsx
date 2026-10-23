@@ -36,7 +36,7 @@ const LoadingScreen = ({ progress = 0, isReady = false }) => {
       clearTimeout(skipTimerRef.current);
       clearTimeout(forceTimerRef.current);
       setFadingOut(true);
-      const timer = setTimeout(() => setMounted(false), 500);
+      const timer = setTimeout(() => setMounted(false), 700);
       return () => clearTimeout(timer);
     }
   }, [isReady, forceReady]);

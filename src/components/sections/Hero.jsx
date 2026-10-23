@@ -5,16 +5,21 @@ import { SplitText, Typewriter } from '../TextFX/TextFX';
 import { portfolio } from '../../data/portfolio';
 import { mapRange } from '../../lib/progress';
 
-const Hero = ({ sectionProgress, isActive }) => {
+const Hero = ({ sectionProgress, isActive, openProgress = 0 }) => {
   const sp = sectionProgress || 0;
 
-  // Staggered cinematic reveals
-  const pName    = mapRange(sp, 0.20, 0.40);
-  const pRole    = mapRange(sp, 0.30, 0.50);
-  const pTagline = mapRange(sp, 0.45, 0.65);
-  const pScroll  = mapRange(sp, 0.65, 0.80);
+  // A3 handoff: the opening beat drives the reveals until the reader scrolls,
+  // then real scroll progress takes over. max() keeps the handoff continuous.
+  const reveal = Math.max(sp, openProgress);
 
-  // Exit fade out at the very end
+  // Staggered cinematic reveals
+  const pName    = mapRange(reveal, 0.20, 0.40);
+  const pRole    = mapRange(reveal, 0.30, 0.50);
+  const pTagline = mapRange(reveal, 0.45, 0.65);
+  const pScroll  = mapRange(reveal, 0.65, 0.80);
+
+  // Exit fade out at the very end — keyed to real scroll, not the beat, so
+  // the hero doesn't fade while the reader is still at the top.
   const exitP = mapRange(sp, 0.85, 1.0);
   const globalOpacity = 1 - exitP;
 

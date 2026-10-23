@@ -55,6 +55,7 @@ const Contact = ({ sectionProgress, isActive }) => {
             <Magnetic strength={6} className="magnetic--block">
               <button
                 className={`contact-link contact-link--email contact-link--primary${copied ? ' is-confirmed' : ''}${copyFailed ? ' is-failed' : ''}`}
+                data-sfx="BAM!"
                 onClick={handleEmailClick}
                 title={copied ? 'Copied to clipboard' : copyFailed ? 'Opening your mail app' : `Copy ${email}`}
                 aria-live="polite"

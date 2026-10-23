@@ -9,17 +9,6 @@
   translate: calc(var(--cam-x, 0) * -22px) calc(var(--cam-y, 0) * -16px);
 }
 
-.atmosphere-wrapper canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-/* ========================
-   FILM GRAIN + VIGNETTE
-   Print-stock grain over the whole sticky viewport.
-   ======================== */
-
 .film-grain {
   position: absolute;
   inset: -60px;

@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback, useReducer } from 'rea
 import { ComicCanvas } from './components/ComicCanvas/ComicCanvas';
 import { Atmosphere } from './components/Atmosphere/Atmosphere';
 import { PixelCursor } from './components/PixelCursor/PixelCursor';
+import { SfxBurst } from './components/SfxBurst/SfxBurst';
 import { CameraRig } from './components/CameraRig/CameraRig';
 import { rigState } from './components/CameraRig/rigState';
 import { getCinePose } from './components/Camera/cineCam';
@@ -30,6 +31,11 @@ function App() {
 
   const [frameReady, setFrameReady] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  // A3 opening beat — hero content driven by this value (0..1) for ~1s after
+  // the loader lifts, so the page-turn and the title arrival read as one beat.
+  const openRef = useRef(0);
+  const openStartRef = useRef(0);
+  const frameReadyRef = useRef(false);
   // Re-render ONLY when scroll progress actually changed. useScrollProgress
   // returns progress through a ref-backed getter, which deliberately does not
   // trigger renders, so something has to bridge rAF -> React. useReducer keeps
@@ -62,7 +68,29 @@ function App() {
 
       const current = scrollDataRef.current.progress;
 
-      if (Math.abs(current - lastProgress) > 0.0001) {
+      // A3 opening beat: advance openRef while the beat is still running, and
+      // force a re-render so Hero's reveals (keyed off openProgress) play out
+      // even before the reader has scrolled anything.
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let beatRunning = false;
+      if (frameReadyRef.current && openRef.current < 1 && !reduced) {
+        const delay = 120; // matches the page-turn animation-delay
+        const dur = 850;
+        const elapsed = performance.now() - openStartRef.current;
+        const t = (elapsed - delay) / dur;
+        if (t >= 1) {
+          openRef.current = 1;
+        } else if (t > 0) {
+          // easeOutCubic — title first, then role, then tagline, then hint,
+          // because each reveal's mapping window is offset along this ramp.
+          openRef.current = 1 - Math.pow(1 - t, 3);
+          beatRunning = true;
+        }
+      } else if (reduced) {
+        openRef.current = 1;
+      }
+
+      if (beatRunning || Math.abs(current - lastProgress) > 0.0001) {
         forceRender();
         lastProgress = current;
       }
@@ -79,6 +107,12 @@ function App() {
   }, []);
 
   // Read progress on each render tick
+  // Mirror frameReady into a ref so the rAF tick (created once) can see it
+  useEffect(() => {
+    frameReadyRef.current = frameReady;
+    if (frameReady) openStartRef.current = performance.now();
+  }, [frameReady]);
+
   const currentProgress = scrollData.progress;
   const currentSectionProgress = scrollData.sectionProgress;
 
@@ -117,6 +151,7 @@ function App() {
   return (
     <>
       <PixelCursor />
+      <SfxBurst />
       {/* Announce chapter changes to screen readers */}
       <div className="sr-only" aria-live="polite">
         {`Chapter ${currentSectionIndex + 1} of ${SECTION_RANGES.length}: ${SECTION_RANGES[currentSectionIndex]?.label ?? ''}`}
@@ -151,6 +186,7 @@ function App() {
           <div className="comic-overlay">
             <Hero
               {...getSectionState('hero')}
+              openProgress={openRef.current}
             />
             <About
               {...getSectionState('about')}

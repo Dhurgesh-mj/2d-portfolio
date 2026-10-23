@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { SECTION_RANGES, resolveSection } from '../lib/sections';
+import { settleLerp } from '../lib/smooth';
 
 /**
  * Tracks absolute scroll progress across the page and which chapter it is in.
@@ -19,6 +20,7 @@ export function useScrollProgress(sections = SECTION_RANGES) {
 
   const targetProgressRef = useRef(0);
   const lerpedProgressRef = useRef(0);
+  const lastTRef = useRef(0);
 
   // `sections` is a module-level constant in practice, but keep it in a ref so
   // a caller passing a fresh array literal doesn't restart the loop each render.
@@ -31,17 +33,21 @@ export function useScrollProgress(sections = SECTION_RANGES) {
     targetProgressRef.current = docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
   }, []);
 
-  const tick = useCallback(() => {
+  const tick = useCallback((now) => {
     calculate();
 
-    // Lerp towards target progress (0.12 is the smoothing factor).
-    // Lower = smoother but more delayed. Higher = snappier.
-    lerpedProgressRef.current += (targetProgressRef.current - lerpedProgressRef.current) * 0.12;
-
-    // Snap if very close
-    if (Math.abs(targetProgressRef.current - lerpedProgressRef.current) < 0.001) {
-      lerpedProgressRef.current = targetProgressRef.current;
-    }
+    // The old lerp applied a fixed * 0.12 every frame — a 144Hz display ran
+    // it 2.4x more often than 60Hz, so the flick felt snappier and settled
+    // faster purely as a side-effect of refresh rate. settleLerp expresses
+    // the same rate per real millisecond instead.
+    let dt = 0;
+    if (lastTRef.current !== 0) dt = now - lastTRef.current;
+    lastTRef.current = now;
+    lerpedProgressRef.current = settleLerp(
+      lerpedProgressRef.current,
+      targetProgressRef.current,
+      dt
+    );
 
     const progress = lerpedProgressRef.current;
     const { id, sectionProgress } = resolveSection(sectionsRef.current, progress);

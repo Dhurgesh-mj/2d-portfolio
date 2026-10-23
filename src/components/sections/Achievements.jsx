@@ -79,7 +79,7 @@ const Achievements = ({ sectionProgress, isActive }) => {
                     should be checkable by the reader, not asserted. */}
                 {m.cves && (
                   <ul className="cve-list">
-                    {m.cves.map((cve) => (
+                    {m.cves.map((cve, cveIndex) => (
                       <li key={cve.id}>
                         <a
                           className="cve-link"
@@ -92,6 +92,7 @@ const Achievements = ({ sectionProgress, isActive }) => {
                           <span className="cve-link__summary">{cve.summary}</span>
                           <span
                             className={`cve-sev cve-sev--${cve.severity.toLowerCase()}`}
+                            style={{ '--i': cveIndex }}
                           >
                             {cve.cvss}
                             <span className="cve-sev__word">{cve.severity}</span>

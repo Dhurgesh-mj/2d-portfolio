@@ -11,9 +11,37 @@
   opacity: 1;
 }
 
+/* A3 handoff: the screen LIFTS as it fades — a curtain rising on the
+   arriving page-turn, not a dissolving. The 32px travel is small enough to
+   read as "rising" rather than "sliding", and the page-turn underneath is
+   already mid-sweep by the time the gap opens. */
 .comic-loading-screen--fade-out {
   opacity: 0;
   pointer-events: none;
+  animation: loader-lift var(--duration-page) var(--ease-decelerate) both;
+}
+
+@keyframes loader-lift {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-24px); }
+}
+
+/* The content settles into the lift (parallax of the curtain rising). */
+.comic-loading-screen--fade-out .comic-loading-screen__content {
+  animation: loader-settle var(--duration-slow) var(--ease-decelerate) both;
+}
+@keyframes loader-settle {
+  from { transform: translateY(0) scale(1); opacity: 1; }
+  to   { transform: translateY(8px) scale(0.985); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comic-loading-screen--fade-out {
+    animation: none;
+  }
+  .comic-loading-screen--fade-out .comic-loading-screen__content {
+    animation: none;
+  }
 }
 
 .comic-loading-screen__texture {

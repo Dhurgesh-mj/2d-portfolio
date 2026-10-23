@@ -265,9 +265,12 @@ export function Atmosphere({ getProgress }) {
           }
           const a = (0.28 + 0.3 * (p.size / 2.4)) * fade * Math.min(1, weights.rain * 2) * rainBoost;
           ctx.fillStyle = `rgba(168, 190, 222, ${Math.min(0.75, a).toFixed(3)})`;
-          // slanted streak: offset x by streak length for wind shear
-          ctx.fillRect(p.x, p.y, p.size, p.len);
-          ctx.fillRect(p.x - p.len * 0.18, p.y - 1, p.size * 0.7, 2);
+          // slanted streak: offset x by streak length for wind shear.
+          // City storm (rain weight > 0.4) reads as longer, heavier drops —
+          // the same rain, drawn with more authority in the storm chapter.
+          const streakLen = p.len * (weights.rain > 0.4 ? 1 + (weights.rain - 0.4) * 0.7 : 1);
+          ctx.fillRect(p.x, p.y, p.size, streakLen);
+          ctx.fillRect(p.x - streakLen * 0.18, p.y - 1, p.size * 0.7, 2);
         } else if (p.mode === 'mote') {
           // perspective warp: near motes fall faster and render larger
           const warp = 1 + (p.z || 0) * 2.2;

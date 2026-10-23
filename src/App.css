@@ -88,6 +88,24 @@
      on the non-interactive layers only — the canvas art drifts beneath and
      the spotlight follows — so depth still reads while targets stay put. */
   translate: none;
+
+  /* Velocity-reactive micro-skew (A2). The canvas already leans with scroll
+     speed (--vel skewY on .comic-canvas-wrapper); the layers ON the paper
+     just stayed bolted upright, which read as a slide projected onto a flat
+     sheet rather than sheets cut from the same physics. Skewing the content
+     layer by the same hair's breadth closes the gap ≤0.35deg at full flick.
+
+     translate stays off (Fitts note above); skewY only. The transform seat
+     is unused on this element (left/top position it), so nothing composes
+     badly — and during the Projects 3D turn the section's own keyframes own
+     their transform on a child element, so a parent's parent skews harmlessly.
+
+     Quantised to 0.05deg via round(): a continuous skew changes the composited
+     matrix every frame the velocity changes, which is exactly when churn
+     matters most. Browsers without round() drop the declaration → no skew,
+     a free graceful default. --vel is 0 on touch (CameraRig bails early),
+     so this is invisible there by construction. */
+  transform: skewY(calc(round(var(--vel, 0) * -0.35deg, 0.05deg)));
 }
 
 /* Spotlight position defaults to centre */
@@ -102,6 +120,8 @@
   }
   .comic-overlay {
     translate: none;
+    /* Velocity skew is motion — flatten it for the reduced-motion reader. */
+    transform: none;
   }
   /* Depth strata are motion. Flattening them back onto the art plane is the
      point of the preference — someone who asked for less movement should not
@@ -120,7 +140,14 @@
    Restorff effect, giving every chapter a distinct entrance means none of them
    is remembered; the differentiation has to be rare to register. */
 .comic-scroll.is-live .comic-overlay > section.is-active {
+  /* A small delay seats the wipe into the handoff beat (A3): the loader lifts
+     over the first ~400ms, so the sweep's most dynamic portion is what the
+     reader sees emerge — wiping under a fully opaque screen would just hide
+     it. `both` fill covers the delay with the from-state (clipped) so the
+     section doesn't flash before the sweep starts. */
   animation: page-turn-in var(--duration-page) var(--ease-standard);
+  animation-delay: 120ms;
+  animation-fill-mode: both;
 }
 
 @keyframes page-turn-in {
@@ -140,6 +167,8 @@
    Scoped to .projects-section on purpose — everything else keeps the flat wipe. */
 .comic-scroll.is-live .comic-overlay > .projects-section.is-active {
   animation: page-turn-3d var(--duration-page) var(--ease-decelerate);
+  animation-delay: 120ms;
+  animation-fill-mode: both;
   transform-origin: left center;
 }
 

@@ -39,8 +39,6 @@ export function PixelCursor() {
     const onMove = (e) => {
       tx = e.clientX;
       ty = e.clientY;
-      // Write synchronously — waiting for the next rAF tick adds up to a
-      // full frame of input latency, which reads as dragging behind.
       x = tx;
       y = ty;
       write();
@@ -54,10 +52,22 @@ export function PixelCursor() {
       }
     };
 
+    const onDown = () => {
+      // ink-splat ripple: re-trigger the animation each press
+      el.classList.remove('pixel-cursor--ink');
+      // force reflow so the animation restarts
+      void el.offsetWidth;
+      el.classList.add('pixel-cursor--ink');
+    };
+
+    const onInkEnd = (e) => {
+      if (e.target === el || (e.target && e.target.classList && e.target.classList.contains('pixel-cursor__ink'))) {
+        el.classList.remove('pixel-cursor--ink');
+      }
+    };
+
     const tick = () => {
       if (!running) return;
-      // Fallback path — onMove already wrote, this only catches anything
-      // missed. Shared write() skips redundant sets.
       x = tx;
       y = ty;
       write();
@@ -66,6 +76,9 @@ export function PixelCursor() {
 
     window.addEventListener('mousemove', onMove, { passive: true });
     window.addEventListener('mouseover', onOver, { passive: true });
+    window.addEventListener('mousedown', onDown, { passive: true });
+    el.addEventListener('animationend', onInkEnd);
+
     raf = requestAnimationFrame(tick);
 
     return () => {
@@ -73,6 +86,8 @@ export function PixelCursor() {
       cancelAnimationFrame(raf);
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseover', onOver);
+      window.removeEventListener('mousedown', onDown);
+      el.removeEventListener('animationend', onInkEnd);
     };
   }, [enabled]);
 
@@ -82,6 +97,7 @@ export function PixelCursor() {
     <div className="pixel-cursor" ref={cursorRef} aria-hidden="true">
       <span className="pixel-cursor__h" />
       <span className="pixel-cursor__v" />
+      <span className="pixel-cursor__ink" />
     </div>
   );
 }

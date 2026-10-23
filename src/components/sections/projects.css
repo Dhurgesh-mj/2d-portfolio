@@ -280,9 +280,38 @@
   transition-duration: var(--duration-instant);
 }
 
-/* ---- Panel hover: subtle border registration shift ---- */
-.comic-mission-panel:hover {
-  box-shadow: 6px 6px 0 var(--ink), -1px -1px 0 rgba(0, 229, 255, 0.4);
+/* ---- B6: halftone shimmer sweep + subtle hover lift on coverflow cards ----
+   pointer:fine + hover-capable only (touch has no hover; motion preference
+   is gated in the reduced-motion block at the end of the file). The panel's
+   transform is owned inline by calculateCoverflow, so the lift lives on the
+   `translate` property, which composes with transform rather than overriding
+   it. */
+@media (hover: hover) {
+  .comic-mission-panel {
+    transition: box-shadow var(--duration-normal) var(--ease-standard),
+      translate var(--duration-normal) var(--ease-standard);
+  }
+  .comic-mission-panel:hover {
+    translate: 0 -3px;
+  }
+  .comic-mission-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    background: linear-gradient(
+      105deg,
+      transparent 38%,
+      rgba(255, 255, 255, 0.28) 50%,
+      transparent 62%
+    );
+    transform: translateX(-120%);
+    transition: transform var(--duration-page) var(--ease-standard);
+  }
+  .comic-mission-panel:hover::before {
+    transform: translateX(120%);
+  }
 }
 
 .comic-mission-panel:hover .mission-corners {
@@ -356,6 +385,7 @@
     transition: opacity var(--duration-fast) var(--ease-loop) !important;
     clip-path: none !important;
     transform: none !important;
+    translate: none !important;
   }
 
   .mission-link__arrow,

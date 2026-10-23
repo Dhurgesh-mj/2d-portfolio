@@ -369,14 +369,54 @@
   transform: translateX(0);
 }
 
+/* ---- B7: CVE badge slam-in stagger + scan-line pass keyed to --p-card ----
+   The badge arrives after the card stamps, so the panel reads as one beat
+   (card → badge). --i is the per-badge index (set inline in Achievements.jsx)
+   and --p-card is the card's own progress (inherited from the milestone).
+   The scan-line sweeps across once as the badge lands. */
+.milestone--visible .cve-sev {
+  animation: badge-slam var(--duration-normal) var(--ease-snap)
+    calc(var(--i, 0) * var(--duration-fast)) both;
+}
+@keyframes badge-slam {
+  0%   { transform: scale(0.6) translateY(-4px); opacity: 0; }
+  60%  { transform: scale(1.08) translateY(1px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.cve-sev {
+  position: relative;
+  overflow: hidden;
+}
+.cve-sev::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 100%
+  );
+  transform: translateX(calc((var(--p-card, 0) * 160%) - 100%));
+  opacity: calc(1 - var(--p-card, 0));
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .milestone--visible .cve-sev {
+    animation: none;
+  }
+  .cve-sev::after {
+    display: none;
+  }
   .cve-link,
   .cve-link:hover,
   .cve-link:active,
   .cve-link:focus-visible {
     transform: none;
   }
-
   .cve-link__arrow {
     opacity: 0.55;
     transform: none;
