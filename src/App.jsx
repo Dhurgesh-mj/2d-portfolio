@@ -88,9 +88,12 @@ function App() {
   const isMobileCam = useMediaQuery('(max-width: 768px)');
   const cinePose = getCinePose(currentSection, currentSectionProgress, rigState.vel, isMobileCam);
 
-  // Depth-of-field: art softens while panels hold focus (sharp on cuts)
+  // Depth-of-field: art softens while panels hold focus (sharp on cuts).
+  // Quantized to 0.25px steps: filter:blur() re-rasters the whole canvas per
+  // distinct radius, so a continuously-varying float re-blurs 60x/sec.
   const clamp01 = (v) => Math.min(1, Math.max(0, v));
-  const dofBlur = 2 * clamp01((currentSectionProgress - 0.12) / 0.13) * clamp01((0.9 - currentSectionProgress) / 0.15);
+  const dofRaw = 2 * clamp01((currentSectionProgress - 0.12) / 0.13) * clamp01((0.9 - currentSectionProgress) / 0.15);
+  const dofBlur = Math.round(dofRaw * 4) / 4;
 
   const getSectionState = useCallback((sectionId) => {
     const range = SECTION_RANGES.find((s) => s.id === sectionId);

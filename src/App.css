@@ -200,3 +200,13 @@
 .comic-overlay > * {
   pointer-events: auto;
 }
+
+/* Inactive chapters are opacity:0 but still painted every frame (halftone
+   gradients, shadows, text). visibility:hidden lets the browser skip them
+   entirely; the .is-active chapter opts back in. */
+.comic-overlay > section {
+  visibility: hidden;
+}
+.comic-overlay > section.is-active {
+  visibility: visible;
+}

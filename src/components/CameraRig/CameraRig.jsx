@@ -41,9 +41,17 @@ export function CameraRig({ targetRef, getProgress }) {
       ty = 0;
     };
 
+    // Last-written values: setting a CSS var invalidates style every time,
+    // even when identical — so only write on real change.
+    let lx = Infinity, ly = Infinity, lv = Infinity, ld = null, lsx = null, lsy = null;
+
     const tick = (now) => {
       if (!running) return;
       raf = requestAnimationFrame(tick);
+      if (document.hidden) {
+        lastT = now;
+        return;
+      }
 
       // Pointer camera (slow cinematic lerp)
       rigState.x += (tx - rigState.x) * 0.06;
@@ -61,13 +69,32 @@ export function CameraRig({ targetRef, getProgress }) {
       // Keep the sign so layers can respond to travel direction, not just speed.
       rigState.dir = delta > 0.0001 ? 1 : delta < -0.0001 ? -1 : 0;
 
-      el.style.setProperty('--cam-x', rigState.x.toFixed(4));
-      el.style.setProperty('--cam-y', rigState.y.toFixed(4));
-      el.style.setProperty('--vel', rigState.vel.toFixed(4));
-      el.style.setProperty('--scroll-dir', String(rigState.dir));
-      // spotlight pool follows the pointer (percentages for gradient stops)
-      el.style.setProperty('--spot-x', `${((rigState.x + 0.5) * 100).toFixed(2)}%`);
-      el.style.setProperty('--spot-y', `${((rigState.y + 0.5) * 100).toFixed(2)}%`);
+      if (Math.abs(rigState.x - lx) > 0.0005) {
+        lx = rigState.x;
+        el.style.setProperty('--cam-x', lx.toFixed(4));
+        const sx = `${((lx + 0.5) * 100).toFixed(2)}%`;
+        if (sx !== lsx) {
+          lsx = sx;
+          el.style.setProperty('--spot-x', sx);
+        }
+      }
+      if (Math.abs(rigState.y - ly) > 0.0005) {
+        ly = rigState.y;
+        el.style.setProperty('--cam-y', ly.toFixed(4));
+        const sy = `${((ly + 0.5) * 100).toFixed(2)}%`;
+        if (sy !== lsy) {
+          lsy = sy;
+          el.style.setProperty('--spot-y', sy);
+        }
+      }
+      if (Math.abs(rigState.vel - lv) > 0.002) {
+        lv = rigState.vel;
+        el.style.setProperty('--vel', lv.toFixed(4));
+      }
+      if (rigState.dir !== ld) {
+        ld = rigState.dir;
+        el.style.setProperty('--scroll-dir', String(ld));
+      }
     };
 
     window.addEventListener('mousemove', onMove, { passive: true });

@@ -26,10 +26,24 @@ export function PixelCursor() {
     let y = -100;
     let raf = 0;
     let running = true;
+    let lastT = '';
+
+    const write = () => {
+      const t = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
+      if (t !== lastT) {
+        lastT = t;
+        el.style.transform = t;
+      }
+    };
 
     const onMove = (e) => {
       tx = e.clientX;
       ty = e.clientY;
+      // Write synchronously — waiting for the next rAF tick adds up to a
+      // full frame of input latency, which reads as dragging behind.
+      x = tx;
+      y = ty;
+      write();
     };
 
     const onOver = (e) => {
@@ -42,12 +56,11 @@ export function PixelCursor() {
 
     const tick = () => {
       if (!running) return;
-      // Stepped follow — pixel-art motion, not smooth glide
-      x += (tx - x) * 0.35;
-      y += (ty - y) * 0.35;
-      if (Math.abs(tx - x) < 0.5) x = tx;
-      if (Math.abs(ty - y) < 0.5) y = ty;
-      el.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
+      // Fallback path — onMove already wrote, this only catches anything
+      // missed. Shared write() skips redundant sets.
+      x = tx;
+      y = ty;
+      write();
       raf = requestAnimationFrame(tick);
     };
 

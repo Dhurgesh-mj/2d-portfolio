@@ -3,15 +3,17 @@ import { getClimateWeights, isStormChapter } from './climates';
 import { rigState } from '../CameraRig/rigState';
 import './atmosphere.css';
 
-const BASE_PARTICLES = 220;
-const MOBILE_PARTICLES = 110;
+const BASE_PARTICLES = 140;
+const MOBILE_PARTICLES = 70;
 
-// Spawn rates (particles per second at full weight)
-const SPAWN = { rain: 130, mote: 46, ember: 30, dust: 22 };
+// Spawn rates (particles per second at full weight) — cut ~35%; density
+// reads the same at these sizes, frame time does not.
+const SPAWN = { rain: 85, mote: 30, ember: 20, dust: 15 };
 const MAX_AGE = { rain: 2.2, mote: 7, ember: 6, dust: 11, splash: 0.4 };
 
-// Manga speed lines radiated on fast scrolls
-const SPEED_LINES = 26;
+// Manga speed lines radiated on fast scrolls (26 save/rotate/restore cycles
+// per frame during scrolls was measurable; 14 reads the same).
+const SPEED_LINES = 14;
 
 function rand(min, max) {
   return min + Math.random() * (max - min);
@@ -132,9 +134,18 @@ export function Atmosphere({ getProgress }) {
     let frameCount = 0;
     let running = true;
 
+    const onVis = () => {
+      last = performance.now();
+    };
+    document.addEventListener('visibilitychange', onVis);
+
     const tick = (now) => {
       if (!running) return;
       raf = requestAnimationFrame(tick);
+      if (document.hidden) {
+        last = now;
+        return;
+      }
 
       let dt = (now - last) / 1000;
       last = now;
@@ -186,7 +197,10 @@ export function Atmosphere({ getProgress }) {
       }
 
       // --- fog banks + finale light shafts (behind particles) ---
-      const fogWeight = Math.max(weights.mote * 0.55, weights.dust);
+      // Radial gradients are the costliest draw here; skip on narrow screens
+      // where they are barely visible.
+      const smallScreen = W < 768;
+      const fogWeight = smallScreen ? 0 : Math.max(weights.mote * 0.55, weights.dust);
       if (fogWeight > 0.03) {
         const t = now / 1000;
         const cool = weights.mote >= weights.dust;
@@ -318,6 +332,7 @@ export function Atmosphere({ getProgress }) {
       running = false;
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
+      document.removeEventListener('visibilitychange', onVis);
     };
   }, []);
 
